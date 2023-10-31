@@ -1,34 +1,34 @@
 import SwiftUI
 
-// A view to display seven dates with the centered one highlighted.
+// A view to display a week (Sunday to Saturday) with the centered day highlighted.
 struct DateSelector: View {
     @Binding var centeredDate: Date
     let dateFormatter: DateFormatter
-    
+
     var body: some View {
-        HStack(spacing: 12) { // Added a spacing for uniform spacing between the dates.
-            
+        HStack(spacing: 12) {
             // Arrow button to move the centered date backward by one day.
             Button(action: {
                 centeredDate = Calendar.current.date(byAdding: .day, value: -1, to: centeredDate)!
             }) {
                 Image(systemName: "arrow.left")
             }
-            
-            Spacer() // Separate the arrow and the date numbers.
-            
-            // Display three dates before the centered date, the centered date, and three dates after.
-            ForEach(-3..<4) { offset in
-                Text(dateFormatter.string(from: Calendar.current.date(byAdding: .day, value: offset, to: centeredDate)!))
-                    .frame(width: 30, height: 30) // Defined frame to ensure space.
-                    .background(offset == 0 ? Color.blue : Color.clear)
+
+            Spacer()
+
+            // Display the dates for the current week.
+            ForEach(0..<7) { offset in
+                let weekDate = dateForDayOfWeek(offset: offset)
+                Text(dateFormatter.string(from: weekDate))
+                    .frame(width: 30, height: 30)
+                    .background(isCenteredDate(date: weekDate) ? Color.blue : Color.clear)
                     .clipShape(Circle())
-                    .foregroundColor(offset == 0 ? .white : .black)
-                    .font(.headline) // Defined font size to ensure fitting within the circle.
+                    .foregroundColor(isCenteredDate(date: weekDate) ? .white : .black)
+                    .font(.headline)
             }
-            
-            Spacer() // Separate the arrow and the date numbers.
-            
+
+            Spacer()
+
             // Arrow button to move the centered date forward by one day.
             Button(action: {
                 centeredDate = Calendar.current.date(byAdding: .day, value: 1, to: centeredDate)!
@@ -37,5 +37,18 @@ struct DateSelector: View {
             }
         }
         .padding()
+    }
+
+    // Helper function to determine if a date is the centered date.
+    private func isCenteredDate(date: Date) -> Bool {
+        let calendar = Calendar.current
+        return calendar.isDate(date, inSameDayAs: centeredDate)
+    }
+
+    // Helper function to get the date for a specific day of the week based on the centeredDate.
+    private func dateForDayOfWeek(offset: Int) -> Date {
+        let calendar = Calendar.current
+        let startOfWeek = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: centeredDate))!
+        return calendar.date(byAdding: .day, value: offset, to: startOfWeek)!
     }
 }

@@ -3,13 +3,17 @@ import SwiftUI
 struct NavBar: View {
     let month: String
     
+    
     var body: some View {
         HStack {
-            Image(systemName: "cat.fill") // Replace with your desired image.
-                .resizable()
-                .frame(width: 30, height: 30)
-            
-//            Spacer()
+            NavigationLink(
+                destination: CalendarView().navigationBarBackButtonHidden(true),
+                label: {
+                    Image("lion")
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                }
+            )
             
             Text(month)
                 .font(.title)
@@ -17,10 +21,15 @@ struct NavBar: View {
             
             Spacer()
             
-            Image(systemName: "person.fill") // Replace with your desired image.
-                .resizable()
-                .frame(width: 30, height: 30)
-                .clipShape(Circle())
+            NavigationLink(
+                destination: Profile().navigationBarBackButtonHidden(true),
+                label: {
+                    Image(systemName: "person.fill")
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                        .clipShape(Circle())
+                }
+            )
         }
         .padding()
     }

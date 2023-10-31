@@ -2,8 +2,10 @@ import SwiftUI
 
 struct AuthView: View {
     @State private var showSafari = false // A state variable that determines whether to show the SFSafariViewController
-    let authURL: URL? = URL(string: "http://10.1.223.130:8080/v1/auth/google") // The URL for Google authentication
+    let authURL: URL? = URL(string: "https://b408-2600-387-5-805-00-61.ngrok-free.app/v1/auth/google") // The URL for Google authentication
+    @State private var token: String? = nil
 
+    
     var body: some View {
         VStack {
             Button(action: {
@@ -16,7 +18,30 @@ struct AuthView: View {
                     SafariView(url: authURL) // Present the SafariView with the Google authentication URL
                 }
             }
+        }.onOpenURL { url in
+            handleURL(url)
+            
         }
+       
+
+        // This function processes the URL to extract and store the token
+        
+    }
+    
+    func handleURL(_ url: URL) {
+        print("heyyyyyyyyy")
+        guard url.scheme == "lionlink" else { return }
+        // Convert the URL into URLComponents to parse its parts
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: true),
+              // Look for query item named "token" and get its value
+              let token = components.queryItems?.first(where: { $0.name == "token" })?.value else {
+            return
+        }
+
+        // Store the retrieved token in the token state variable and also in UserDefaults
+        self.token = token
+        UserDefaults.standard.set(token, forKey: "token")
+        
     }
 }
 

@@ -7,18 +7,47 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5058BC8D2AF090DE007B3628 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5058BC8C2AF090DE007B3628 /* SignInView.swift */; };
+		5058BC902AF09766007B3628 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5058BC8F2AF09766007B3628 /* Profile.swift */; };
 		50FF06D12AE7645000B6330E /* LionLinkApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF06D02AE7645000B6330E /* LionLinkApp.swift */; };
 		50FF06D32AE7645000B6330E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF06D22AE7645000B6330E /* ContentView.swift */; };
 		50FF06D52AE7645000B6330E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 50FF06D42AE7645000B6330E /* Assets.xcassets */; };
 		50FF06D82AE7645000B6330E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 50FF06D72AE7645000B6330E /* Preview Assets.xcassets */; };
+		50FF06DF2AE7647700B6330E /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF06DE2AE7647700B6330E /* ProfileView.swift */; };
+		50FF06E12AE764A800B6330E /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF06E02AE764A800B6330E /* AuthView.swift */; };
+		50FF06E32AE764C200B6330E /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF06E22AE764C200B6330E /* SafariView.swift */; };
+		50FF06E52AE7650200B6330E /* AppURLHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF06E42AE7650200B6330E /* AppURLHandler.swift */; };
+		50FF06E72AE7651600B6330E /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF06E62AE7651600B6330E /* CalendarView.swift */; };
+		50FF06E92AE7657200B6330E /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF06E82AE7657200B6330E /* Event.swift */; };
+		50FF06EB2AE7658600B6330E /* NavBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF06EA2AE7658600B6330E /* NavBar.swift */; };
+		50FF06ED2AE765A800B6330E /* DateSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF06EC2AE765A800B6330E /* DateSelector.swift */; };
+		50FF06EF2AE765C500B6330E /* DayScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF06EE2AE765C500B6330E /* DayScheduleView.swift */; };
+		50FF071A2AE802B700B6330E /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF07192AE802B700B6330E /* SplashScreenView.swift */; };
+		50FF07372AE8AC1100B6330E /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF07362AE8AC1100B6330E /* TimerView.swift */; };
+		50FF07392AE8B69500B6330E /* NextEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF07382AE8B69500B6330E /* NextEvent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5058BC8C2AF090DE007B3628 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		5058BC8F2AF09766007B3628 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		5058BC912AF170EB007B3628 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		50FF06CD2AE7645000B6330E /* LionLink.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LionLink.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		50FF06D02AE7645000B6330E /* LionLinkApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LionLinkApp.swift; sourceTree = "<group>"; };
 		50FF06D22AE7645000B6330E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		50FF06D42AE7645000B6330E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		50FF06D72AE7645000B6330E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		50FF06DE2AE7647700B6330E /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		50FF06E02AE764A800B6330E /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
+		50FF06E22AE764C200B6330E /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
+		50FF06E42AE7650200B6330E /* AppURLHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppURLHandler.swift; sourceTree = "<group>"; };
+		50FF06E62AE7651600B6330E /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		50FF06E82AE7657200B6330E /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		50FF06EA2AE7658600B6330E /* NavBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBar.swift; sourceTree = "<group>"; };
+		50FF06EC2AE765A800B6330E /* DateSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelector.swift; sourceTree = "<group>"; };
+		50FF06EE2AE765C500B6330E /* DayScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayScheduleView.swift; sourceTree = "<group>"; };
+		50FF07192AE802B700B6330E /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
+		50FF07362AE8AC1100B6330E /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
+		50FF07382AE8B69500B6330E /* NextEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextEvent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +61,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5058BC8E2AF0972C007B3628 /* Pfp */ = {
+			isa = PBXGroup;
+			children = (
+				50FF06DE2AE7647700B6330E /* ProfileView.swift */,
+				5058BC8F2AF09766007B3628 /* Profile.swift */,
+			);
+			path = Pfp;
+			sourceTree = "<group>";
+		};
 		50FF06C42AE7645000B6330E = {
 			isa = PBXGroup;
 			children = (
@@ -51,8 +89,12 @@
 		50FF06CF2AE7645000B6330E /* LionLink */ = {
 			isa = PBXGroup;
 			children = (
+				5058BC912AF170EB007B3628 /* Info.plist */,
+				5058BC8E2AF0972C007B3628 /* Pfp */,
+				50FF07182AE8029800B6330E /* Animation */,
+				50FF06F92AE786A300B6330E /* Main Page */,
+				50FF06F82AE7869A00B6330E /* GoogleAuth */,
 				50FF06D02AE7645000B6330E /* LionLinkApp.swift */,
-				50FF06D22AE7645000B6330E /* ContentView.swift */,
 				50FF06D42AE7645000B6330E /* Assets.xcassets */,
 				50FF06D62AE7645000B6330E /* Preview Content */,
 			);
@@ -65,6 +107,40 @@
 				50FF06D72AE7645000B6330E /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		50FF06F82AE7869A00B6330E /* GoogleAuth */ = {
+			isa = PBXGroup;
+			children = (
+				50FF06E02AE764A800B6330E /* AuthView.swift */,
+				50FF06E22AE764C200B6330E /* SafariView.swift */,
+				50FF06E42AE7650200B6330E /* AppURLHandler.swift */,
+				50FF06D22AE7645000B6330E /* ContentView.swift */,
+				5058BC8C2AF090DE007B3628 /* SignInView.swift */,
+			);
+			path = GoogleAuth;
+			sourceTree = "<group>";
+		};
+		50FF06F92AE786A300B6330E /* Main Page */ = {
+			isa = PBXGroup;
+			children = (
+				50FF06E62AE7651600B6330E /* CalendarView.swift */,
+				50FF06E82AE7657200B6330E /* Event.swift */,
+				50FF06EA2AE7658600B6330E /* NavBar.swift */,
+				50FF06EC2AE765A800B6330E /* DateSelector.swift */,
+				50FF06EE2AE765C500B6330E /* DayScheduleView.swift */,
+				50FF07362AE8AC1100B6330E /* TimerView.swift */,
+				50FF07382AE8B69500B6330E /* NextEvent.swift */,
+			);
+			path = "Main Page";
+			sourceTree = "<group>";
+		};
+		50FF07182AE8029800B6330E /* Animation */ = {
+			isa = PBXGroup;
+			children = (
+				50FF07192AE802B700B6330E /* SplashScreenView.swift */,
+			);
+			path = Animation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,8 +213,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50FF06E92AE7657200B6330E /* Event.swift in Sources */,
+				50FF071A2AE802B700B6330E /* SplashScreenView.swift in Sources */,
+				50FF06E52AE7650200B6330E /* AppURLHandler.swift in Sources */,
+				50FF06EB2AE7658600B6330E /* NavBar.swift in Sources */,
+				50FF07372AE8AC1100B6330E /* TimerView.swift in Sources */,
+				50FF06E72AE7651600B6330E /* CalendarView.swift in Sources */,
 				50FF06D32AE7645000B6330E /* ContentView.swift in Sources */,
+				50FF06DF2AE7647700B6330E /* ProfileView.swift in Sources */,
+				50FF06E12AE764A800B6330E /* AuthView.swift in Sources */,
+				5058BC902AF09766007B3628 /* Profile.swift in Sources */,
+				5058BC8D2AF090DE007B3628 /* SignInView.swift in Sources */,
 				50FF06D12AE7645000B6330E /* LionLinkApp.swift in Sources */,
+				50FF07392AE8B69500B6330E /* NextEvent.swift in Sources */,
+				50FF06ED2AE765A800B6330E /* DateSelector.swift in Sources */,
+				50FF06EF2AE765C500B6330E /* DayScheduleView.swift in Sources */,
+				50FF06E32AE764C200B6330E /* SafariView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,6 +365,7 @@
 				DEVELOPMENT_TEAM = 6G2JW7RS8R;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LionLink/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -304,6 +395,7 @@
 				DEVELOPMENT_TEAM = 6G2JW7RS8R;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LionLink/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

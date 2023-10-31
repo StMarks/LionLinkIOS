@@ -8,18 +8,19 @@ struct AppURLHandler: View {
     @Environment(\.openURL) var openURL
 
     var body: some View {
-        // The main ContentView is wrapped inside a NavigationView for potential navigation actions
-        NavigationView {
-            ContentView()
-        }
-        // Listens for an "open URL" event, which will call the handleURL function when a URL is opened
-        .onOpenURL { url in
+        Text("hello")
+        VStack {
+            
+        }.onOpenURL { url in
             handleURL(url)
+            
         }
     }
 
     // This function processes the URL to extract and store the token
     func handleURL(_ url: URL) {
+        print("heyyyyyyyyy")
+        guard url.scheme == "lionlink" else { return }
         // Convert the URL into URLComponents to parse its parts
         guard let components = URLComponents(url: url, resolvingAgainstBaseURL: true),
               // Look for query item named "token" and get its value
@@ -30,5 +31,6 @@ struct AppURLHandler: View {
         // Store the retrieved token in the token state variable and also in UserDefaults
         self.token = token
         UserDefaults.standard.set(token, forKey: "token")
+        
     }
 }

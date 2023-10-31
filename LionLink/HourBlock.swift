@@ -8,11 +8,14 @@
 import SwiftUI
 
 struct HourBlock: View {
+    var hour: Int
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Divider()
+            Text("\(hour):00")
+            Spacer()
+            // Here you can add events using ZStack for overlapping
+        }
+        .frame(height: 60) // Or adjust based on your design preference
     }
-}
-
-#Preview {
-    HourBlock()
 }
