@@ -5,10 +5,13 @@ struct DayScheduleView: View {
     // Array of events to display.
     let events: [Event]
     
-    @State private var isPanelShown: Bool = false
 
- 
+    @Binding var isPanelShown: Bool
+    var togglePanel: () -> Void
+    @Binding var selectedEventName: String?
+
     
+    @AppStorage("isDarkMode") public var isDarkMode: Bool?
     
     // Constants for layout calculation.
     private let hourHeight: CGFloat = 60
@@ -105,6 +108,7 @@ struct DayScheduleView: View {
             currentDate = Date() // Update the currentDate every second.
             refreshID = UUID() // Force refresh of the view
         }
+//        .background(isDarkMode ?? false ? Color.black : Color.white)
         
         
         ScrollView(.vertical, showsIndicators: true) {
@@ -169,43 +173,14 @@ struct DayScheduleView: View {
                                 .position(x: UIScreen.main.bounds.width / 2 + 20, y: eventStartY + eventHeight / 2)
                                 .onTapGesture {
                                     isPanelShown.toggle()
+                                    selectedEventName = event.name
                                 }
-                        // Overlay Panel
-                        if isPanelShown {
-                            // This creates a semi-transparent black background that dims the content behind the panel
-                            Color.black.opacity(0.4)
-                                .edgesIgnoringSafeArea(.all)
-                                .onTapGesture {
-                                    // When the background is tapped, hide the panel
-                                    self.isPanelShown = false
-                                }
-
-                            
-                            VStack {
-                                HStack {
-                                    Spacer()
-                                    Button(action: {
-                                        // When the 'x' button is tapped, hide the panel
-                                        self.isPanelShown = false
-                                    }) {
-                                        Image(systemName: "xmark.circle.fill")
-                                            .resizable()
-                                            .frame(width: 20, height: 20)
-                                            .padding()
-                                    }
-                                }
-
-                                Text("PYURRRR")
-                                    .padding()
-
-                                Spacer()
-                            }
-                            .background(Color.white)
-                            .edgesIgnoringSafeArea(.all) // Makes the panel cover the entire screen
-                        }
+ 
+                        
                     }
                 }
                 .frame(height: hourHeight * CGFloat(hoursInDay))
+            
                 .onAppear {
                     // Scroll to the red line's position when the view first appears
                     reader.scrollTo("redLine", anchor: .center)
@@ -213,7 +188,12 @@ struct DayScheduleView: View {
             }
         }
 
-
+        .onTapGesture {
+                        // Use the passed function to toggle the panel
+                        togglePanel()
+            
+                    }
+//        .background(isDarkMode ?? false ? Color.black : Color.white)
     }
     
     

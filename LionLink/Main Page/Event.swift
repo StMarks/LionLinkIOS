@@ -7,6 +7,9 @@ struct Event: Identifiable, Equatable {
     let startTime: String
     let endTime: String
     let color: Color
+//    let teacher: String
+//    let location: String
+    
     
     var startDateTime: Date? {
         return date(from: startTime)

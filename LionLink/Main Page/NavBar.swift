@@ -2,7 +2,8 @@ import SwiftUI
 
 struct NavBar: View {
     let month: String
-    
+    @AppStorage("isDarkMode") public var isDarkMode: Bool?
+
     
     var body: some View {
         HStack {
@@ -18,16 +19,23 @@ struct NavBar: View {
             Text(month)
                 .font(.title)
                 .bold()
-            
+                
             Spacer()
             
             NavigationLink(
                 destination: Profile().navigationBarBackButtonHidden(true),
                 label: {
-                    Image(systemName: "person.fill")
-                        .resizable()
-                        .frame(width: 30, height: 30)
-                        .clipShape(Circle())
+//                    if let image = image {
+//                        Image(uiImage: image)
+//                            .resizable()
+//                            .frame(width: 30, height: 30)
+//                            .clipShape(Circle())
+//                    } else {
+                        Image(systemName: "person.fill")
+                            .resizable()
+                            .frame(width: 30, height: 30)
+                            .clipShape(Circle())
+//                    }
                 }
             )
         }

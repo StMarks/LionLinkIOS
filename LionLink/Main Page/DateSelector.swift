@@ -1,6 +1,5 @@
 import SwiftUI
 
-// A view to display a week (Sunday to Saturday) with the centered day highlighted.
 struct DateSelector: View {
     @Binding var centeredDate: Date
     let dateFormatter: DateFormatter
@@ -19,12 +18,16 @@ struct DateSelector: View {
             // Display the dates for the current week.
             ForEach(0..<7) { offset in
                 let weekDate = dateForDayOfWeek(offset: offset)
-                Text(dateFormatter.string(from: weekDate))
-                    .frame(width: 30, height: 30)
-                    .background(isCenteredDate(date: weekDate) ? Color.blue : Color.clear)
-                    .clipShape(Circle())
-                    .foregroundColor(isCenteredDate(date: weekDate) ? .white : .black)
-                    .font(.headline)
+                Button(action: {
+                    centeredDate = weekDate
+                }) {
+                    Text(dateFormatter.string(from: weekDate))
+                        .frame(width: 30, height: 30)
+                        .background(isCenteredDate(date: weekDate) ? Color.blue : Color.clear)
+                        .clipShape(Circle())
+                        .foregroundColor(isCenteredDate(date: weekDate) ? .white : .black)
+                        .font(.headline)
+                }
             }
 
             Spacer()
