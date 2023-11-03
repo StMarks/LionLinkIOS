@@ -1,11 +1,19 @@
 import SwiftUI
 
-struct Account: Equatable {
-
-    let firstname: String
-    let lastname: String
-    let preferredname: String
-    let gradyear: String
+struct Account: Codable, Equatable, Identifiable {
+    enum CodingKeys: CodingKey {
+        case firstName
+        case lastName
+        case preferredName
+        case gradYear
+        case email
+    }
+    
+    var id = UUID()
+    let firstName: String
+    let lastName: String
+    let preferredName: String
+    let gradYear: String
     let email: String
     
    

@@ -25,6 +25,8 @@
 		50FF071A2AE802B700B6330E /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF07192AE802B700B6330E /* SplashScreenView.swift */; };
 		50FF07372AE8AC1100B6330E /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF07362AE8AC1100B6330E /* TimerView.swift */; };
 		50FF07392AE8B69500B6330E /* NextEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF07382AE8B69500B6330E /* NextEvent.swift */; };
+		F8D836282AF2AFDE0046A7AB /* JSONInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D836272AF2AFDE0046A7AB /* JSONInfo.swift */; };
+		F8D8362A2AF2B0750046A7AB /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D836292AF2B0750046A7AB /* Block.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +50,8 @@
 		50FF07192AE802B700B6330E /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		50FF07362AE8AC1100B6330E /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		50FF07382AE8B69500B6330E /* NextEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextEvent.swift; sourceTree = "<group>"; };
+		F8D836272AF2AFDE0046A7AB /* JSONInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONInfo.swift; sourceTree = "<group>"; };
+		F8D836292AF2B0750046A7AB /* Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +129,8 @@
 			isa = PBXGroup;
 			children = (
 				50FF06E62AE7651600B6330E /* CalendarView.swift */,
+				F8D836272AF2AFDE0046A7AB /* JSONInfo.swift */,
+				F8D836292AF2B0750046A7AB /* Block.swift */,
 				50FF06E82AE7657200B6330E /* Event.swift */,
 				50FF06EA2AE7658600B6330E /* NavBar.swift */,
 				50FF06EC2AE765A800B6330E /* DateSelector.swift */,
@@ -224,9 +230,11 @@
 				50FF06E12AE764A800B6330E /* AuthView.swift in Sources */,
 				5058BC902AF09766007B3628 /* Profile.swift in Sources */,
 				5058BC8D2AF090DE007B3628 /* SignInView.swift in Sources */,
+				F8D836282AF2AFDE0046A7AB /* JSONInfo.swift in Sources */,
 				50FF06D12AE7645000B6330E /* LionLinkApp.swift in Sources */,
 				50FF07392AE8B69500B6330E /* NextEvent.swift in Sources */,
 				50FF06ED2AE765A800B6330E /* DateSelector.swift in Sources */,
+				F8D8362A2AF2B0750046A7AB /* Block.swift in Sources */,
 				50FF06EF2AE765C500B6330E /* DayScheduleView.swift in Sources */,
 				50FF06E32AE764C200B6330E /* SafariView.swift in Sources */,
 			);
