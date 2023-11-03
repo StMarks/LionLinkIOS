@@ -56,21 +56,32 @@ struct CalendarView: View {
     
     var parsedInfo: JSONInfo {
         //  Get Request that puts data into JSONInfo struct
-        let url = URL(string: "https://4a6c-96-230-82-137.ngrok-free.app")!
-        let testToken = "eyJhbGciOiJIUzI1NilsInR5cCI6|kpXVCJ9.eyJle-HBpcmVzSW4iOilzZCIsImlkljo00DQyNjcyL-CJIbWFpbCI6|mphbWVzc2FiZXRAc3RtYXJr-c3NjaG9vbC5vcmciLCJpYXQiOjE20Tg3Nz-Q1MTJ9.U9YvOXLpKdJAbq|X0GMFKUyoJa-LMcIcwdMqVIpietSA"
+        let testToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmVzSW4iOiIzZCIsImlkIjo0OTgyMjQyLCJlbWFpbCI6Inlpa2FpaHVuZ0BzdG1hcmtzc2Nob29sLm9yZyIsImlhdCI6MTY5ODk4NDg5Mn0.mm35cVGLilv7y_ruh41ipBgwpfwsxnZNwjtBjBaDiSc"
+        let url = URL(string: "https://4a6c-96-230-82-137.ngrok-free.app/v1/student/schedule")!
+        let headers = [
+            "Authorization": "Bearer " + testToken
+        ]
+        
+//        var rawInfo = JSONInfo(scheduleDayLimit: 0, user: Account(firstName: String(), lastName: String(), preferredName: String(), gradYear: String(), email: String()),schedule: [Block]())
+        var rawInfo: JSONInfo?
+        
         var request = URLRequest(url: url)
-        request.setValue( "Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.allHTTPHeaderFields = headers
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             if let error = error {
                 print(error)
+            } else if let data = data {
+                do {
+                    let rawInfo = try JSONDecoder().decode(JSONInfo.self, from: data)
+                } catch DecodingError.dataCorrupted(let context) {
+                    print(context)
+                } catch {
+                    print("error: ", error)
+                }
             }
         }
         task.resume()
-        
-//Uses JSONDecoder() to parse the data into the accessible structs
-        let data = try? Data(contentsOf: url)
-        let rawInfo = try? JSONDecoder().decode(JSONInfo.self, from: data!)
-        return rawInfo!
+        return rawInfo
     }
     
     var weeklyEvents: [[Event]] {
@@ -83,7 +94,6 @@ struct CalendarView: View {
         var idnum = 1
         for block in unordered {
             if (dateFormatter.date(from:block.startTime) != day) {
-                
                 idnum = 1
                 i += 1
             }
