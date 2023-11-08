@@ -3,7 +3,7 @@ import SwiftUI
 // This struct represents the view for displaying daily events on a timeline.
 struct DayScheduleView: View {
     // Array of events to display.
-    let events: [Event]
+    var events: [Event]
     
 
     @Binding var isPanelShown: Bool
@@ -12,6 +12,8 @@ struct DayScheduleView: View {
 
     
     @AppStorage("isDarkMode") public var isDarkMode: Bool?
+    @AppStorage("tokenClear") public var tokenClear: Bool?
+    
     
     // Constants for layout calculation.
     private let hourHeight: CGFloat = 60
@@ -29,6 +31,10 @@ struct DayScheduleView: View {
     // State to track the event that user taps on.
     @State private var selectedEvent: Event?
 
+    
+    func printEv(){
+        print(events)
+    }
     // Function to calculate the Y-position for a given time.
     func positionYFor(time: String) -> CGFloat {
         let components = time.split(separator: ":").compactMap { Int($0) }
@@ -93,16 +99,18 @@ struct DayScheduleView: View {
 
     // Main body of the DayScheduleView.
     var body: some View {
+        
+        
         HStack{
             // Uncomment below to see the timer view.
             // TimerView(startTime: Date().addingTimeInterval(-60), endTime: Date().addingTimeInterval(240))
-            TimerView(startTimeString: currentEvent?.startTime ?? "0:00", endTimeString: currentEvent?.endTime ?? "0:00", name: currentEvent?.name ?? "No Current Class", color: currentEvent?.color ?? .black)
+            TimerView(startTimeString: currentEvent?.startTime ?? "0:00", endTimeString: currentEvent?.endTime ?? "0:00", name: currentEvent?.title ?? "No Current Class", color: currentEvent?.color ?? .black)
             
             Spacer()
                 .frame(width: 25)
             
             // View for the next event.
-            NextEvent(eventName: nextEvent?.name ?? "Bio", backgroundColor: nextEvent?.color ?? .black, startTime: nextEvent?.startTime ?? "0:00", endTime: nextEvent?.endTime ?? "0:00")
+            NextEvent(eventName: nextEvent?.title ?? "Bio", backgroundColor: nextEvent?.color ?? .black, startTime: nextEvent?.startTime ?? "0:00", endTime: nextEvent?.endTime ?? "0:00")
         }
         .onReceive(timer) { _ in
             currentDate = Date() // Update the currentDate every second.
@@ -129,28 +137,25 @@ struct DayScheduleView: View {
                         let currentDate = Date()
                         let formatter = DateFormatter()
                         formatter.dateFormat = "HH:mm"
+                        printEv()
                         return formatter.string(from: currentDate)
                     }
                     
-                    Rectangle()
-                        .fill(Color.red)
-                        .frame(width: UIScreen.main.bounds.width - 60, height: 3)
-                        .position(x: UIScreen.main.bounds.width / 2, y: positionYFor(time: currentTime))
-                        .id("redLine") // We're tagging this view so that we can scroll to it
+                    
                     
                     // Events displayed as colored blocks.
-                    ForEach(events) { event in
+                    ForEach(events, id: \.id) { event in
                         let eventStartY = self.positionYFor(time: event.startTime)
-                            let eventHeight = self.heightFor(startTime: event.startTime, endTime: event.endTime)
+                        let eventHeight = self.heightFor(startTime: event.startTime, endTime: event.endTime)
 
                             RoundedRectangle(cornerRadius: 10)
                                 .fill(
                                     LinearGradient(
                                         gradient: Gradient(
                                             stops: [
-                                                .init(color: event.color, location: 0),
-                                                .init(color: event.color, location: 0.2),
-                                                .init(color: event.color.opacity(0.8), location: 1)
+                                                .init(color: event.color!, location: 0),
+                                                .init(color: event.color!, location: 0.2),
+                                                .init(color: event.color!.opacity(0.8), location: 1)
                                             ]),
                                         startPoint: .leading,
                                         endPoint: .trailing
@@ -160,7 +165,7 @@ struct DayScheduleView: View {
                                 .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
                                 .overlay(
                                     HStack {
-                                        Text(event.name)
+                                        Text(event.title)
                                             .font(.headline)
                                             .padding(.leading, 20)
                                         Spacer()
@@ -173,11 +178,17 @@ struct DayScheduleView: View {
                                 .position(x: UIScreen.main.bounds.width / 2 + 20, y: eventStartY + eventHeight / 2)
                                 .onTapGesture {
                                     isPanelShown.toggle()
-                                    selectedEventName = event.name
+                                    selectedEventName = event.title
                                 }
  
                         
                     }
+                    
+                    Rectangle()
+                        .fill(Color.red)
+                        .frame(width: UIScreen.main.bounds.width-30, height: 2)
+                        .position(x: UIScreen.main.bounds.width / 2, y: positionYFor(time: currentTime))
+                        .id("redLine") // We're tagging this view so that we can scroll to it
                 }
                 .frame(height: hourHeight * CGFloat(hoursInDay))
             
@@ -206,6 +217,3 @@ extension Date {
         return formatter.string(from: self)
     }
 }
-
-
-

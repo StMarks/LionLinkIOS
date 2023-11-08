@@ -5,7 +5,7 @@ struct ContentView: View {
 
     var body: some View {
         if let _ = token {
-            CalendarView()
+            SignInView()
         } else {
             AuthView()
         }

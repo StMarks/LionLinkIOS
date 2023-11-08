@@ -2,9 +2,10 @@ import SwiftUI
 
 struct AuthView: View {
     @State private var showSafari = false // A state variable that determines whether to show the SFSafariViewController
-    let authURL: URL? = URL(string: "https://4a6c-96-230-82-137.ngrok-free.app/v1/auth/google") // The URL for Google authentication
-    @State private var token: String? = nil
-
+    let authURL: URL? = URL(string: "https://e6c9-96-230-82-137.ngrok-free.app/v1/auth/google") // The URL for Google authentication
+   
+    @State private var token: String?
+    
     
     var body: some View {
         VStack {

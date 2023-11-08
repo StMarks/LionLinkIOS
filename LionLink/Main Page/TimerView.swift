@@ -43,14 +43,14 @@ struct TimerView: View {
     var body: some View {
         ZStack {
             Circle()
-                .stroke(Color.gray, lineWidth: 7)
-                .frame(width: 150, height: 150)
+                .stroke(Color.gray, lineWidth: 8)
+                .frame(width: 170, height: 170)
 
             Circle()
                 .trim(from: 0, to: elapsedTimeProgress)
-                .stroke(gradient, style: StrokeStyle(lineWidth: 12, lineCap: .round))
+                .stroke(gradient, style: StrokeStyle(lineWidth: 8, lineCap: .round))
                 .rotationEffect(.degrees(-90))
-                .frame(width: 150, height: 150)
+                .frame(width: 170, height: 170)
 
             VStack {
                 Text(timeDifference)
