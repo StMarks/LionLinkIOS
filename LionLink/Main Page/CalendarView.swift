@@ -3,53 +3,32 @@ import Combine
 
 struct CalendarView: View {
 //    var token: String
-    
-    // State variable for the currently centered date.
-    
-    @AppStorage("profileImageData") var profileImageData: Data?
     @AppStorage("token") var token: String?
     
-    @State private var scheduleData: ScheduleData?
+    //Loading Data
+    @State private var scheduleString: String?
+    @State private var individualEventsString: String?
+    @State private var isLoading = true
     
     @State private var profileImage: UIImage? = UIImage(systemName: "person.fill")
     @State private var selectedEventName: String? = ""
+    
+    @State private var groupedEvents: [[Event]] = []
+    @State private var individualEvents: [Event] = []
+  
     @State private var isPanelShown: Bool = false
+    
+    @State private var showingCreateEventView = false
+    @State private var selectedIndex: Int = 1
+    
+    
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     @State private var centeredDate = Date()
-    @State private var currentDate = Date()
-    
-    let timeZoneIdentifier = "America/New_York" // Set the appropriate time zone identifier
-    let timeString = "2023-11-08T12:00:00.000Z"
     
     
- 
-    // Function to toggle the panel
-        private func togglePanel() {
-            isPanelShown.toggle()
-        }
-    
-    // DateFormatter for displaying day numbers.
-    private var dateFormatter: DateFormatter = {
-        let df = DateFormatter()
-        df.dateFormat = "d"
-        return df
-    }()
-    
-    var currentEvent: Event? {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
-//        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-
-        let currentTime = formatter.date(from: formatter.string(from: currentDate)) ?? Date()
-
-        return events.first(where: { event in
-            if let startTime = formatter.date(from: event.startTime),
-               let endTime = formatter.date(from: event.endTime) {
-                return currentTime >= startTime && currentTime <= endTime
-            }
-            return false
-        })
+    private func togglePanel() {
+        isPanelShown.toggle()
     }
     
     // DateFormatter for displaying the month name.
@@ -60,179 +39,252 @@ struct CalendarView: View {
     }()
     
     
-    // An array of arrays to hold events for each day of the week.
-    // Each inner array represents the events for one specific day.
-
-    private var events: [Event] {
-        var tempday: [Event] = []
-        var count: Int = 1
-        if let scheduleData = scheduleData {
-            // Use the parsed data to populate your array
-            for item in scheduleData.schedule {
-                if(isSameDayAndMonth(dateString: extractDayAndMonth(from: item.startTime), currentDate: centeredDate)){
-                    
+    func fetchSchedule(completion: @escaping () -> Void) {
+        let urlString = "https://hub-dev.stmarksschool.org/v1/student/schedule?limit=3"
+        fetchFromEndpoint(urlString: urlString) { [self] result in
+            switch result {
+            case .success(let string):
+                guard let data = string.data(using: .utf8),
+                      let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                      let scheduleArray = json["schedule"] as? [[String: Any]] else {
+                    print("Could not parse JSON for schedule")
+                    return
                 }
-                tempday.append(Event(id: count, startTime: parseTime(from: item.startTime, timeZoneIdentifier: timeZoneIdentifier), endTime: parseTime(from: item.endTime, timeZoneIdentifier: timeZoneIdentifier), teacher: item.teacher, title: item.title, location: item.location, coler: item.color))
-                count+=1
+                
+                var scheduleEvents: [Event] = []
+                for dict in scheduleArray {
+                    guard let startTime = dict["startTime"] as? String,
+                          let endTime = dict["endTime"] as? String,
+                          let title = dict["title"] as? String,
+                          let teacher = dict["teacher"] as? String,
+                          let abbreviatedTitle = dict["abbreviatedTitle"] as? String,
+                          let location = dict["location"] as? String,
+                          let color = dict["color"] as? String else {
+                        print("Missing data for schedule event")
+                        continue
+                    }
+                    
+                    print(color.lowercased())
+                    if(color=="Yellow"){
+                        let event = Event(startTime: startTime, endTime: endTime, teacher: teacher, title: title, abbreviatedTitle: abbreviatedTitle, location: location, hex: "FFEA00")
+                            scheduleEvents.append(event)
+                    }else if(color.elementsEqual("Blue")){
+                        let event = Event(startTime: startTime, endTime: endTime, teacher: teacher, title: title, abbreviatedTitle: abbreviatedTitle, location: location, hex: "89CFF0")
+                            scheduleEvents.append(event)
+                    }else if(color.elementsEqual("Brown")){
+                        let event = Event(startTime: startTime, endTime: endTime, teacher: teacher, title: title, abbreviatedTitle: abbreviatedTitle, location: location, hex: "7B3F00")
+                            scheduleEvents.append(event)
+                    }else{
+                        let event = Event(startTime: startTime, endTime: endTime, teacher: teacher, title: title, abbreviatedTitle: abbreviatedTitle, location: location, hex: "023020")
+                            scheduleEvents.append(event)
+                    }
+                }
+                
+                individualEvents.append(contentsOf: scheduleEvents)
+                completion() // Call the completion handler
+            case .failure(let error):
+                print("Error fetching schedule: \(error.localizedDescription)")
             }
         }
-      
-        
-        return tempday
-        
-    }
-    
-    func parseTime(from string: String, timeZoneIdentifier: String) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-        dateFormatter.timeZone = TimeZone(identifier: timeZoneIdentifier)
-        
-        if let date = dateFormatter.date(from: string) {
-            dateFormatter.dateFormat = "HH:mm"
-            return dateFormatter.string(from: date)
-        }
-        
-        return "Invalid Date"
     }
 
-    
-    func extractDayAndMonth(from string: String) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-        
-        if let date = dateFormatter.date(from: string) {
-            dateFormatter.dateFormat = "dd-MM"
-            return dateFormatter.string(from: date)
-        }
-        
-        return "Invalid Date"
-    }
-    
-    func isSameDayAndMonth(dateString: String, currentDate: Date) -> Bool {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd-MM"
-        
-        let currentDateString = dateFormatter.string(from: currentDate)
-        return dateString == currentDateString
-    }
-    
-   
-    
 
-    
-    
-    
-    var body: some View {
-        
-        VStack {
-           
-            if let scheduleData = scheduleData {
-                        
-                    } else {
-                        Text("Loading...")
-                            .onAppear {
-                                // Make an HTTP GET request with the JWT token in the request header
-                                print(token)
-                                guard let url = URL(string: "https://e6c9-96-230-82-137.ngrok-free.app/v1/student/schedule?limit=0") else { return }
-                                var request = URLRequest(url: url)
-                                if(token == nil) {
-                                    // ruh roh
-                                    return
-                                }
-                                request.httpMethod = "GET"
-                                request.setValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
+    func fetchIndividualEvents(completion: @escaping () -> Void) {
+        let urlString = "https://hub-dev.stmarksschool.org/v1/student/schedule/manual"
+        fetchFromEndpoint(urlString: urlString) { [self] result in
+            switch result {
+            case .success(let string):
+                guard let data = string.data(using: .utf8),
+                      let jsonArray = try? JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] else {
+                    print("Could not parse JSON for individual events")
+                    return
+                }
 
-                                URLSession.shared.dataTask(with: request) { (data, response, error) in
-                                    
-                                    if let data = data {
-                                        do {
-                                            // Parse the JSON response into Swift data structures
-                                            
-                                            print(token)
-                                            let decoder = JSONDecoder()
-                                            let decodedData = try decoder.decode(ScheduleData.self, from: data)
-                                            DispatchQueue.main.async {
-                                                self.scheduleData = decodedData
-                                                
-                                                for event in self.events {
-                                                    event.scheduleNotification()
-                                                }
-                                            }
-                                        } catch {
-                                            print("Error decoding JSON: \(error)")
-                                        }
-                                    }
-                                }.resume()
-                            }
+                var events: [Event] = []
+                for dict in jsonArray {
+                    guard let startTime = dict["startTime"] as? String,
+                          let endTime = dict["endTime"] as? String,
+                          let description = dict["description"] as? String,
+                          let color = dict["color"] as? String else {
+                        print("Missing data for individual event")
+                        continue
                     }
-            NavBar(month: monthFormatter.string(from: centeredDate))
-//            // Date selector view.
-            DateSelector(centeredDate: $centeredDate, dateFormatter: dateFormatter)
-            Divider()
+                    let location = "Not specified" // Use a default value for location
+                    let event = Event(startTime: startTime, endTime: endTime, title: description, location: location, hex: color)
+                    events.append(event)
+                }
+
+                individualEvents.append(contentsOf: events)
+                completion() // Call the completion handler
+            case .failure(let error):
+                print("Error fetching individual events: \(error.localizedDescription)")
+            }
+        }
+    }
+
+
+
+    // fetchFromEndpoint remains the same
+    func fetchFromEndpoint(urlString: String, completion: @escaping (Result<String, Error>) -> Void) {
+        guard let url = URL(string: urlString) else {
+            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
+            return
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        // Unwrap the token safely before adding it to the request header
+        if let token = token {
+            request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        } else {
+            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Authentication token is missing"])))
+            return
+        }
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                if let data = data, let string = String(data: data, encoding: .utf8) {
+                    completion(.success(string))
+                } else if let error = error {
+                    completion(.failure(error))
+                } else {
+                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unknown error"])))
+                }
+            }
+        }.resume()
+    }
+
+    
+    func groupEventsByCurrentWeek(events: [Event]) -> [[Event]] {
+        var calendar = Calendar.current
+        calendar.timeZone = TimeZone(secondsFromGMT: 5 * 60 * 60) ?? calendar.timeZone // Adjust for the timezone (+5 hours)
+        calendar.firstWeekday = 2 // Week starts on Monday
+
+        // Find the start of the current week
+        guard let weekStart = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date())) else {
+            fatalError("Couldn't calculate the start of the current week.")
+        }
+
+        // Find the end of the current week
+        guard let endOfWeek = calendar.date(byAdding: .day, value: 7, to: weekStart) else {
+            fatalError("Couldn't calculate the end of the current week.")
+        }
+
+        // Filter events that occur within the current week
+        let eventsThisWeek = events.filter { event in
+            event.startTime >= weekStart && event.startTime < endOfWeek
+        }
+
+        // Create an array to hold events for each day of the week
+        var daysArray: [[Event]] = Array(repeating: [], count: 7)
+
+        // Assign events to the corresponding day
+        for event in eventsThisWeek {
+            let dayOffset = calendar.dateComponents([.day], from: weekStart, to: event.startTime).day ?? 0
+            daysArray[dayOffset].append(event)
+        }
+
+        // Sort the events for each day
+        for i in 0..<daysArray.count {
+            daysArray[i].sort(by: { $0.startTime < $1.startTime })
+        }
+
+        return daysArray
+    }
+
+
+    
+    func printEventsByDay(eventsByDay: [[Event]]) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .full
+        dateFormatter.timeStyle = .short
+        
+        let daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+        var dayIndex = Calendar.current.component(.weekday, from: Date()) - 1 // Adjust for your calendar if needed
+        
+        for dailyEvents in eventsByDay {
+            // Check to wrap around the daysOfWeek array if dayIndex exceeds its bounds
+            if dayIndex >= daysOfWeek.count {
+                dayIndex = 0
+            }
             
-            DayScheduleView(events: events, isPanelShown: $isPanelShown, togglePanel: togglePanel, selectedEventName: $selectedEventName)
-        }
-        .onReceive(timer) { _ in
-            currentDate = Date() // Update the currentDate every second.
-        }
-        .overlay(
-            Group {
-                if isPanelShown {
-                    // Faded background
-                    Rectangle()
-                        .fill(Color.black.opacity(0.4))
-                        .edgesIgnoringSafeArea(.all)
-                        .onTapGesture {
-                            // Hide panel when the background is tapped
-                            isPanelShown = false
-                        }
-                    
-                    // Panel in the center of the screen
-                    VStack {
-                        HStack {
-                            Spacer()
-                            Button(action: {
-                                // Hide panel when the 'x' button is tapped
-                                isPanelShown = false
-                            }) {
-                                Image(systemName: "xmark.circle.fill")
-                                    .resizable()
-                                    .frame(width: 20, height: 20)
-                                    .padding()
-                            }
-                        }
-                        Text(selectedEventName ?? "hehehehehe")
-                            .padding()
-                        Spacer()
+            print("\(daysOfWeek[dayIndex]):")
+            if dailyEvents.isEmpty {
+                print("  No events")
+            } else {
+                for event in dailyEvents {
+                    let startTime = dateFormatter.string(from: event.startTime)
+                    let endTime = dateFormatter.string(from: event.endTime)
+                    print("  \(event.title) - \(startTime) to \(endTime)")
+                    if let teacher = event.teacher {
+                        print("    Teacher: \(teacher)")
                     }
-                    .frame(width: 350, height: 250) // Medium-sized rectangle
-                    .background(Color.white)
-                    .cornerRadius(20) // Optional: Add rounded corners to the panel
+                    if let abbreviatedTitle = event.abbreviatedTitle {
+                        print("    Abbreviated Title: \(abbreviatedTitle)")
+                    }
+                    print("    Color: \(event.colorHex)")
                 }
             }
-        )
+            dayIndex += 1
+            print("\n") // Add space between days for readability
+        }
+    }
+    
+    
+
+        var body: some View {
+            VStack {
+                CalendarNavBar(month: monthFormatter.string(from: centeredDate))
+                DateSelectorView(selectedDayIndex: $selectedIndex)
+                
+                Divider() // Remove padding if not needed
+                
+                TabView {
+                    // First page
+                    HStack(spacing: 20) { // Remove spacing if not needed
+                        TimerView(startTimeString: "13:45", endTimeString: "15:05", name: "Computer Science", color: .brown)
+                        NextEvent(eventName: "Done For The Day!", backgroundColor: .pink, startTime: "", endTime: "")
+                    }
+                    .padding(.horizontal, 10) // Add a little padding if needed, adjust to your preference
+                    .tag(0)
+                    
+                    // Second page (replace with your actual other view)
+                    Text("Clubs")
+                        .padding(.horizontal, 10) // Same padding for consistency
+                        .tag(1)
+                }
+                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                 .frame(height: 200) 
+                
+                DayEventView(selectedIndex: $selectedIndex, showingCreateEventView: $showingCreateEventView ,eventsByDay: groupedEvents)
+            }
+            .onReceive(timer) { _ in
+//                refreshID = UUID() // Force refresh of the view
+//                print("heyyyyy")
+            }
+            .onAppear {
+                fetchSchedule {
+                    fetchIndividualEvents {
+                        // Now the groupEventsByCurrentWeek and printEventsByDay will be called
+                        // after both fetchSchedule and fetchIndividualEvents have completed
+                        groupedEvents = groupEventsByCurrentWeek(events: individualEvents)
+                        printEventsByDay(eventsByDay: groupedEvents)
+                    }
+                }
+            }
+            .sheet(isPresented: $showingCreateEventView) {
+                CreateEventView(token: token ?? "")
+            }
+        }
+    
+    private func formatTime(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        return formatter.string(from: date)
+    }
+    func findNextEvent(after date: Date, in events: [[Event]]) -> Event? {
+        let sortedEvents = events.flatMap { $0 }.sorted { $0.startTime < $1.startTime }
+        return sortedEvents.first { $0.startTime > date }
     }
 }
 
-
-struct ScheduleData: Codable {
-    let scheduleDayLimit: Int
-    let user: User
-    let schedule: [ScheduleItem]
-}
-struct User: Codable {
-    let firstName: String
-    let lastName: String
-    let preferredName: String
-    let gradYear: Int
-    let email: String
-}
-struct ScheduleItem: Codable, Identifiable {
-    let startTime: String
-    let endTime: String
-    let teacher: String
-    let title: String
-    let location: String
-    let color: String
-    var id: String { startTime + title }
-}

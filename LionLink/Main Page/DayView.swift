@@ -1,63 +1,36 @@
-//
+
 import SwiftUI
 
 struct DayView: View {
-    let hours: [Int] = Array(0..<24)
-    let events: [Event]
+    let daySchedule: [ScheduleItem]
 
     var body: some View {
         ScrollView {
-//            VStack(spacing: 0) {
-//                ForEach(hours, id: \.self) { hour in
-//                    HStack {
-//                        Text("\(hour):00")
-//                            .frame(width: 50, alignment: .leading)
-//                            .padding(.leading)
-//                        
-//                        ZStack(alignment: .topLeading) {
-//                            Divider()
-//                                .background(Color.gray)
-//                                .frame(height: 60)
-//
-//                            ForEach(events.filter { isEvent($0, happeningDuring: hour) }, id: \.id) { event in
-//                                GeometryReader { geo in
-//                                    EventView(event: event)
-//                                        .frame(width: geo.size.width, height: eventHeight(for: event))
-//                                        .offset(y: eventOffset(for: event))
-//                                }
-//                            }
-//                        }.frame(maxHeight: .infinity)
-//                        
-//                        Spacer()
-//                    }
-//                }
-//            }
+            VStack(spacing: 12) {
+                ForEach(daySchedule) { item in
+                    EventView(scheduleItem: item)
+                }
+            }
+        }
+        .navigationTitle(dayTitle)
+    }
+
+    private var dayTitle: String {
+
+        // Check if there is a first item in the daySchedule array
+        if let firstEvent = daySchedule.first {
+            // If there is, format the startTime of the first event for the title
+            return "Events for \(dayFormatter.string(from: firstEvent.startTime))"
+        } else {
+            // If there isn't, provide a default title
+            return "No Events"
         }
     }
-    
-    func yOffset(for event: Event) -> CGFloat {
-        let startHour = Calendar.current.component(.hour, from: event.start)
-        let startMinute = Calendar.current.component(.minute, from: event.start)
-        
-        return CGFloat(startHour * 60 + startMinute - 8 * 60) // Assuming 8:00 is the first hour in the calendar.
-    }
-    func eventOffset(for event: Event) -> CGFloat {
-        let startHour = Calendar.current.component(.hour, from: event.start)
-        let startMinute = Calendar.current.component(.minute, from: event.start)
-        return CGFloat(startHour - 7) * 60 + CGFloat(startMinute)
-    }
 
-
-    func eventHeight(for event: Event) -> CGFloat {
-        let duration = event.end.timeIntervalSince(event.start) / 60.0 // in minutes
-        return CGFloat(duration) // Given that each minute is 1 point
+    private var dayFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .full // Adjust the style as needed
+        formatter.timeStyle = .none
+        return formatter
     }
-    
-    func isEvent(_ event: Event, happeningDuring hour: Int) -> Bool {
-        let startHour = Calendar.current.component(.hour, from: event.start)
-        return startHour == hour
-    }
-
 }
-
-

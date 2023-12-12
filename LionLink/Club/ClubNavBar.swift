@@ -1,14 +1,10 @@
 import SwiftUI
 
-struct NavBar: View {
-    let month: String
-    @AppStorage("isDarkMode") public var isDarkMode: Bool?
-
-    
+struct ClubNavBar: View {
     var body: some View {
         HStack {
             NavigationLink(
-                destination: CalendarView().navigationBarBackButtonHidden(true),
+                destination: Hubmain().navigationBarBackButtonHidden(true),
                 label: {
                     Image("lion")
                         .resizable()
@@ -16,9 +12,7 @@ struct NavBar: View {
                 }
             )
             
-            Text(month)
-                .font(.title)
-                .bold()
+            
                 
             Spacer()
             
@@ -35,3 +29,5 @@ struct NavBar: View {
         .padding()
     }
 }
+
+

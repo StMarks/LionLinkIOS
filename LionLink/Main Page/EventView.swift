@@ -1,33 +1,26 @@
 import SwiftUI
 
 struct EventView: View {
-    let event: Event
-    let hourHeight: CGFloat
+    var event: Event
 
     var body: some View {
-        let startHour = CGFloat(Calendar.current.component(.hour, from: event.start))
-        let startMinute = CGFloat(Calendar.current.component(.minute, from: event.start))
-        
-        let durationInSeconds = event.end.timeIntervalSince(event.start)
-        let durationInHours = durationInSeconds / 3600
-        let height = CGFloat(durationInHours) * hourHeight
-
-        return VStack {
-            Text("\(formatTime(event.start)) - \(formatTime(event.end))")
-            Text(event.name)
+        VStack(alignment: .leading, spacing: 10) {
+            Text(event.title)
+                .font(.headline)
+                .foregroundColor(.white)
+            Text("Teacher: \(event.teacher!)")
+                .font(.subheadline)
+                .foregroundColor(.white)
+//            Text("Time: \(event.startTime.formatted(date: .omitted, time: .shortened)) - \(event.endTime.formatted(date: .omitted, time: .shortened))")
+//                .font(.caption)
+//                .foregroundColor(.white)
+            Text("Location: \(event.location)")
+                .font(.caption)
+                .foregroundColor(.white)
         }
         .padding()
-        .frame(height: height)
-        .background(event.color)
-        .cornerRadius(8)
-        .offset(y: (startMinute / 60) * hourHeight)
-    }
-    
-    func formatTime(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
-        return formatter.string(from: date)
+        .frame(maxWidth: .infinity, alignment: .leading)
+//        .background(event.color)
+        .cornerRadius(10)
     }
 }
-
-//hello

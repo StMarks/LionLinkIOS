@@ -1,85 +1,60 @@
 import SwiftUI
-import UserNotifications
 
-struct Event: Identifiable, Equatable {
-    var id: Int
-    let startTime: String
-    let endTime: String
-    let teacher: String
+struct Event: Encodable, Identifiable, Equatable {
+    var id = UUID()
+    let startTime: Date
+    let endTime: Date
+    let teacher: String?
     let title: String
+    let abbreviatedTitle: String?
     let location: String
-    let coler: String
+    let colorHex: String
     
-   
-    
-    
-    
+    init(startTime: String, endTime: String, teacher: String? = nil, title: String, abbreviatedTitle: String? = nil, location: String, hex: String) {
+            if let startDate = Date.iso8601Formatter.date(from: startTime) {
+                self.startTime = startDate.addingTimeInterval(5 * 60 * 60) // Add 5 hours
+            } else {
+                self.startTime = Date()
+            }
+            
+            if let endDate = Date.iso8601Formatter.date(from: endTime) {
+                self.endTime = endDate.addingTimeInterval(5 * 60 * 60) // Add 5 hours
+            } else {
+                self.endTime = Date()
+            }
+            
+            self.teacher = teacher
+            self.title = title
+            self.abbreviatedTitle = abbreviatedTitle
+            self.location = location
+            self.colorHex = hex
+            
+            
+        }
 
-    
-    var startDateTime: Date? {
-        return date(from: startTime)
-    }
+       
+    func hexStringFromColor(color: UIColor) -> String {
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
 
-    var endDateTime: Date? {
-        return date(from: endTime)
+        color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+
+        let redInt = Int(red * 255)
+        let greenInt = Int(green * 255)
+        let blueInt = Int(blue * 255)
+
+        let hexString = String(format: "#%02X%02X%02X", redInt, greenInt, blueInt)
+        return hexString
     }
-    
-    var color: Color?{
-        if(coler.lowercased() == "orange"){
-            return Color(.orange)
-        }
-        if(coler.lowercased() == "blue"){
-            return Color(.blue)
-        }
-        if(coler.lowercased() == "brown"){
-            return Color(.brown)
-        }
-        if(coler.lowercased() == "green"){
-            return Color(.green)
-        }
-        if(coler.lowercased() == "red"){
-            return Color(.red)
-        }
-        if(coler.lowercased() == "yellow"){
-            return Color(.yellow)
-        }
-        if(coler.lowercased() == "plum"){
-            return Color(.purple)
-        }
-        
-        return Color(coler.lowercased())
-    }
-    private func date(from time: String) -> Date? {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm"
-        return formatter.date(from: time)
-    }
-    
-  
 }
 
-
-
-extension Event {
-    func scheduleNotification() {
-        let content = UNMutableNotificationContent()
-        content.title = "Upcoming Event"
-        content.body = "Your event \(title) is starting in 5 minutes."
-        content.sound = UNNotificationSound.default
-
-        // Convert start time to Date and subtract 5 minutes
-        if let eventDate = startDateTime {
-            let triggerDate = Calendar.current.date(byAdding: .minute, value: -5, to: startDateTime!)
-            let triggerComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: triggerDate!)
-            let trigger = UNCalendarNotificationTrigger(dateMatching: triggerComponents, repeats: false)
-
-            let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-
-            UNUserNotificationCenter.current().add(request) { error in
-                if let error = error {
-                    print("Error scheduling notification: \(error)")
-                }
-            }
-        }
-    }
+extension Date {
+    static let iso8601Formatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        return formatter
+    }()
 }

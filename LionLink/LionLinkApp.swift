@@ -1,9 +1,23 @@
 import SwiftUI
 import SafariServices
+import UserNotifications
+
 
 @main
 struct LionLinkApp: App {
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+//    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
+    
+    init() {
+            // Requesting notification permission when the app launches
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { granted, _ in
+                if granted {
+                    print("Notification permission granted.")
+                } else {
+                    print("Notification permission denied.")
+                }
+            }
+        }
     
     var body: some Scene {
         WindowGroup {
@@ -12,16 +26,5 @@ struct LionLinkApp: App {
     }
 }
 
-class AppDelegate: NSObject, UIApplicationDelegate {
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        // Request notification permissions here
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
-            if granted {
-                   print("Notification permission granted.")
-            }
-        }
-        return true
-    }
-}
 
 

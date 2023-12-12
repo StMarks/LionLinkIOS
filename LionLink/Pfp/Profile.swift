@@ -17,7 +17,7 @@ struct Profile: View {
     @State var image: UIImage?
          
         var body: some View {
-            NavBar(month: monthFormatter.string(from: centeredDate))
+            CalendarNavBar(month: monthFormatter.string(from: centeredDate))
 
             NavigationView {
                 VStack {

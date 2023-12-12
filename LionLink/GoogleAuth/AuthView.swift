@@ -2,7 +2,7 @@ import SwiftUI
 
 struct AuthView: View {
     @State private var showSafari = false // A state variable that determines whether to show the SFSafariViewController
-    let authURL: URL? = URL(string: "https://e6c9-96-230-82-137.ngrok-free.app/v1/auth/google") // The URL for Google authentication
+    let authURL: URL? = URL(string: "https://hub-dev.stmarksschool.org/v1/auth/google") // The URL for Google authentication
    
     @State private var token: String?
     
@@ -51,7 +51,7 @@ struct AuthView: View {
     }
     
     func handleURL(_ url: URL) {
-        print("heyyyyyyyyy")
+
         guard url.scheme == "lionlink" else { return }
         // Convert the URL into URLComponents to parse its parts
         guard let components = URLComponents(url: url, resolvingAgainstBaseURL: true),

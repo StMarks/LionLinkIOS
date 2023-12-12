@@ -1,18 +1,22 @@
 import SwiftUI
 
-// This struct represents the view for displaying daily events on a timeline.
 struct DayScheduleView: View {
     // Array of events to display.
-    var events: [Event]
-    
+    var events: [[Event]]
+    @AppStorage("token") var token: String?
 
     @Binding var isPanelShown: Bool
     var togglePanel: () -> Void
     @Binding var selectedEventName: String?
-
     
     @AppStorage("isDarkMode") public var isDarkMode: Bool?
     @AppStorage("tokenClear") public var tokenClear: Bool?
+    
+    
+    @State private var selectedIndex: Int = 0
+    
+    
+    
     
     
     // Constants for layout calculation.
@@ -51,169 +55,82 @@ struct DayScheduleView: View {
         return positionYFor(time: endTime) - positionYFor(time: startTime)
     }
 
-    // Determine the currently ongoing event.
-    var currentEvent: Event? {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
-//        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-
-        let currentTime = formatter.date(from: formatter.string(from: currentDate)) ?? Date()
-
-        return events.first(where: { event in
-            if let startTime = formatter.date(from: event.startTime),
-               let endTime = formatter.date(from: event.endTime) {
-                return currentTime >= startTime && currentTime <= endTime
-            }
-            return false
-        })
-    }
-
-    
-    // Determine the next event after the current event.
-    var nextEvent: Event? {
-        let calendar = Calendar.current
-        let currentTimeComponents = calendar.dateComponents([.hour, .minute], from: currentDate)
-        
-        let futureEvents = events.filter { event in
-            let eventStartTimeComponents = event.startTime.split(separator: ":").compactMap { Int($0) }
-            if eventStartTimeComponents.count == 2,
-               let eventHour = eventStartTimeComponents.first,
-               let eventMinute = eventStartTimeComponents.last,
-               let currentHour = currentTimeComponents.hour,
-               let currentMinute = currentTimeComponents.minute {
-                return (eventHour, eventMinute) > (currentHour, currentMinute)
-            }
-            return false
-        }.sorted { event1, event2 in
-            let event1Components = event1.startTime.split(separator: ":").compactMap { Int($0) }
-            let event2Components = event2.startTime.split(separator: ":").compactMap { Int($0) }
-            return (event1Components.first ?? 0, event1Components.last ?? 0) < (event2Components.first ?? 0, event2Components.last ?? 0)
-        }
-
-        return futureEvents.first
-    }
 
 
-
-    
 
     // Main body of the DayScheduleView.
     var body: some View {
-        
-        
-        HStack{
-            // Uncomment below to see the timer view.
-            // TimerView(startTime: Date().addingTimeInterval(-60), endTime: Date().addingTimeInterval(240))
-            TimerView(startTimeString: currentEvent?.startTime ?? "0:00", endTimeString: currentEvent?.endTime ?? "0:00", name: currentEvent?.title ?? "No Current Class", color: currentEvent?.color ?? .black)
+        DateSelectorView(selectedDayIndex: $selectedIndex)
+      
+        VStack{
             
-            Spacer()
-                .frame(width: 25)
+            HStack{
+                // Uncomment below to see the timer view.
+                // TimerView(startTime: Date().addingTimeInterval(-60), endTime: Date().addingTimeInterval(240))
+//                TimerView(startTimeString: currentEvent?.startTime ?? "0:00", endTimeString: currentEvent?.endTime ?? "0:00", name: currentEvent?.title ?? "No Current Class", color: currentEvent?.color ?? .black)
+//                    .frame(width: 170, height: 170)
+                
+                Spacer()
+                    .frame(width: 25)
+                
+                // View for the next event.
+//                NextEvent(eventName: nextEvent?.title ?? "Done For Today!", backgroundColor: nextEvent?.color ?? .black, startTime: nextEvent?.startTime ?? "", endTime: nextEvent?.endTime ?? "")
+//                    .frame(width: 170, height: 170)
+            }
+            .onReceive(timer) { _ in
+                currentDate = Date() // Update the currentDate every second.
+                refreshID = UUID() // Force refresh of the view
+            }
+            .padding([.horizontal, .top])
             
-            // View for the next event.
-            NextEvent(eventName: nextEvent?.title ?? "Bio", backgroundColor: nextEvent?.color ?? .black, startTime: nextEvent?.startTime ?? "0:00", endTime: nextEvent?.endTime ?? "0:00")
-        }
-        .onReceive(timer) { _ in
-            currentDate = Date() // Update the currentDate every second.
-            refreshID = UUID() // Force refresh of the view
-        }
-//        .background(isDarkMode ?? false ? Color.black : Color.white)
-        
-        
-        ScrollView(.vertical, showsIndicators: true) {
-            ScrollViewReader { reader in
-                Divider()
+            ScrollView(.vertical, showsIndicators: true) {
+                ScrollViewReader { reader in
+                    Divider()
 
-                ZStack(alignment: .leading) {
-                    // Time markings on the left.
-                    ForEach(0..<hoursInDay*2) { index in
-                        Text("\(index / 2):\(index % 2 == 0 ? "00" : "30")")
-                            .font(.caption)
-                            .frame(width: 60, height: hourHeight/2, alignment: .leading)
-                            .position(x: 30, y: CGFloat(index) * (hourHeight / 2))
-                    }
-                    
-                    // Red horizontal line indicating the current time.
-                    var currentTime: String {
-                        let currentDate = Date()
-                        let formatter = DateFormatter()
-                        formatter.dateFormat = "HH:mm"
-                        printEv()
-                        return formatter.string(from: currentDate)
-                    }
-                    
-                    
-                    
-                    // Events displayed as colored blocks.
-                    ForEach(events, id: \.id) { event in
-                        let eventStartY = self.positionYFor(time: event.startTime)
-                        let eventHeight = self.heightFor(startTime: event.startTime, endTime: event.endTime)
-
-                            RoundedRectangle(cornerRadius: 10)
-                                .fill(
-                                    LinearGradient(
-                                        gradient: Gradient(
-                                            stops: [
-                                                .init(color: event.color!, location: 0),
-                                                .init(color: event.color!, location: 0.2),
-                                                .init(color: event.color!.opacity(0.8), location: 1)
-                                            ]),
-                                        startPoint: .leading,
-                                        endPoint: .trailing
-                                    )
-                                )
-                                .frame(width: UIScreen.main.bounds.width - 40, height: eventHeight)
-                                .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
-                                .overlay(
-                                    HStack {
-                                        Text(event.title)
-                                            .font(.headline)
-                                            .padding(.leading, 20)
-                                        Spacer()
-                                        Text("\(event.startTime) - \(event.endTime)")
-                                            .font(.footnote)
-                                            .padding(.trailing, 20)
-                                    }
-                                    .foregroundColor(.white)
-                                )
-                                .position(x: UIScreen.main.bounds.width / 2 + 20, y: eventStartY + eventHeight / 2)
-                                .onTapGesture {
-                                    isPanelShown.toggle()
-                                    selectedEventName = event.title
-                                }
- 
+                    ZStack(alignment: .leading) {
+                        // Time markings on the left.
+                        ForEach(0..<hoursInDay*2) { index in
+                            Text("\(index / 2):\(index % 2 == 0 ? "00" : "30")")
+                                .font(.caption)
+                                .frame(width: 60, height: hourHeight/2, alignment: .leading)
+                                .position(x: 30, y: CGFloat(index) * (hourHeight / 2))
+                        }
                         
-                    }
-                    
-                    Rectangle()
-                        .fill(Color.red)
-                        .frame(width: UIScreen.main.bounds.width-30, height: 2)
-                        .position(x: UIScreen.main.bounds.width / 2, y: positionYFor(time: currentTime))
-                        .id("redLine") // We're tagging this view so that we can scroll to it
-                }
-                .frame(height: hourHeight * CGFloat(hoursInDay))
+                        // Red horizontal line indicating the current time.
+                        var currentTime: String {
+                            let currentDate = Date()
+                            let formatter = DateFormatter()
+                            formatter.dateFormat = "HH:mm"
+                            printEv()
+                            return formatter.string(from: currentDate)
+                        }
+                        
             
-                .onAppear {
-                    // Scroll to the red line's position when the view first appears
-                    reader.scrollTo("redLine", anchor: .center)
+                    
+                        
+                        Rectangle()
+                            .fill(Color.red)
+                            .frame(width: UIScreen.main.bounds.width-30, height: 2)
+                            .position(x: UIScreen.main.bounds.width / 2, y: positionYFor(time: currentTime))
+                            .id("redLine") // We're tagging this view so that we can scroll to it
+                    }
+                    .frame(height: hourHeight * CGFloat(hoursInDay))
+                
+                    .onAppear {
+                        // Scroll to the red line's position when the view first appears
+                        reader.scrollTo("redLine", anchor: .center)
+                    }
                 }
             }
-        }
-
-        .onTapGesture {
-                        // Use the passed function to toggle the panel
-                        togglePanel()
+            .onTapGesture {
+                            // Use the passed function to toggle the panel
+                            togglePanel()
+                        }
             
-                    }
-//        .background(isDarkMode ?? false ? Color.black : Color.white)
+            
+            
+            
+        }
     }
-    
-    
 }
 
-extension Date {
-    var timeString: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
-        return formatter.string(from: self)
-    }
-}
