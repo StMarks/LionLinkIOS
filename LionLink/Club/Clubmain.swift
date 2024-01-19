@@ -33,9 +33,9 @@ class ClubData: ObservableObject {
     // Initializer with mock data for testing purposes
     init() {
         self.clubs = [
-            // Assuming "codingClub" is a placeholder image name in your assets.
+
 //            Club(name: "Coding Club", coHeads: ["Ian Choe", "Jane Doe"], membersCount: 365, description: "Cool Coders", image: UIImage(named: "codingClub")),
-            // ... add more mock clubs as needed
+
         ]
     }
 }
@@ -96,7 +96,6 @@ struct Clubmain: View {
                 SearchBar(text: $clubData.searchText)
                     .padding()
                 
-                // Scrollable list of clubs
                 ScrollView {
                     VStack {
                         ForEach(clubData.filteredClubs) { club in
@@ -277,14 +276,14 @@ struct ClubDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
-                // Image at the top of the detail view
+ 
                 Image(uiImage: club.image ?? UIImage())
                     .resizable()
                     .scaledToFill()
                     .frame(height: 300)
                     .clipped()
 
-                // VStack for the club's details
+
                 VStack(alignment: .leading, spacing: 10) {
                     Text(club.name)
                         .font(.title)
@@ -308,12 +307,11 @@ struct ClubDetailView: View {
                 }
                 .padding()
                 .background(Color.white)
-                // Apply corner radius to top corners
                 .cornerRadius(20, corners: [.topLeft, .topRight])
             }
             .edgesIgnoringSafeArea(.top)
             
-            // Join button at the bottom of the detail view
+
             Button(action: {
                 club.isJoined.toggle()
             }) {

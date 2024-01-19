@@ -3,13 +3,14 @@ import SwiftUI
 struct DayEventView: View {
     @Binding var selectedIndex: Int
     @Binding var showingCreateEventView: Bool
+    @Binding var selectedEvent: Event?
+    var onDelete: (Event) -> Void
     
     let eventsByDay: [[Event]]
     
     
     @AppStorage("token") var token: String?
-    @State private var isCalendarViewActive = false // This will toggle between the list and calendar view
-    
+    @State private var isCalendarViewActive = false
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             
@@ -26,16 +27,14 @@ struct DayEventView: View {
                     if isCalendarViewActive {
                         // Calendar-style view
                         ZStack(alignment: .bottomTrailing) {
-                            
-                            ColView(events: eventsByDay[selectedIndex])
+                            ColView(events: eventsByDay[selectedIndex], selectedEvent: $selectedEvent)
                         }
                     } else {
                         ZStack(alignment: .bottomTrailing) {
-                            ListView(events: eventsByDay[selectedIndex])
+                            ListView(events: eventsByDay[selectedIndex], selectedEvent: $selectedEvent, onDelete: onDelete)
                         }
                     }
                 } else {
-                    // Display a message if there are no events
                     ZStack(alignment: .bottomTrailing) {
                         ScrollView{
                             Text("No events currently")

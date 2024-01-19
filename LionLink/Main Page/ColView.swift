@@ -1,111 +1,103 @@
 import SwiftUI
 
 struct ColView: View {
-    
     var events: [Event]
-    @State private var selectedEventId: UUID?
-    private let hourHeight: CGFloat = 60 // Height for one hour slot
+    private let hourHeight: CGFloat = 60
+    @Binding var selectedEvent: Event?
 
     var body: some View {
-        GeometryReader { geometry in
-            ScrollView(.vertical, showsIndicators: true) {
-                ZStack(alignment: .topLeading) {
-                    timeMarkings
-                    VStack(spacing: 0) {
-                        ForEach(events) { event in
-                            EventCard(event: event, width: geometry.size.width - 60)
-                                .frame(height: eventHeight(event: event))
-                                .offset(x: 60, y: eventOffset(event: event)) // Offset by the width of the time labels
-                                .onTapGesture {
-                                    selectedEventId = event.id
-                                }
-                        }
+        ScrollView {
+            VStack(spacing: 0) {
+                ForEach(0..<24) { hour in
+                    HStack {
+                        Text("\(hour % 12 == 0 ? 12 : hour % 12) \(hour < 12 ? "AM" : "PM")")
+                            .frame(width: 50)
+                        Divider()
+                            .frame(height: hourHeight)
                     }
-                    .frame(width: geometry.size.width, alignment: .topLeading)
                 }
-                .overlay(
-                    CurrentTimeIndicator(hourHeight: hourHeight),
-                    alignment: .topLeading
-                )
+                ForEach(events) { event in
+                    EventViewCol(event: event, hourHeight: hourHeight, selectedEvent: $selectedEvent)
+                        .frame(height: eventHeight(event: event))
+                        .offset(y: eventOffset(event: event))
+                }
             }
-            .frame(height: geometry.size.height)
+            CurrentTimeIndicator(hourHeight: hourHeight)
+                .frame(height: CGFloat(24) * hourHeight, alignment: .top)
         }
     }
 
-    private var timeMarkings: some View {
-        VStack(alignment: .trailing, spacing: 0) {
-            ForEach(0..<24, id: \.self) { hour in
-                Text("\(hour == 0 || hour == 12 ? 12 : hour % 12) \(hour < 12 ? "AM" : "PM")")
-                    .frame(width: 50, height: hourHeight)
-            }
-        }
-    }
-    
-    private func eventHeight(event: Event) -> CGFloat {
+    func eventHeight(event: Event) -> CGFloat {
         let duration = event.endTime.timeIntervalSince(event.startTime)
-        return CGFloat(duration / 3600) * hourHeight
+        return max(CGFloat(duration / 3600) * hourHeight, hourHeight)
     }
-    
-    private func eventOffset(event: Event) -> CGFloat {
+
+    func eventOffset(event: Event) -> CGFloat {
         let startOfDay = Calendar.current.startOfDay(for: event.startTime)
-        let offset = event.startTime.timeIntervalSince(startOfDay)
-        return CGFloat(offset / 3600) * hourHeight
+        return CGFloat(event.startTime.timeIntervalSince(startOfDay) / 3600) * hourHeight
     }
 }
 
-struct EventCard: View {
+struct EventViewCol: View {
     var event: Event
-    var width: CGFloat
+    var hourHeight: CGFloat
+    @Binding var selectedEvent: Event?
+    
     var body: some View {
-        HStack {
+        HStack(alignment: .top) {
             Rectangle()
                 .fill(Color(hex: event.colorHex))
                 .frame(width: 4)
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading) {
                 Text(event.title)
                     .font(.headline)
-                Text("\(timeFormatter.string(from: event.startTime)) - \(timeFormatter.string(from: event.endTime))")
+                Text("\(event.startTime.formatted()), \(event.endTime.formatted())")
                     .font(.subheadline)
-                    .foregroundColor(.gray)
-                HStack {
-                    Image(systemName: "location.fill")
-                    Text(event.location)
-                        .font(.subheadline)
-                }
-                .foregroundColor(.gray)
+                Text(event.location)
+                    .font(.subheadline)
             }
-            .padding(.vertical, 8)
-            .padding(.horizontal, 12)
-            Spacer()
         }
-        .frame(width: width, alignment: .leading)
+        .padding(10)
         .background(Color.white)
-        .cornerRadius(10)
+        .cornerRadius(5)
         .shadow(radius: 2)
-        .padding(.horizontal, 8)
+        .padding(.horizontal)
+        .padding(.top, 1)
+        .onTapGesture {
+            self.selectedEvent = event
+        }
     }
-    
-    private let timeFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm a"
-        return formatter
-    }()
 }
 
 struct CurrentTimeIndicator: View {
-    let hourHeight: CGFloat
+    var hourHeight: CGFloat
     var body: some View {
         GeometryReader { geometry in
             let now = Date()
             let startOfDay = Calendar.current.startOfDay(for: now)
             let secondsFromStartOfDay = now.timeIntervalSince(startOfDay)
             let yPosition = CGFloat(secondsFromStartOfDay / 3600) * hourHeight
-            
+
             Rectangle()
-                .frame(width: geometry.size.width - 60, height: 1) // Subtract the width of the time labels
+                .frame(width: geometry.size.width, height: 1)
                 .foregroundColor(.red)
-                .offset(x: 60, y: yPosition) // Offset by the width of the time labels
-                .animation(.linear, value: yPosition)
+                .offset(y: yPosition)
         }
     }
 }
+
+//extension Color {
+//    init(hex: String) {
+//        let scanner = Scanner(string: hex)
+//        _ = scanner.scanString("#")
+//
+//        var rgb: UInt64 = 0
+//        scanner.scanHexInt64(&rgb)
+//
+//        let r = Double((rgb & 0xFF0000) >> 16) / 255.0
+//        let g = Double((rgb & 0x00FF00) >> 8) / 255.0
+//        let b = Double(rgb & 0x0000FF) / 255.0
+//
+//        self.init(red: r, green: g, blue: b)
+//    }
+//}

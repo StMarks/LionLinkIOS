@@ -25,6 +25,7 @@
 		5094CB2B2AFE6F1D005FB29E /* Clubmain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5094CB2A2AFE6F1D005FB29E /* Clubmain.swift */; };
 		5094CB2E2AFE6F3F005FB29E /* TeamPgMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5094CB2D2AFE6F3F005FB29E /* TeamPgMain.swift */; };
 		5094CB302AFE727C005FB29E /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5094CB2F2AFE727C005FB29E /* Activity.swift */; };
+		50CA8C232B5A5166001DF7A6 /* EventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CA8C222B5A5166001DF7A6 /* EventDetailView.swift */; };
 		50FF06D12AE7645000B6330E /* LionLinkApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF06D02AE7645000B6330E /* LionLinkApp.swift */; };
 		50FF06D32AE7645000B6330E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF06D22AE7645000B6330E /* ContentView.swift */; };
 		50FF06D52AE7645000B6330E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 50FF06D42AE7645000B6330E /* Assets.xcassets */; };
@@ -58,6 +59,7 @@
 		5094CB2A2AFE6F1D005FB29E /* Clubmain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clubmain.swift; sourceTree = "<group>"; };
 		5094CB2D2AFE6F3F005FB29E /* TeamPgMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamPgMain.swift; sourceTree = "<group>"; };
 		5094CB2F2AFE727C005FB29E /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
+		50CA8C222B5A5166001DF7A6 /* EventDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailView.swift; sourceTree = "<group>"; };
 		50FF06CD2AE7645000B6330E /* LionLink.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LionLink.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		50FF06D02AE7645000B6330E /* LionLinkApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LionLinkApp.swift; sourceTree = "<group>"; };
 		50FF06D22AE7645000B6330E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 				5052F8FD2B202D0000C2BC2B /* ListView.swift */,
 				5052F8FF2B202D6600C2BC2B /* ColView.swift */,
 				5052F9012B20313000C2BC2B /* CreateEventView.swift */,
+				50CA8C222B5A5166001DF7A6 /* EventDetailView.swift */,
 			);
 			path = "Main Page";
 			sourceTree = "<group>";
@@ -298,6 +301,7 @@
 				500688572B1EFD3F0036B631 /* Event.swift in Sources */,
 				5094CB302AFE727C005FB29E /* Activity.swift in Sources */,
 				50FF06E12AE764A800B6330E /* AuthView.swift in Sources */,
+				50CA8C232B5A5166001DF7A6 /* EventDetailView.swift in Sources */,
 				5058BC902AF09766007B3628 /* Profile.swift in Sources */,
 				5094CB2E2AFE6F3F005FB29E /* TeamPgMain.swift in Sources */,
 				50FF06D12AE7645000B6330E /* LionLinkApp.swift in Sources */,

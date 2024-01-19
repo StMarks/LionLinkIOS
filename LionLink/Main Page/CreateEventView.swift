@@ -15,7 +15,6 @@ struct CreateEventView: View {
                     TextField("Description", text: $description)
                     ColorPicker("Choose Color", selection: $selectedColor, supportsOpacity: false)
                     TextField("Location", text: $location)
-                    
                     DatePicker("Start Time", selection: $startTime, displayedComponents: [.date, .hourAndMinute])
                     DatePicker("End Time", selection: $endTime, displayedComponents: [.date, .hourAndMinute])
                 }

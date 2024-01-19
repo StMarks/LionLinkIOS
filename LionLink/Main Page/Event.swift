@@ -2,6 +2,8 @@ import SwiftUI
 
 struct Event: Encodable, Identifiable, Equatable {
     var id = UUID()
+    let creatorId: Int?
+    let indvId: Int?
     let startTime: Date
     let endTime: Date
     let teacher: String?
@@ -9,8 +11,10 @@ struct Event: Encodable, Identifiable, Equatable {
     let abbreviatedTitle: String?
     let location: String
     let colorHex: String
+   
     
-    init(startTime: String, endTime: String, teacher: String? = nil, title: String, abbreviatedTitle: String? = nil, location: String, hex: String) {
+    
+    init(indvId: Int? = nil, creatorId: Int? = nil, startTime: String, endTime: String, teacher: String? = nil, title: String, abbreviatedTitle: String? = nil, location: String, hex: String) {
             if let startDate = Date.iso8601Formatter.date(from: startTime) {
                 self.startTime = startDate.addingTimeInterval(5 * 60 * 60) // Add 5 hours
             } else {
@@ -28,8 +32,8 @@ struct Event: Encodable, Identifiable, Equatable {
             self.abbreviatedTitle = abbreviatedTitle
             self.location = location
             self.colorHex = hex
-            
-            
+            self.creatorId = creatorId
+            self.indvId = indvId
         }
 
        

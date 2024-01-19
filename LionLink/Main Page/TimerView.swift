@@ -6,18 +6,11 @@ struct TimerView: View {
     @State private var cancellables = Set<AnyCancellable>()
 
     // String representations of the start and end times
-    let startTimeString: String
-    let endTimeString: String
+    let startTime: Date
+    let endTime: Date
     let name: String
     let color: Color
 
-    // Computed properties to convert string times to Date
-    var startTime: Date {
-        convertStringToDate(timeString: startTimeString)
-    }
-    var endTime: Date {
-        convertStringToDate(timeString: endTimeString)
-    }
 
     var elapsedTimeProgress: CGFloat {
         guard let elapsed = Calendar.current.dateComponents([.second], from: startTime, to: currentTime).second,

@@ -2,6 +2,8 @@ import SwiftUI
 
 struct ListView: View {
     let events: [Event]
+    @Binding var selectedEvent: Event?
+    var onDelete: (Event) -> Void
     
     private var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
@@ -53,13 +55,19 @@ struct ListView: View {
                     .cornerRadius(10)
                     .shadow(radius: 2)
                     .padding(.horizontal)
+                    .onTapGesture {
+                        self.selectedEvent = event
+                    }
+                    
+                    if let event = selectedEvent {
+                            EventDetailView(event: event, onDismiss: { selectedEvent = nil }, onDelete: { onDelete(event) })
+                        }
                 }
             }
             .padding(.top, 10)
         }
     }
 }
-
 extension Color {
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
