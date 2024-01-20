@@ -6,6 +6,8 @@ struct CreateEventView: View {
     @State private var location: String = ""
     @State private var startTime = Date()
     @State private var endTime = Date()
+    @Binding var needsRefresh: Bool
+    @Environment(\.presentationMode) var presentationMode
     var token: String
 
     var body: some View {
@@ -58,25 +60,24 @@ struct CreateEventView: View {
         }
 
         URLSession.shared.dataTask(with: request) { data, response, error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    print("Error: \(error.localizedDescription)")
-                    return
-                }
-
-                if let httpResponse = response as? HTTPURLResponse {
-                    print("Response status code: \(httpResponse.statusCode)")
-                    if httpResponse.statusCode == 201 {
-                        print("Successfully created event")
-                    } else {
-                        print("Failed to create event with status code: \(httpResponse.statusCode)")
+                DispatchQueue.main.async {
+                    if let httpResponse = response as? HTTPURLResponse {
+                        print("Response status code: \(httpResponse.statusCode)")
+                        if httpResponse.statusCode == 201 {
+                            print("Successfully created event")
+                            DispatchQueue.main.async {
+                                self.needsRefresh = true
+                            }
+                        } else {
+                            print("Failed to create event with status code: \(httpResponse.statusCode)")
+                        }
                     }
-                } else {
-                    print("No HTTP response received.")
+                    // Move the refresh and dismissal out here so it executes regardless of response
+                    self.needsRefresh = true
+                    self.presentationMode.wrappedValue.dismiss()
                 }
+            }.resume()
             }
-        }.resume()
-    }
 
 }
 

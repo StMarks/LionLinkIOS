@@ -27,6 +27,7 @@ struct CalendarView: View {
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     @State private var centeredDate = Date()
     
+    @State private var needsRefresh: Bool = false
     
     private func togglePanel() {
         isPanelShown.toggle()
@@ -334,14 +335,17 @@ struct CalendarView: View {
     }
     
     private func loadData() {
+        individualEvents.removeAll()
         fetchSchedule {
             fetchIndividualEvents {
                 groupedEvents = groupEventsByCurrentWeek(events: individualEvents)
                 printEventsByDay(eventsByDay: groupedEvents)
                 isLoading = false
+                needsRefresh = false  // Reset the refresh trigger
             }
         }
     }
+
     
     func printEventsByDay(eventsByDay: [[Event]]) {
         let dateFormatter = DateFormatter()
@@ -424,9 +428,13 @@ struct CalendarView: View {
                 .onReceive(timer) { _ in
                 }
                 .sheet(isPresented: $showingCreateEventView) {
-                    CreateEventView(token: token ?? "")
+                    CreateEventView(needsRefresh: $needsRefresh, token: token ?? "")
                 }
-                
+                .onChange(of: needsRefresh) { newValue in
+                    if newValue {
+                        loadData()
+                    }
+                }
                 if isLoading {
                             ProgressView("Loading…")
                                 .scaleEffect(1.5, anchor: .center)
@@ -437,7 +445,12 @@ struct CalendarView: View {
                 }
             }
             .onAppear {
-                loadData()
+                if needsRefresh {
+                       loadData()
+                       needsRefresh = false
+                   } else {
+                       loadData()
+                   }
             }
             
             
