@@ -63,9 +63,7 @@ struct Profile: View {
                     }
                     Spacer()
                     
-                    Toggle("Dark Mode", isOn: $isDarkMode)
-                        .padding()
-                    Spacer()
+                    
                     Button("Clear Token") {
                         token = nil
                     }
@@ -77,4 +75,15 @@ struct Profile: View {
         }
 }
 
+
+struct CustomColorSchemeKey: EnvironmentKey {
+    static let defaultValue: ColorScheme? = nil
+}
+
+extension EnvironmentValues {
+    var customColorScheme: ColorScheme? {
+        get { self[CustomColorSchemeKey.self] }
+        set { self[CustomColorSchemeKey.self] = newValue }
+    }
+}
 

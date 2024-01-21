@@ -3,8 +3,10 @@ import SwiftUI
 struct Hubmain: View {
     
     @AppStorage("token") var token: String?
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
+    
             NavigationView {
                 VStack(spacing: 20) {
                     HStack(spacing: 20) {
