@@ -5,10 +5,10 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
-			<key>NSUserActivityTypes</key>
-			<string>com.lionlink.liveactivity.countdown</string>
 			<key>CFBundleURLName</key>
 			<string></string>
+			<key>NSUserActivityTypes</key>
+			<string>com.lionlink.liveactivity.countdown</string>
 		</dict>
 		<string>NSUserActivityTypes</string>
 		<dict>

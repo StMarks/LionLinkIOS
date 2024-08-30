@@ -55,33 +55,12 @@ struct DayScheduleView: View {
         return positionYFor(time: endTime) - positionYFor(time: startTime)
     }
 
-
-
-
     // Main body of the DayScheduleView.
     var body: some View {
         DateSelectorView(selectedDayIndex: $selectedIndex)
       
         VStack{
-            
-            HStack{
-                // Uncomment below to see the timer view.
-                // TimerView(startTime: Date().addingTimeInterval(-60), endTime: Date().addingTimeInterval(240))
-//                TimerView(startTimeString: currentEvent?.startTime ?? "0:00", endTimeString: currentEvent?.endTime ?? "0:00", name: currentEvent?.title ?? "No Current Class", color: currentEvent?.color ?? .black)
-//                    .frame(width: 170, height: 170)
-                
-                Spacer()
-                    .frame(width: 25)
-                
-                // View for the next event.
-//                NextEvent(eventName: nextEvent?.title ?? "Done For Today!", backgroundColor: nextEvent?.color ?? .black, startTime: nextEvent?.startTime ?? "", endTime: nextEvent?.endTime ?? "")
-//                    .frame(width: 170, height: 170)
-            }
-            .onReceive(timer) { _ in
-                currentDate = Date() // Update the currentDate every second.
-                refreshID = UUID() // Force refresh of the view
-            }
-            .padding([.horizontal, .top])
+        
             
             ScrollView(.vertical, showsIndicators: true) {
                 ScrollViewReader { reader in
@@ -122,14 +101,6 @@ struct DayScheduleView: View {
                     }
                 }
             }
-            .onTapGesture {
-                            // Use the passed function to toggle the panel
-                            togglePanel()
-                        }
-            
-            
-            
-            
         }
     }
 }

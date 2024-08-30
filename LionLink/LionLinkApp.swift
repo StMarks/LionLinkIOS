@@ -5,11 +5,8 @@ import UserNotifications
 
 @main
 struct LionLinkApp: App {
-//    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    
-    
     init() {
-            // Requesting notification permission when the app launches
+        //Gets permission to send notifications - Use of permission not implemented so not needed. 
             UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { granted, _ in
                 if granted {
                     print("Notification permission granted.")
@@ -28,3 +25,5 @@ struct LionLinkApp: App {
 
 
 
+//Dark and Light mode is only implemented in some parts.
+//Log out error description should be on asana + Profile Page(Pfp)

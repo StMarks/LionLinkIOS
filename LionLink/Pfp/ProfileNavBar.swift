@@ -1,6 +1,8 @@
 import SwiftUI
 
-struct ClubNavBar: View {
+struct ProfileNavBar: View {
+    let month: String
+    
     var body: some View {
         HStack {
             NavigationLink(
@@ -12,19 +14,19 @@ struct ClubNavBar: View {
                 }
             )
             
-            
+            Text(month)
+                .font(.title)
+                .bold()
                 
             Spacer()
             
-            NavigationLink(
-                destination: Profile().navigationBarBackButtonHidden(true),
-                label: {
-                        Image(systemName: "person.fill")
-                            .resizable()
-                            .frame(width: 30, height: 30)
-                            .clipShape(Circle())
-                }
-            )
+            
+            Image(systemName: "person.fill")
+                .resizable()
+                .frame(width: 30, height: 30)
+                .clipShape(Circle())
+                .foregroundColor(.blue)
+                
         }
         .padding()
     }

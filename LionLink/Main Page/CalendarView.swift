@@ -1,8 +1,10 @@
 import SwiftUI
 import Combine
 
+//This is the big boy calendar main view
+//Without this the calendar well wouldn't work in the slightest
+//Here essentially we call the Top nav bar --> Date selector --> Curr Event timer & Next Event --> Then the view of the selected day
 struct CalendarView: View {
-//    var token: String
     @AppStorage("token") var token: String?
     
     //Loading Data
@@ -12,14 +14,12 @@ struct CalendarView: View {
     @Environment(\.colorScheme) var colorScheme
     @State private var profileImage: UIImage? = UIImage(systemName: "person.fill")
     @State private var selectedEventName: String? = ""
-    
     @State private var groupedEvents: [[Event]] = []
     @State private var individualEvents: [Event] = []
   
-    @State private var isPanelShown: Bool = false
-    
+    //There may be some not needed variables here, I'm not sure it's been a hot second
     @State private var showingCreateEventView = false
-    @State private var selectedIndex: Int = 4
+    @State private var selectedIndex: Int = 0
     
     @State private var showingAlert = false
     @State private var selectedEvent: Event?
@@ -29,37 +29,44 @@ struct CalendarView: View {
     
     @State private var needsRefresh: Bool = false
     
-    private func togglePanel() {
-        isPanelShown.toggle()
-    }
-    
     // DateFormatter for displaying the month name.
     private var monthFormatter: DateFormatter = {
-        let df = DateFormatter()
-        df.dateFormat = "MMMM"
-        df.timeZone = TimeZone.current
-        return df
+        let dataformat = DateFormatter()
+        dataformat.dateFormat = "MMMM"
+        dataformat.timeZone = TimeZone.current
+        return dataformat
     }()
     
+    //Sets SelectedIndex based on the current day
+    func setSelectedIndexBasedOnDay() {
+        let calendar = Calendar.current
+        let today = Date()
+        let weekday = calendar.component(.weekday, from: today)
+        
+        selectedIndex = (weekday + 5) % 7
+    }
     
     func fetchSchedule(completion: @escaping () -> Void) {
         let calendar = Calendar.current
-            let today = Date()
-            let weekday = calendar.component(.weekday, from: today)
-            let daysToSubtract = weekday - calendar.firstWeekday // Calculate days to subtract to get to Monday (depends on the calendar's firstWeekday)
-            let thisMonday = calendar.date(byAdding: .day, value: -daysToSubtract, to: today)!
-            
-            let startDateMillis = Int64(thisMonday.timeIntervalSince1970 * 1000) // Convert to milliseconds
-            let limit = 7 // Number of days to fetch
+        let today = Date()
+        let weekday = calendar.component(.weekday, from: today)
 
-            let urlString = "https://hub-dev.stmarksschool.org/v1/student/schedule?startDate=\(startDateMillis)&limit=\(limit)"
+        // If today is Sunday (weekday 1), set daysToSubtract to 6 to get to the previous Monday.
+        // Otherwise, calculate the days to subtract as before.
+        let daysToSubtract = (weekday == 1) ? 6 : weekday - calendar.firstWeekday
+        let thisMonday = calendar.date(byAdding: .day, value: -daysToSubtract, to: today)!
+        
+            
+        let startDateMillis = Int64(thisMonday.timeIntervalSince1970 * 1000) // Convert to milliseconds
+        let limit = 7 // Number of days to fetch
+        let urlString = "https://hub-dev.stmarksschool.org/v1/student/schedule?startDate=\(startDateMillis)&limit=\(limit)"
         
         print("Fetching schedule with URL: \(urlString)")
         
         fetchFromEndpoint(urlString: urlString) { [self] result in
             switch result {
             case .success(let string):
-                print("Raw response string: \(string)")
+//                print("Raw response string: \(string)")
                 guard let data = string.data(using: .utf8),
                       let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                       let scheduleArray = json["schedule"] as? [[String: Any]] else {
@@ -123,10 +130,24 @@ struct CalendarView: View {
 
 
     func fetchIndividualEvents(completion: @escaping () -> Void) {
-        let urlString = "https://hub-dev.stmarksschool.org/v1/student/schedule/manual"
+        let calendar = Calendar.current
+        let today = Date()
+        let weekday = calendar.component(.weekday, from: today)
+
+        // If today is Sunday (weekday 1), set daysToSubtract to 6 to get to the previous Monday.
+        // Otherwise, calculate the days to subtract as before.
+        let daysToSubtract = (weekday == 1) ? 6 : weekday - calendar.firstWeekday
+        let thisMonday = calendar.date(byAdding: .day, value: -daysToSubtract, to: today)!
+        
+            
+        let startDateMillis = Int64(thisMonday.timeIntervalSince1970 * 1000) // Convert to milliseconds
+        let limit = 7 // Number of days to fetch
+        
+        let urlString = "https://hub-dev.stmarksschool.org/v1/student/schedule/manual?startDate=\(startDateMillis)&limit=\(limit)"
         fetchFromEndpoint(urlString: urlString) { [self] result in
             switch result {
             case .success(let string):
+                print("Raw response string: \(string)")
                 guard let data = string.data(using: .utf8),
                       let jsonArray = try? JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] else {
                     print("Could not parse JSON for individual events")
@@ -138,6 +159,7 @@ struct CalendarView: View {
                     guard let indvId = dict["id"] as? Int,
                           let description = dict["description"] as? String,
                           let color = dict["color"] as? String,
+//                          let location = dict["location"] as? String,
                           let startTimeStr = dict["startTime"] as? String,
                           let endTimeStr = dict["endTime"] as? String else {
                         print("Missing data for individual event", dict)
@@ -149,11 +171,10 @@ struct CalendarView: View {
                     
                     let event = Event(
                         indvId: indvId,
-                        creatorId: nil,
                         startTime: startTimeStr,
                         endTime: endTimeStr,
                         title: description,
-                        location: "Not specified",
+                        location: "location",
                         hex: formattedColor
                     )
                     events.append(event)
@@ -167,13 +188,7 @@ struct CalendarView: View {
         }
     }
 
-
-
-
-
-
-
-    // fetchFromEndpoint remains the same
+    
     func fetchFromEndpoint(urlString: String, completion: @escaping (Result<String, Error>) -> Void) {
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
@@ -181,7 +196,6 @@ struct CalendarView: View {
         }
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        
         
         if let token = token {
             request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
@@ -191,6 +205,9 @@ struct CalendarView: View {
         }
 
         URLSession.shared.dataTask(with: request) { data, response, error in
+            if let rawResponseString = String(data: data!, encoding: .utf8) {
+                print("Response data string:\n\(rawResponseString)")
+            }
             DispatchQueue.main.async {
                 if let data = data, let string = String(data: data, encoding: .utf8) {
                     completion(.success(string))
@@ -204,58 +221,49 @@ struct CalendarView: View {
     }
     
     
+    //this function below
     private func deleteEvent(event: Event) {
-        if let eventID = event.indvId {
+        guard let eventID = event.indvId else {
+            print("Event does not have a valid ID")
+            return
+        }
         
-            guard let url = URL(string: "https://hub-dev.stmarksschool.org/v1/student/schedule/manual/\(eventID)") else {
-                print("Invalid URL")
-                return
-            }
+        guard let url = URL(string: "https://hub-dev.stmarksschool.org/v1/student/schedule/manual/\(eventID)"),
+              let token = self.token else {
+            print("Invalid URL or Token is nil")
+            return
+        }
+        
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
 
-            var request = URLRequest(url: url)
-            request.httpMethod = "DELETE"
-            request.addValue("Bearer \(token ?? "")", forHTTPHeaderField: "Authorization")
-
-            URLSession.shared.dataTask(with: request) { data, response, error in
-                DispatchQueue.main.async {
-                    if let error = error {
-                        // Handle network error
-                        print("Deletion error: \(error.localizedDescription)")
-                        showingAlert = true
-                    } else if let httpResponse = response as? HTTPURLResponse {
-                        // Check the status code
-                        print("Response status code: \(httpResponse.statusCode)")
-                        if httpResponse.statusCode == 200 {
-                            // Handle success
-                            print("Successfully deleted event")
-                            // Remove event from the local list
-                            if let index = individualEvents.firstIndex(where: { $0.indvId == eventID }) {
-                                individualEvents.remove(at: index)
-                            }
-                            selectedEvent = nil // Close the detail view
-                        } else {
-                            // Handle different status codes with appropriate actions
-                            if let data = data, let responseBody = String(data: data, encoding: .utf8) {
-                                // Log the response body from the server
-                                print("Server response: \(responseBody)")
-                            }
-                            showingAlert = true
-                        }
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                needsRefresh = true
+                if let error = error {
+                    print("Error when trying to delete event: \(error.localizedDescription)")
+                    return
+                }
+                
+                if let httpResponse = response as? HTTPURLResponse {
+                    print("Response status code: \(httpResponse.statusCode)")
+                    
+                    if httpResponse.statusCode == 200 {
+                        print("Successfully deleted event with ID: \(eventID)")
+                         
                     } else {
-                        // Handle any other errors
-                        print("Unknown response error")
-                        showingAlert = true
+                        print("Failed to delete the event with status code: \(httpResponse.statusCode)")
                     }
                 }
-            }.resume()
-        } else {
-            print("Event does not have a valid ID")
-        }
+            }
+        }.resume()
     }
 
 
 
-    
 
     
     func groupEventsByCurrentWeek(events: [Event]) -> [[Event]] {
@@ -344,6 +352,7 @@ struct CalendarView: View {
                 needsRefresh = false  // Reset the refresh trigger
             }
         }
+        
     }
 
     
@@ -383,8 +392,6 @@ struct CalendarView: View {
         }
     }
     
-    
-
         var body: some View {
             if colorScheme == .dark {
                 ZStack {
@@ -420,7 +427,7 @@ struct CalendarView: View {
                         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                         .frame(height: 200)
                         Divider().colorInvert()
-                        DayEventView(selectedIndex: $selectedIndex, showingCreateEventView: $showingCreateEventView, selectedEvent: $selectedEvent ,onDelete: deleteEvent, eventsByDay: groupedEvents)
+                        DayEventView(selectedIndex: $selectedIndex, showingCreateEventView: $showingCreateEventView, selectedEvent: $selectedEvent ,onDelete: deleteEvent, eventsByDay: groupedEvents, token: $token)
                     }
                     .overlay(
                         // Only show the EventDetailView if selectedEvent is not nil
@@ -429,7 +436,7 @@ struct CalendarView: View {
                     .onReceive(timer) { _ in
                     }
                     .sheet(isPresented: $showingCreateEventView) {
-                        CreateEventView(needsRefresh: $needsRefresh, token: token ?? "")
+                        CreateEventView(needsRefresh: $needsRefresh, token: token!)
                     }
                     .onChange(of: needsRefresh) { newValue in
                         if newValue {
@@ -437,36 +444,41 @@ struct CalendarView: View {
                         }
                     }
                     if isLoading {
-                                ProgressView("Loading…")
-                                    .scaleEffect(1.5, anchor: .center)
-                                    .progressViewStyle(CircularProgressViewStyle(tint: .blue))
-                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                    .background(Color.black.opacity(0.45))
-                                    .edgesIgnoringSafeArea(.all)
+                        ProgressView("Loading…")
+                            .scaleEffect(1.5, anchor: .center)
+                            .progressViewStyle(CircularProgressViewStyle(tint: .blue))
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .background(Color.black.opacity(0.45))
+                            .edgesIgnoringSafeArea(.all)
                     }
                 }
                 .onAppear {
+                    setSelectedIndexBasedOnDay()
                     if needsRefresh {
-                           loadData()
-                           needsRefresh = false
-                       } else {
-                           loadData()
-                       }
+                        loadData()
+                        needsRefresh = false
+                    } else {
+                        loadData()
+                    }
                 }
                 } else {
                     ZStack {
                         VStack {
                             CalendarNavBar(month: monthFormatter.string(from: centeredDate))
                             DateSelectorView(selectedDayIndex: $selectedIndex)
+                            
                             Divider()
                             
                             TabView {
                                 HStack(spacing: 20) {
                                     if let currentEvent = findCurrentEvent() {
                                         TimerView(startTime: currentEvent.startTime, endTime: currentEvent.endTime, name: currentEvent.abbreviatedTitle ?? currentEvent.title, color: Color(hex: currentEvent.colorHex))
+                                    } else{
+                                        if let nextEvent = findNextEvent() {
+                                            TimerView(startTime: nextEvent.startTime, endTime: nextEvent.endTime, name: "next event", color: Color(hex: nextEvent.colorHex))
+                                        }
                                     }
                                     if let nextEvent = findNextEvent() {
-                                        // Display next event details
                                         NextEvent(eventName: nextEvent.title, backgroundColor: Color(hex: nextEvent.colorHex), startTime: formatTime(nextEvent.startTime), endTime: formatTime(nextEvent.endTime))
                                     } else {
                                         Text("No More Events For Today")
@@ -486,17 +498,27 @@ struct CalendarView: View {
                             }
                             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                             .frame(height: 200)
-                            
-                            DayEventView(selectedIndex: $selectedIndex, showingCreateEventView: $showingCreateEventView, selectedEvent: $selectedEvent ,onDelete: deleteEvent, eventsByDay: groupedEvents)
+                            Divider()
+                            DayEventView(selectedIndex: $selectedIndex, showingCreateEventView: $showingCreateEventView, selectedEvent: $selectedEvent ,onDelete: deleteEvent, eventsByDay: groupedEvents, token: $token)
                         }
                         .overlay(
-                            // Only show the EventDetailView if selectedEvent is not nil
-                            selectedEvent != nil ? EventDetailView(event: selectedEvent!, onDismiss: { selectedEvent = nil }, onDelete: { deleteEvent(event: selectedEvent!) }) : nil
+                            Group {
+                                if let event = selectedEvent {
+                                    EventDetailView(event: event, onDismiss: {
+                                        withAnimation {
+                                            selectedEvent = nil
+                                        }
+                                    }, onDelete: {
+                                        deleteEvent(event: event)
+                                        selectedEvent = nil
+                                    })
+                                }
+                            }
                         )
                         .onReceive(timer) { _ in
                         }
                         .sheet(isPresented: $showingCreateEventView) {
-                            CreateEventView(needsRefresh: $needsRefresh, token: token ?? "")
+                            CreateEventView(needsRefresh: $needsRefresh, token: token!)
                         }
                         .onChange(of: needsRefresh) { newValue in
                             if newValue {
@@ -504,17 +526,18 @@ struct CalendarView: View {
                             }
                         }
                         if isLoading {
-                                    ProgressView("Loading…")
-                                        .scaleEffect(1.5, anchor: .center)
-                                        .progressViewStyle(CircularProgressViewStyle(tint: .blue))
-                                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                        .background(Color.black.opacity(0.45))
-                                        .edgesIgnoringSafeArea(.all)
+                            ProgressView("Loading…")
+                                .scaleEffect(1.5, anchor: .center)
+                                .progressViewStyle(CircularProgressViewStyle(tint: .blue))
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                .background(Color.black.opacity(0.45))
+                                .edgesIgnoringSafeArea(.all)
                         }
                     }
                     .onAppear {
+                        setSelectedIndexBasedOnDay()
                         if needsRefresh {
-                               loadData()
+                                loadData()
                                needsRefresh = false
                            } else {
                                loadData()
@@ -522,6 +545,7 @@ struct CalendarView: View {
                     }
             }
         }
+        
     
     private func formatTime(_ date: Date) -> String {
         let formatter = DateFormatter()
@@ -533,6 +557,7 @@ struct CalendarView: View {
         let sortedEvents = events.flatMap { $0 }.sorted { $0.startTime < $1.startTime }
         return sortedEvents.first { $0.startTime > date }
     }
+        
 }
 
 

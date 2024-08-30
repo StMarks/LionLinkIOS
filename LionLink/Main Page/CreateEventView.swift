@@ -2,15 +2,28 @@ import SwiftUI
 
 struct CreateEventView: View {
     @State private var description: String = ""
-    @State private var selectedColor: Color = .blue
+    @State private var selectedColor: Color = Color(hex: "0594fa")
     @State private var location: String = ""
     @State private var startTime = Date()
     @State private var endTime = Date()
     @Binding var needsRefresh: Bool
     @Environment(\.presentationMode) var presentationMode
     var token: String
-
+    
+    private var dateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a"
+        return formatter
+    }
+    
+    
     var body: some View {
+        
+        
+        EventView(event: Event(startTime: dateFormatter.string(from: startTime), endTime: dateFormatter.string(from: endTime), title: description, location: location, hex: selectedColor.toHexString()))
+            .padding(.vertical, 40)
+        Divider().colorInvert()
+        
         NavigationView {
             Form {
                 Section(header: Text("Event Details")) {
@@ -26,21 +39,36 @@ struct CreateEventView: View {
                 }
             }
             .navigationBarTitle("Create Event", displayMode: .inline)
+            
         }
+        
+    }
+    
+    func adjustDateToTimeZone(date: Date, timeZone: TimeZone?) -> Date {
+        guard let timeZone = timeZone else { return date }
+        let seconds = TimeInterval(timeZone.secondsFromGMT(for: date))
+        return Date(timeInterval: seconds, since: date)
     }
 
     func createEvent() {
         let dateFormatter = ISO8601DateFormatter()
-        dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+            dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+
         
-        print(description)
-        let eventDetails: [String: Any] = [
-            "description": description,
-            "color": selectedColor.toHexString(),
-            "location": location,
-            "startTime": dateFormatter.string(from: startTime),
-            "endTime": dateFormatter.string(from: endTime)
-        ]
+        let targetTimeZone = TimeZone(identifier: "America/New_York")
+            dateFormatter.timeZone = targetTimeZone
+
+            // Adjust startTime and endTime to the target timezone
+            let adjustedStartTime = adjustDateToTimeZone(date: startTime, timeZone: targetTimeZone)
+            let adjustedEndTime = adjustDateToTimeZone(date: endTime, timeZone: targetTimeZone)
+
+            let eventDetails: [String: Any] = [
+                "description": description,
+                "color": selectedColor.toHexString(),
+                "location": location,
+                "startTime": dateFormatter.string(from: adjustedStartTime),
+                "endTime": dateFormatter.string(from: adjustedEndTime)
+            ]
 
         guard let url = URL(string: "https://hub-dev.stmarksschool.org/v1/student/schedule/manual") else {
             print("Invalid url")
@@ -95,9 +123,9 @@ extension Color {
 
         // Convert to hex string
         let hexString = String(format: "#%02lX%02lX%02lX",
-                               lroundf(Float(red * 255)),
-                               lroundf(Float(green * 255)),
-                               lroundf(Float(blue * 255)))
+            lroundf(Float(red * 255)),
+            lroundf(Float(green * 255)),
+            lroundf(Float(blue * 255)))
         return hexString
     }
 }

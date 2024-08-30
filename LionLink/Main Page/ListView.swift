@@ -4,6 +4,8 @@ struct ListView: View {
     let events: [Event]
     @Binding var selectedEvent: Event?
     var onDelete: (Event) -> Void
+    @Environment(\.colorScheme) var colorScheme
+    
     
     private var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
@@ -12,59 +14,109 @@ struct ListView: View {
     }
     
     var body: some View {
-        ScrollView {
-            VStack(spacing: 16) { // Space between event cards
-                ForEach(events.sorted(by: { $0.startTime < $1.startTime })) { event in
-                    // Time label above each event card
-                    Text("\(dateFormatter.string(from: event.startTime)) - \(dateFormatter.string(from: event.endTime))")
-                        .font(.caption)
-                        .foregroundColor(.gray)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal)
+        if colorScheme == .dark {
+            ScrollView {
+                VStack(spacing: 16) { // Space between event cards
+                    ForEach(events.sorted(by: { $0.startTime < $1.startTime })) { event in
+                        // Time label above each event card
+                        Text("\(dateFormatter.string(from: event.startTime)) - \(dateFormatter.string(from: event.endTime))")
+                            .font(.caption)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal)
 
-                    // Event card
-                    HStack {
-                        Rectangle()
-                            .fill(Color(hex: event.colorHex))
-                            .frame(width: 4)
+                        // Event card
+                        HStack {
+                            Rectangle()
+                                .fill(Color(hex: event.colorHex))
+                                .frame(width: 7)
 
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text(event.title)
-                                .font(.headline)
-                                .foregroundColor(.black)
-                            
-                            Text("\(dateFormatter.string(from: event.startTime)) - \(dateFormatter.string(from: event.endTime))")
-                                                            .font(.subheadline)
-                                                            .foregroundColor(.gray)
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text(event.title)
+                                    .font(.headline)
+                                    .foregroundColor(.white)
+                                
+                                Text("\(dateFormatter.string(from: event.startTime)) - \(dateFormatter.string(from: event.endTime))")
+                                                                .font(.subheadline)
+                                                                .foregroundColor(.white)
 
-                            HStack {
-                                Image(systemName: "location.fill")
-                                    .foregroundColor(Color(hex: event.colorHex))
-                                Text(event.location)
-                                    .font(.subheadline)
+                                HStack {
+                                    Image(systemName: "location.fill")
+                                        .foregroundColor(Color(hex: event.colorHex))
+                                    Text(event.location)
+                                        .font(.subheadline)
+                                }
+                                .foregroundColor(.gray)
                             }
-                            .foregroundColor(.gray)
-                        }
-                        .padding(.vertical, 8)
-                        .padding(.horizontal, 12)
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 12)
 
-                        Spacer()
-                    }
-                    .frame(height: 100)
-                    .background(Color.white)
-                    .cornerRadius(10)
-                    .shadow(radius: 2)
-                    .padding(.horizontal)
-                    .onTapGesture {
-                        self.selectedEvent = event
-                    }
-                    
-                    if let event = selectedEvent {
-                            EventDetailView(event: event, onDismiss: { selectedEvent = nil }, onDelete: { onDelete(event) })
+                            Spacer()
                         }
+                        .frame(height: 100)
+                        .background(Color(hex: "171616"))
+                        .cornerRadius(10)
+                        .shadow(radius: 2)
+                        .padding(.horizontal)
+                        .onTapGesture {
+                            self.selectedEvent = event
+                        }
+                    }
                 }
+                .padding(.top, 10)
             }
-            .padding(.top, 10)
+        }else{
+            ScrollView {
+                VStack(spacing: 16) { // Space between event cards
+                    ForEach(events.sorted(by: { $0.startTime < $1.startTime })) { event in
+                        // Time label above each event card
+
+                        Text("\(dateFormatter.string(from: event.startTime)) - \(dateFormatter.string(from: event.endTime))")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal)
+
+                        // Event card
+                        HStack {
+                            Rectangle()
+                                .fill(Color(hex: event.colorHex))
+                                .frame(width: 4)
+
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text(event.title)
+                                    .font(.headline)
+                                    .foregroundColor(.black)
+                                
+                                Text("\(dateFormatter.string(from: event.startTime)) - \(dateFormatter.string(from: event.endTime))")
+                                                                .font(.subheadline)
+                                                                .foregroundColor(.gray)
+
+                                HStack {
+                                    Image(systemName: "location.fill")
+                                        .foregroundColor(Color(hex: event.colorHex))
+                                    Text(event.location)
+                                        .font(.subheadline)
+                                }
+                                .foregroundColor(.gray)
+                            }
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 12)
+
+                            Spacer()
+                        }
+                        .frame(height: 100)
+                        .background(Color.white)
+                        .cornerRadius(10)
+                        .shadow(radius: 2)
+                        .padding(.horizontal)
+                        .onTapGesture {
+                            self.selectedEvent = event
+                        }
+                    }
+                }
+                .padding(.top, 10)
+            }
         }
     }
 }

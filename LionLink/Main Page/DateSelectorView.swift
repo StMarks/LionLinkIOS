@@ -40,13 +40,11 @@ struct DateSelectorView: View {
                                     .font(.headline)
                                 Text(dates[index])
                                     .font(.subheadline)
-                                
-                                
                             }
                             .frame(width: 60, height: 60) // Adjusted width of the boxes
                             .padding(.vertical, 10)
-                            .background(self.selectedDayIndex == index ? Color.blue : Color.white)
-                            .foregroundColor(self.selectedDayIndex == index ? Color.white : Color.black)
+                            .background(self.selectedDayIndex == index ? Color.blue : Color.gray)
+                            .foregroundColor(self.selectedDayIndex == index ? Color.black : Color.white)
                             .cornerRadius(10)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10)
@@ -69,8 +67,6 @@ struct DateSelectorView: View {
                                     .font(.headline)
                                 Text(dates[index])
                                     .font(.subheadline)
-                                
-                                
                             }
                             .frame(width: 60, height: 60) // Adjusted width of the boxes
                             .padding(.vertical, 10)

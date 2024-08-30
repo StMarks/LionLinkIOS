@@ -2,7 +2,6 @@ import SwiftUI
 
 struct Event: Encodable, Identifiable, Equatable {
     var id = UUID()
-    let creatorId: Int?
     let indvId: Int?
     let startTime: Date
     let endTime: Date
@@ -14,15 +13,15 @@ struct Event: Encodable, Identifiable, Equatable {
    
     
     
-    init(indvId: Int? = nil, creatorId: Int? = nil, startTime: String, endTime: String, teacher: String? = nil, title: String, abbreviatedTitle: String? = nil, location: String, hex: String) {
+    init(indvId: Int? = nil, startTime: String, endTime: String, teacher: String? = nil, title: String, abbreviatedTitle: String? = nil, location: String, hex: String) {
             if let startDate = Date.iso8601Formatter.date(from: startTime) {
-                self.startTime = startDate.addingTimeInterval(5 * 60 * 60) // Add 5 hours
+                self.startTime = startDate.addingTimeInterval(4 * 60 * 60) // Add 5 hours
             } else {
                 self.startTime = Date()
             }
             
             if let endDate = Date.iso8601Formatter.date(from: endTime) {
-                self.endTime = endDate.addingTimeInterval(5 * 60 * 60) // Add 5 hours
+                self.endTime = endDate.addingTimeInterval(4 * 60 * 60) // Add 5 hours
             } else {
                 self.endTime = Date()
             }
@@ -32,7 +31,6 @@ struct Event: Encodable, Identifiable, Equatable {
             self.abbreviatedTitle = abbreviatedTitle
             self.location = location
             self.colorHex = hex
-            self.creatorId = creatorId
             self.indvId = indvId
         }
 

@@ -4,9 +4,9 @@ import SafariServices
 struct SafariView: UIViewControllerRepresentable {
     let url: URL 
 
-    // This function tells SwiftUI which UIKit view controller to instantiate for this view
+    // tells Swift which UIKit view controller to instantiate 
     func makeUIViewController(context: UIViewControllerRepresentableContext<SafariView>) -> SFSafariViewController {
-        return SFSafariViewController(url: url) // Initialize the SFSafariViewController with the provided URL
+        return SFSafariViewController(url: url)
     }
 
     func updateUIViewController(_ uiViewController: SFSafariViewController, context: UIViewControllerRepresentableContext<SafariView>) {

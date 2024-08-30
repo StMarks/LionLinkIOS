@@ -16,26 +16,41 @@ struct EventDetailView: View {
                 Spacer()
                 VStack {
                     Text(event.title) // Event title
-                    
-                    
-//                        Button("Delete", action: onDelete)
-//                                        .foregroundColor(.white)
-//                                        .padding()
-//                                        .background(Color.red)
-//                                        .cornerRadius(10)
+                        .foregroundColor(.black)
                         
-                        Spacer()
-                        Button("Close", action: onDismiss)
-                            .foregroundColor(.white)
-                            .padding(.horizontal, 30)
-                            .padding(.vertical, 8)
-                            .background(Color.blue)
-                            .cornerRadius(5) // Less rounded corners
-                            .frame(maxWidth: .infinity, alignment: .leading) // Align to left
+                    Text(event.abbreviatedTitle ?? "No Abbrev Title")
+                        .foregroundColor(.black)
+                    Text(event.location ?? "No Location")
+                        .foregroundColor(.black)
+                    Text(event.indvId.map { String($0) } ?? "No indvId")
+
+
                     
+                    Spacer()
+                        HStack(spacing: 40) {
+                            if(event.indvId.map {String($0)} != nil){
+                                Button("Delete", action: onDelete)
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 30)
+                                    .padding(.vertical, 8)
+                                    .background(Color.red)
+                                    .cornerRadius(5)
+                                    .frame(maxWidth: .infinity, alignment: .trailing)
+                            }
+                           
+                        
+                            Button("Close", action: onDismiss)
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 30)
+                                .padding(.vertical, 8)
+                                .background(Color.blue)
+                                .cornerRadius(5)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        .padding(.bottom, 30)
                     
                 }
-                .frame(width: UIScreen.main.bounds.width * 0.8, height: UIScreen.main.bounds.height * 0.6)
+                .frame(width: UIScreen.main.bounds.width * 0.8, height: UIScreen.main.bounds.height * 0.7)
                 .background(Color.white)
                 .cornerRadius(15)
                 .shadow(radius: 10)
@@ -46,9 +61,11 @@ struct EventDetailView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .edgesIgnoringSafeArea(.all) // Ensure the overlay covers the whole screen
+        .onAppear {
+            print("EventDetailView for \(event.title) appeared")
+        }
+        .onDisappear {
+            print("EventDetailView for \(event.title) disappeared")
+        }
     }
-    
-    
 }
-
-

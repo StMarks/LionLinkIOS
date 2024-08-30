@@ -9,8 +9,10 @@ struct DayEventView: View {
     let eventsByDay: [[Event]]
     
     
-    @AppStorage("token") var token: String?
+    @Binding var token: String?
     @State private var isCalendarViewActive = false
+    
+    
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             
@@ -27,7 +29,7 @@ struct DayEventView: View {
                     if isCalendarViewActive {
                         // Calendar-style view
                         ZStack(alignment: .bottomTrailing) {
-                            ColView(events: eventsByDay[selectedIndex], selectedEvent: $selectedEvent)
+                            ListedView(events: eventsByDay[selectedIndex], selectedEvent: $selectedEvent)
                         }
                     } else {
                         ZStack(alignment: .bottomTrailing) {
