@@ -65,6 +65,16 @@
 		50FF071A2AE802B700B6330E /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF07192AE802B700B6330E /* SplashScreenView.swift */; };
 		50FF07372AE8AC1100B6330E /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF07362AE8AC1100B6330E /* TimerView.swift */; };
 		50FF07392AE8B69500B6330E /* NextEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF07382AE8B69500B6330E /* NextEvent.swift */; };
+		EB6518222CCFCD69006A42A4 /* LunchMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6518212CCFCD69006A42A4 /* LunchMainView.swift */; };
+		EB6518242CCFCE4E006A42A4 /* LunchDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6518232CCFCE4E006A42A4 /* LunchDayView.swift */; };
+		EB6518262CD09F67006A42A4 /* WeeklyMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6518252CD09F67006A42A4 /* WeeklyMenuView.swift */; };
+		EB80DD412CBD599F00E32503 /* XDismissButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB80DD402CBD599F00E32503 /* XDismissButton.swift */; };
+		EB80DD432CBD5B6D00E32503 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB80DD422CBD5B6D00E32503 /* DetailViewModel.swift */; };
+		EBE7D14D2CBD57A600A59DF1 /* GameScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE7D14C2CBD57A600A59DF1 /* GameScheduleView.swift */; };
+		EBF4947C2CBCD9AC00462A96 /* TeamGridViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF4947B2CBCD9AC00462A96 /* TeamGridViewModel.swift */; };
+		EBF4947E2CBCDA2600462A96 /* MockTeamData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF4947D2CBCDA2600462A96 /* MockTeamData.swift */; };
+		EBF494802CBCDB5200462A96 /* TeamDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF4947F2CBCDB5200462A96 /* TeamDetailView.swift */; };
+		EBF494822CBCDC6F00462A96 /* TeamTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF494812CBCDC6F00462A96 /* TeamTitleView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -128,6 +138,16 @@
 		50FF07192AE802B700B6330E /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		50FF07362AE8AC1100B6330E /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		50FF07382AE8B69500B6330E /* NextEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextEvent.swift; sourceTree = "<group>"; };
+		EB6518212CCFCD69006A42A4 /* LunchMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LunchMainView.swift; sourceTree = "<group>"; };
+		EB6518232CCFCE4E006A42A4 /* LunchDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LunchDayView.swift; sourceTree = "<group>"; };
+		EB6518252CD09F67006A42A4 /* WeeklyMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyMenuView.swift; sourceTree = "<group>"; };
+		EB80DD402CBD599F00E32503 /* XDismissButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XDismissButton.swift; sourceTree = "<group>"; };
+		EB80DD422CBD5B6D00E32503 /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
+		EBE7D14C2CBD57A600A59DF1 /* GameScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleView.swift; sourceTree = "<group>"; };
+		EBF4947B2CBCD9AC00462A96 /* TeamGridViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamGridViewModel.swift; sourceTree = "<group>"; };
+		EBF4947D2CBCDA2600462A96 /* MockTeamData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTeamData.swift; sourceTree = "<group>"; };
+		EBF4947F2CBCDB5200462A96 /* TeamDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamDetailView.swift; sourceTree = "<group>"; };
+		EBF494812CBCDC6F00462A96 /* TeamTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamTitleView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +165,9 @@
 			isa = PBXGroup;
 			children = (
 				071F2B8B2BD2AD25009CBDF8 /* Lunchmain.swift */,
+				EB6518212CCFCD69006A42A4 /* LunchMainView.swift */,
+				EB6518232CCFCE4E006A42A4 /* LunchDayView.swift */,
+				EB6518252CD09F67006A42A4 /* WeeklyMenuView.swift */,
 			);
 			path = Lunch;
 			sourceTree = "<group>";
@@ -243,6 +266,13 @@
 			isa = PBXGroup;
 			children = (
 				5094CB2D2AFE6F3F005FB29E /* TeamPgMain.swift */,
+				EBF4947B2CBCD9AC00462A96 /* TeamGridViewModel.swift */,
+				EBF4947D2CBCDA2600462A96 /* MockTeamData.swift */,
+				EBF4947F2CBCDB5200462A96 /* TeamDetailView.swift */,
+				EBF494812CBCDC6F00462A96 /* TeamTitleView.swift */,
+				EBE7D14C2CBD57A600A59DF1 /* GameScheduleView.swift */,
+				EB80DD402CBD599F00E32503 /* XDismissButton.swift */,
+				EB80DD422CBD5B6D00E32503 /* DetailViewModel.swift */,
 			);
 			path = Sports;
 			sourceTree = "<group>";
@@ -409,11 +439,17 @@
 				078B91AE2BEDACAF00D1F179 /* ManagementView.swift in Sources */,
 				072F6DA02BD8B8B2008F0465 /* gameClass.swift in Sources */,
 				072F6DA22BD94C67008F0465 /* doubleooNineAdmin.swift in Sources */,
+				EBF4947E2CBCDA2600462A96 /* MockTeamData.swift in Sources */,
+				EB80DD412CBD599F00E32503 /* XDismissButton.swift in Sources */,
+				EB6518262CD09F67006A42A4 /* WeeklyMenuView.swift in Sources */,
 				078B91A82BEDAC2200D1F179 /* PlayerView.swift in Sources */,
 				07F67AFC2BF3D436006EDF5D /* GroupTile.swift in Sources */,
+				EB6518222CCFCD69006A42A4 /* LunchMainView.swift in Sources */,
 				078AADAF2BBE5C33004B10E7 /* ClubNavBar.swift in Sources */,
 				50FF071A2AE802B700B6330E /* SplashScreenView.swift in Sources */,
+				EB6518242CCFCE4E006A42A4 /* LunchDayView.swift in Sources */,
 				5052F8FC2B202C3200C2BC2B /* DateSelectorView.swift in Sources */,
+				EBF494802CBCDB5200462A96 /* TeamDetailView.swift in Sources */,
 				50FF07372AE8AC1100B6330E /* TimerView.swift in Sources */,
 				500A96412B1A2D9E007BA636 /* CalendarNavBar.swift in Sources */,
 				07F67B0C2BF3D554006EDF5D /* EventRow.swift in Sources */,
@@ -425,6 +461,7 @@
 				071F2B8C2BD2AD25009CBDF8 /* Lunchmain.swift in Sources */,
 				5094CB2B2AFE6F1D005FB29E /* Clubmain.swift in Sources */,
 				5052F9002B202D6600C2BC2B /* ColView.swift in Sources */,
+				EBF494822CBCDC6F00462A96 /* TeamTitleView.swift in Sources */,
 				50FF06D32AE7645000B6330E /* ContentView.swift in Sources */,
 				500688532B1EFBCE0036B631 /* CustomTextField.swift in Sources */,
 				501945D02B07A6D50072E148 /* EventView.swift in Sources */,
@@ -446,7 +483,9 @@
 				076D29EC2BBC733400286010 /* groupClass.swift in Sources */,
 				07F67B042BF3D4B9006EDF5D /* GeneralClubDetailView.swift in Sources */,
 				078AADB12BBE6BD3004B10E7 /* LogoutView.swift in Sources */,
+				EBE7D14D2CBD57A600A59DF1 /* GameScheduleView.swift in Sources */,
 				07DD49E02BEE664C00FC4149 /* check.swift in Sources */,
+				EBF4947C2CBCD9AC00462A96 /* TeamGridViewModel.swift in Sources */,
 				5058BC902AF09766007B3628 /* Profile.swift in Sources */,
 				078B91AC2BEDAC8C00D1F179 /* PlayerListView.swift in Sources */,
 				078AADB32BC6DF44004B10E7 /* Models.swift in Sources */,
@@ -457,6 +496,7 @@
 				075D2CDA2B96E5E2000EC761 /* PrivacyPolicyView.swift in Sources */,
 				078B91A42BEDABAA00D1F179 /* EliminateUserView.swift in Sources */,
 				50FF06D12AE7645000B6330E /* LionLinkApp.swift in Sources */,
+				EB80DD432CBD5B6D00E32503 /* DetailViewModel.swift in Sources */,
 				50FF07392AE8B69500B6330E /* NextEvent.swift in Sources */,
 				500A96462B1A31B1007BA636 /* RoundedCorner.swift in Sources */,
 				078B91B42BEDACFB00D1F179 /* UpdateTargetView.swift in Sources */,
