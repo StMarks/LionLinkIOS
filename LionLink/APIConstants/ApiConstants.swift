@@ -7,6 +7,6 @@
 import SwiftUI
 import Foundation
 struct APIConstants {
-    static let baseURL = "https://hub-dev.stmarksschool.org/v1"
+    static let baseURL = "http://localhost:8080/v1"
 }
 //    In API calls, the base URL is referenced as \(APIConstants.baseURL)
