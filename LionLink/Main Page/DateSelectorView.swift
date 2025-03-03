@@ -28,61 +28,96 @@ struct DateSelectorView: View {
         }
 
     var body: some View {
-        if colorScheme == .dark {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 16) { // Adjust spacing between the date boxes
-                    ForEach(Array(zip(weekDays.indices, weekDays)), id: \.0) { index, day in
-                        Button(action: {
-                            self.selectedDayIndex = index
-                        }) {
-                            VStack {
-                                Text(day)
-                                    .font(.headline)
-                                Text(dates[index])
-                                    .font(.subheadline)
-                            }
-                            .frame(width: 60, height: 60) // Adjusted width of the boxes
-                            .padding(.vertical, 10)
-                            .background(self.selectedDayIndex == index ? Color.blue : Color.gray)
-                            .foregroundColor(self.selectedDayIndex == index ? Color.black : Color.white)
-                            .cornerRadius(10)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(Color.gray, lineWidth: 1)
-                            )
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 10) { // Adjust spacing between the date boxes
+                ForEach(Array(zip(weekDays.indices, weekDays)), id: \.0) { index, day in
+                    Button(action: {
+                        self.selectedDayIndex = index
+                    }) {
+                        VStack {
+                            Text(day)
+                                .font(.headline)
+                            Text(dates[index])
+                                .font(.subheadline)
                         }
+                        .frame(minWidth:20,idealWidth:UIScreen.screenWidth/6,maxWidth: 200,minHeight: 30,idealHeight:50,maxHeight:60)
+                        .padding(.vertical, 10)
+                        .background(self.selectedDayIndex == index ? Color.blue : Color.clearNGray)
+                        .foregroundColor(self.selectedDayIndex == index ? Color.black : Color.whiteNBlack)
+                        .cornerRadius(10)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.black, lineWidth: 0)
+                        )
+                        .scrollTransition(.interactive){content, phase in
+                            content
+                                .opacity(phase.isIdentity ?1:0)
+                                .scaleEffect(phase.isIdentity ?1:0.7)
+                            
+                        }
+                        
                     }
                 }
-                .padding(.horizontal)
             }
-        } else {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 16) { // Adjust spacing between the date boxes
-                    ForEach(Array(zip(weekDays.indices, weekDays)), id: \.0) { index, day in
-                        Button(action: {
-                            self.selectedDayIndex = index
-                        }) {
-                            VStack {
-                                Text(day)
-                                    .font(.headline)
-                                Text(dates[index])
-                                    .font(.subheadline)
-                            }
-                            .frame(width: 60, height: 60) // Adjusted width of the boxes
-                            .padding(.vertical, 10)
-                            .background(self.selectedDayIndex == index ? Color.blue : Color.clear)
-                            .foregroundColor(self.selectedDayIndex == index ? Color.white : Color.black)
-                            .cornerRadius(10)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(Color.gray, lineWidth: 1)
-                            )
-                        }
-                    }
-                }
-                .padding(.horizontal)
-            }
-        }
+            .ignoresSafeArea()
+            .scenePadding()
+        } .scrollTargetLayout()
+            .scrollTargetBehavior(.viewAligned)
+//        if colorScheme == .dark {
+//            ScrollView(.horizontal, showsIndicators: false) {
+//                HStack(spacing: 16) { // Adjust spacing between the date boxes
+//                    ForEach(Array(zip(weekDays.indices, weekDays)), id: \.0) { index, day in
+//                        Button(action: {
+//                            self.selectedDayIndex = index
+//                        }) {
+//                            VStack {
+//                                Text(day)
+//                                    .font(.headline)
+//                                Text(dates[index])
+//                                    .font(.subheadline)
+//                            }
+//                            .frame(minWidth:20,idealWidth:UIScreen.screenWidth/6,maxWidth: 200,minHeight: 30,idealHeight:80,maxHeight:90)
+//                            .padding(.vertical, 10)
+//                            .background(self.selectedDayIndex == index ? Color.blue : Color.gray)
+//                            .foregroundColor(self.selectedDayIndex == index ? Color.black : Color.white)
+//                            .cornerRadius(10)
+//                            .overlay(
+//                                RoundedRectangle(cornerRadius: 10)
+//                                    .stroke(Color.black, lineWidth: 3)
+//                            )
+//                        }
+//                    }
+//                }
+//                .padding(.horizontal)
+//            }
+//        } else {
+//            ScrollView(.horizontal, showsIndicators: false) {
+//                HStack(spacing: 16) { // Adjust spacing between the date boxes
+//                    ForEach(Array(zip(weekDays.indices, weekDays)), id: \.0) { index, day in
+//                        Button(action: {
+//                            self.selectedDayIndex = index
+//                        }) {
+//                            VStack {
+//                                Text(day)
+//                                    .font(.headline)
+//                                Text(dates[index])
+//                                    .font(.subheadline)
+//                            }
+//                            .frame(minWidth:20,idealWidth:UIScreen.screenWidth/6,maxWidth: 200,minHeight: 30,idealHeight:80,maxHeight:90)
+//                            .padding(.vertical, 10)
+//                            .background(self.selectedDayIndex == index ? Color.blue : Color.clear)
+//                            .foregroundColor(self.selectedDayIndex == index ? Color.white : Color.black)
+//                            .cornerRadius(10)
+//                            .overlay(
+//                                RoundedRectangle(cornerRadius: 10)
+//                                    .stroke(Color.black, lineWidth: 3)
+//                            )
+//                        }
+//                    }
+//                }
+//                .padding(.horizontal)
+//            }
+        
         
     }
 }

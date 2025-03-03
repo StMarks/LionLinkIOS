@@ -70,7 +70,7 @@ struct CreateEventView: View {
                 "endTime": dateFormatter.string(from: adjustedEndTime)
             ]
 
-        guard let url = URL(string: "https://hub-dev.stmarksschool.org/v1/student/schedule/manual") else {
+        guard let url = URL(string: "\(APIConstants.baseURL)/student/schedule/manual") else {
             print("Invalid url")
             return
         }

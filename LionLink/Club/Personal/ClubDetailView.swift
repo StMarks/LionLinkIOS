@@ -68,7 +68,7 @@ struct ClubDetailView: View {
                         self.isLoading = false
                     }
                 }
-        .onChange(of: viewModel.unwrappedCurrentUser) { _ in
+        .onChange(of: viewModel.unwrappedCurrentUser) {
             // This will trigger when currentUser is updated and is non-nil
             if let group = detailedGroup {
                 self.isUserLeader = viewModel.isUserLeader(group: group)

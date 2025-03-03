@@ -25,5 +25,5 @@ struct LionLinkApp: App {
 
 
 
-//Dark and Light mode is only implemented in some parts.
+//Dark and Light mode is on ly implemented in some parts.
 //Log out error description should be on asana + Profile Page(Pfp)

@@ -59,7 +59,7 @@ struct CalendarView: View {
             
         let startDateMillis = Int64(thisMonday.timeIntervalSince1970 * 1000) // Convert to milliseconds
         let limit = 7 // Number of days to fetch
-        let urlString = "https://hub-dev.stmarksschool.org/v1/student/schedule?startDate=\(startDateMillis)&limit=\(limit)"
+        let urlString = "\(APIConstants.baseURL)/student/schedule?startDate=\(startDateMillis)&limit=\(limit)"
         
         print("Fetching schedule with URL: \(urlString)")
         
@@ -143,7 +143,7 @@ struct CalendarView: View {
         let startDateMillis = Int64(thisMonday.timeIntervalSince1970 * 1000) // Convert to milliseconds
         let limit = 7 // Number of days to fetch
         
-        let urlString = "https://hub-dev.stmarksschool.org/v1/student/schedule/manual?startDate=\(startDateMillis)&limit=\(limit)"
+        let urlString = "\(APIConstants.baseURL)/student/schedule/manual?startDate=\(startDateMillis)&limit=\(limit)"
         fetchFromEndpoint(urlString: urlString) { [self] result in
             switch result {
             case .success(let string):
@@ -228,7 +228,7 @@ struct CalendarView: View {
             return
         }
         
-        guard let url = URL(string: "https://hub-dev.stmarksschool.org/v1/student/schedule/manual/\(eventID)"),
+        guard let url = URL(string: "\(APIConstants.baseURL)/student/schedule/manual/\(eventID)"),
               let token = self.token else {
             print("Invalid URL or Token is nil")
             return
@@ -438,8 +438,8 @@ struct CalendarView: View {
                     .sheet(isPresented: $showingCreateEventView) {
                         CreateEventView(needsRefresh: $needsRefresh, token: token!)
                     }
-                    .onChange(of: needsRefresh) { newValue in
-                        if newValue {
+                    .onChange(of: needsRefresh) {
+                        if needsRefresh {
                             loadData()
                         }
                     }
@@ -520,8 +520,8 @@ struct CalendarView: View {
                         .sheet(isPresented: $showingCreateEventView) {
                             CreateEventView(needsRefresh: $needsRefresh, token: token!)
                         }
-                        .onChange(of: needsRefresh) { newValue in
-                            if newValue {
+                        .onChange(of: needsRefresh) {
+                            if needsRefresh {
                                 loadData()
                             }
                         }

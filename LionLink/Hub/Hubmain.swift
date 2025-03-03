@@ -4,6 +4,7 @@ struct Hubmain: View {
     //main navigation page for the user "HUB" of information and places to navigate
     @AppStorage("token") var token: String?
     @Environment(\.colorScheme) var colorScheme
+    @AppStorage("id") var id: Int?
     @State private var user: UserProfile?
     
     var body: some View {
@@ -21,8 +22,8 @@ struct Hubmain: View {
                 }
                 
                 HStack(spacing: 20) {
-                    Activity(text: "Lunch Menu", iconName: "fork.knife", destination: AnyView(LunchMainView(lunchService: LunchService(token: token!)).navigationBarBackButtonHidden(false)), active: false)
-                    Activity(text: "Sports", subtext: "(Coming Soon)", iconName: "football", destination: AnyView(TeamPgMain().navigationBarBackButtonHidden(false)), active: false)
+                    Activity(text: "Dining Menu", iconName: "fork.knife", destination: AnyView(LunchMainView(lunchService: LunchService(token: token!)).navigationBarBackButtonHidden(true)), active: false)
+                    Activity(text: "Sports", iconName: "football", destination: AnyView(SportsView().navigationBarBackButtonHidden(true)), active: false)
                 }
                 HStack(spacing: 20) {
                     Activity(text: "Clubs", subtext: "(Coming Soon)", iconName: "graduationcap", destination: AnyView(Clubmain().navigationBarBackButtonHidden(true)), active: false)
@@ -35,11 +36,16 @@ struct Hubmain: View {
                         Activity(text: "009 Admin", iconName: "bolt.horizontal", destination: AnyView(doubleooNineAdmin().navigationBarBackButtonHidden(false)), active: false)
                     }
                 }
+//                HStack(spacing:20){
+//                    Activity(text: "Forums", iconName: "vial.viewfinder", destination: AnyView(ForumsMainView().navigationBarBackButtonHidden(false)), active: false)
+//                }
+                Spacer()
             }
             .padding()
             .navigationBarTitle("Lion Link", displayMode: .inline)
             .onAppear {
                 fetchUserProfile()
+                self.id = user?.id
             }
         }
     }
@@ -48,7 +54,7 @@ struct Hubmain: View {
     
     // MARK: - Basic User Data
     func fetchUserProfile() {
-        guard let url = URL(string: "https://hub-dev.stmarksschool.org/v1/auth/user") else {
+        guard let url = URL(string: "\(APIConstants.baseURL)/auth/user") else {
             print("Invalid URL for user profile.")
             return
         }

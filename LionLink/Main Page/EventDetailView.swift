@@ -20,7 +20,7 @@ struct EventDetailView: View {
                         
                     Text(event.abbreviatedTitle ?? "No Abbrev Title")
                         .foregroundColor(.black)
-                    Text(event.location ?? "No Location")
+                    Text(event.location)
                         .foregroundColor(.black)
                     Text(event.indvId.map { String($0) } ?? "No indvId")
 

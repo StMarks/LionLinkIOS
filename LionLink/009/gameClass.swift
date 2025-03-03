@@ -1,7 +1,7 @@
 import Foundation
 
 class GameService: ObservableObject {
-    let baseURL = URL(string: "https://hub-dev.stmarksschool.org/v1/009")!
+    let baseURL = URL(string: "\(APIConstants.baseURL)/009")!
     let token: String
     
     init(token: String) {
@@ -131,7 +131,7 @@ class GameService: ObservableObject {
             }
             
             DispatchQueue.main.async {
-                completion(true, "User added successfully. \(response)")
+                completion(true, "User added successfully. \(String(describing: response))")
             }
         }.resume()
     }

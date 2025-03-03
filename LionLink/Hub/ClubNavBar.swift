@@ -40,7 +40,7 @@ struct ClubNavBar: View {
     
     // Networking call to fetch the user's profile
     func fetchUserProfile() {
-        guard let url = URL(string: "https://hub-dev.stmarksschool.org/v1/auth/user") else {
+        guard let url = URL(string: "\(APIConstants.baseURL)/auth/user") else {
             print("Invalid URL for user profile.")
             return
         }

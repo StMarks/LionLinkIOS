@@ -49,7 +49,7 @@ class GroupViewModel: ObservableObject {
 
     func fetchCurrentUser() {
         guard let token = token,
-              let userProfileURL = URL(string: "https://hub-dev.stmarksschool.org/v1/auth/user") else {
+              let userProfileURL = URL(string: "\(APIConstants.baseURL)/auth/user") else {
             print("No token available or invalid URL.")
             return
         }

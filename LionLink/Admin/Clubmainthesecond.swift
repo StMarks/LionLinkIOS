@@ -6,7 +6,7 @@ import SwiftUI
 // MARK: - Networking Service
 
 class BatchService {
-    let baseURL = URL(string: "https://hub-dev.stmarksschool.org/v1/group")!
+    let baseURL = URL(string: "\(APIConstants.baseURL)/group")!
     let token: String
         
     init(token: String) {
@@ -15,7 +15,7 @@ class BatchService {
     
     func deleteEvent(eventId: Int, completion: @escaping (Bool, String) -> Void) {
 //        let endpoint = baseURL.appendingPathComponent("/event")
-        let endpoint = URL(string: "https://hub-dev.stmarksschool.org/v1/group/event")!
+        let endpoint = URL(string: "\(APIConstants.baseURL)/group/event")!
         var request = URLRequest(url: endpoint)
         request.httpMethod = "DELETE"
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
@@ -45,7 +45,7 @@ class BatchService {
     
     func editEvent(eventId: Int, groupId: Int, eventType: String, locationId: Int, startTime: String, endTime: String, description: String, completion: @escaping (Bool, String) -> Void) {
 //        let endpoint = baseURL.appendingPathComponent("/event")
-        let endpoint = URL(string: "https://hub-dev.stmarksschool.org/v1/group/event")!
+        let endpoint = URL(string: "\(APIConstants.baseURL)/group/event")!
         var request = URLRequest(url: endpoint)
         request.httpMethod = "PUT"
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
@@ -1418,7 +1418,7 @@ struct UserRoleUpdateView: View {
 
 
 class LocationService {
-    let baseURL = URL(string: "https://hub-dev.stmarksschool.org/v1/location")!
+    let baseURL = URL(string: "\(APIConstants.baseURL)/location")!
     let token: String
         
     init(token: String) {
@@ -1735,7 +1735,7 @@ struct LocationDetailView: View {
 //
 //  func createGroupEvent() {
 //    // Replace "YOUR_GROUP_ID" with the actual group ID
-//    guard let url = URL(string: "https://hub-dev.stmarksschool.org/v1/group/YOUR_GROUP_ID/event") else {
+//    guard let url = URL(string: "\(APIConstants.baseURL)/group/YOUR_GROUP_ID/event") else {
 //      print("Invalid URL")
 //      return
 //    }

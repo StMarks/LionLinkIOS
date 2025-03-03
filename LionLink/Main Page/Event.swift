@@ -14,14 +14,15 @@ struct Event: Encodable, Identifiable, Equatable {
     
     
     init(indvId: Int? = nil, startTime: String, endTime: String, teacher: String? = nil, title: String, abbreviatedTitle: String? = nil, location: String, hex: String) {
-            if let startDate = Date.iso8601Formatter.date(from: startTime) {
-                self.startTime = startDate.addingTimeInterval(4 * 60 * 60) // Add 5 hours
+            if let startDate = Date.ISO8601DateFormatter.date(from: startTime) {
+            self.startTime = startDate.addingTimeInterval(5 * 60 * 60) // Add 5 hours
+                print(startDate)
             } else {
                 self.startTime = Date()
             }
             
-            if let endDate = Date.iso8601Formatter.date(from: endTime) {
-                self.endTime = endDate.addingTimeInterval(4 * 60 * 60) // Add 5 hours
+            if let endDate = Date.ISO8601DateFormatter.date(from: endTime) {
+                self.endTime = endDate.addingTimeInterval(5 * 60 * 60) // Add 5 hours
             } else {
                 self.endTime = Date()
             }
@@ -53,9 +54,11 @@ struct Event: Encodable, Identifiable, Equatable {
 }
 
 extension Date {
-    static let iso8601Formatter: DateFormatter = {
+    static let ISO8601DateFormatter: DateFormatter = {
         let formatter = DateFormatter()
+//        formatter.timeZone = TimeZone(secondsFromGMT: +14400)
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        formatter.timeZone = TimeZone(secondsFromGMT: +14400)
         formatter.locale = Locale(identifier: "en_US_POSIX")
         return formatter
     }()

@@ -97,7 +97,7 @@ struct Author: Codable, Identifiable {
 
 
 class GroupService {
-    let baseURL = URL(string: "https://hub-dev.stmarksschool.org/v1/group")!
+    let baseURL = URL(string: "\(APIConstants.baseURL)/group")!
     let token: String
     
     init(token: String) {
