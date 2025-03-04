@@ -30,70 +30,11 @@ struct LunchDayView: View {
     @State private var currentlyVisibleId: Int?
     @State var dateSelected: Int
     @State private var debounceTask: DispatchWorkItem?
-//    @State private var activeTab: [DailyMenu]
     var body: some View {
         ScrollViewReader { proxy in
             VStack{
-                //                Button{
-                //                    proxy.scrollTo(todayDate,anchor:.leading)
-                //                    proxy.scrollTo(todayId, anchor:.center)
-                //                }label:{
-                //                    Text("Today's Menu")
-                //                        .bold()
-                //                        .fontDesign(.default)
-                //                        .foregroundStyle(.white)
-                //                        .frame(width:120,height:50)
-                //                }
-                
-                    DayLunch(lunchService: lunchService,dailyMenus:dailyMenus,todayId:todayId,proxy:proxy,selectedDate: $dateSelected)
-                
-                
-                //                NavView(lunchService: lunchService, dailyMenus: dailyMenus, todayId: todayId, todayDate: todayDate)
-                //                LunchTabs(lunchService: lunchService, dailyMenus: dailyMenus,todayId: todayId, todayDate: todayDate)
+                DayLunch(lunchService: lunchService,dailyMenus:dailyMenus,todayId:todayId,proxy:proxy,selectedDate: $dateSelected)
                 Spacer()
-                //BELOW IS NON FUNCTIONAL
-                
-                
-                //                TabView(selection:$activeTab){
-                //                    ForEach(dailyMenus, id:\.id){menu in
-                //                        VStack{
-                //                            Text("ID: \(menu.id)")
-                //                            Text("\(lunchService.formatDateFromMenu(from:menu.date)!)").padding()
-                //
-                //                            if !menu.lunchContents.isEmpty {
-                //                                Text("Breakfast: \(menu.breakfastContents.joined(separator: ", "))").padding()
-                //                            }
-                //
-                //                            if !menu.lunchContents.isEmpty {
-                //                                Text("Lunch: \(menu.lunchContents.joined(separator: ", "))").padding()
-                //                            }
-                //
-                //                            if !menu.dinnerContents.isEmpty {
-                //                                Text("Dinner: \(menu.dinnerContents.joined(separator: ", "))").padding()
-                //                            }
-                //                        }
-                //                        .tag(menu.id)
-                //                        .padding()
-                //                        .background(Color.blue.opacity(0.5))
-                //                        .foregroundColor(Color.white)
-                //                        .cornerRadius(20)
-                //                        .frame(width:300,height:500,alignment:.center)
-                //
-                //                    }
-                //
-                //
-                //                    }
-                //                }
-                //                .onAppear(){
-                //                    self.activeTab = todayId
-                //                }
-                //
-                //                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                //
-                //
-                
-                //BELOW IS FUNCTIONAL
-                
                 ScrollView(.horizontal, showsIndicators: false){
                     HStack(spacing:0){
                         ForEach(dailyMenus, id:\.id){ menu in
@@ -160,7 +101,6 @@ struct LunchDayView: View {
                             print(dateSelected)
                             
                         }
-                        //                                    .scenePadding()
                     }
                 }
                 .toolbar(.hidden, for: .navigationBar)
@@ -187,97 +127,6 @@ struct LunchDayView: View {
         }
     }
 }
-//struct LunchDayView: View {
-//    let lunchService: LunchService
-//    let dailyMenus: [DailyMenu]
-//    let todayId: Int
-//    let todayDate: String
-//    @State var dateSelected: Int
-//    @State private var currentlyVisibleId: Int? // Track the currently visible element
-//
-//    var body: some View {
-//        ScrollViewReader { proxy in
-//            VStack {
-//                // Button to scroll to today's menu
-//                Button {
-//                    withAnimation {
-//                        proxy.scrollTo(todayId, anchor: .center)
-//                        dateSelected = todayId
-//                        currentlyVisibleId = todayId
-//                    }
-//                } label: {
-//                    Text("Today's Menu")
-//                        .bold()
-//                        .fontDesign(.default)
-//                        .foregroundStyle(.white)
-//                        .frame(width: 120, height: 50)
-//                }
-//
-//                DayLunch(lunchService: lunchService, dailyMenus: dailyMenus, todayId: todayId, proxy: proxy, selectedDate: $dateSelected)
-//
-//                Spacer()
-//
-//                // Horizontal ScrollView
-//                ScrollView(.horizontal, showsIndicators: false) {
-//                    HStack(spacing: 0) {
-//                        ForEach(dailyMenus, id: \.id) { menu in
-//                            GeometryReader { geometry in
-//                                VStack {
-//                                    Text("\(lunchService.formatDateFromMenu(from: menu.date)!)")
-//                                        .font(.system(size: 40))
-//                                        .fontDesign(.serif)
-//                                        .background(.clear)
-//
-//                                    ScrollView(showsIndicators: false) {
-//                                        VStack {
-//                                            if !menu.breakfastContents.isEmpty {
-//                                                LunchRec(title: "Breakfast", text: "\(menu.breakfastContents.joined(separator: "\n-"))", color: .clearNGray)
-//                                                    .padding(5)
-//                                            }
-//
-//                                            if !menu.lunchContents.isEmpty {
-//                                                LunchRec(title: "Lunch", text: "\(menu.lunchContents.joined(separator: "\n-"))", color: .clearNGray)
-//                                                    .padding(5)
-//                                            }
-//
-//                                            if !menu.dinnerContents.isEmpty {
-//                                                LunchRec(title: "Dinner", text: "\(menu.dinnerContents.joined(separator: "\n-"))", color: .clearNGray)
-//                                                    .padding(5)
-//                                            }
-//                                        }
-//                                        .background(.white.opacity(0.2))
-//                                        .clipShape(RoundedRectangle(cornerRadius: 20))
-//                                    }
-//                                    .scrollTargetLayout()
-//                                    .scrollTargetBehavior(.viewAligned)
-//                                }
-//                                .onChange(of: geometry.frame(in: .global).midX) { midX in
-//                                    // Check if the element is in the visible area
-//                                    let screenWidth = UIScreen.main.bounds.width
-//                                    if abs(midX - screenWidth / 2) < screenWidth / 2 {
-//                                        currentlyVisibleId = menu.id
-//                                    }
-//                                }
-//                            }
-//                            .containerRelativeFrame(.horizontal, alignment: .center)
-//                            .id(menu.id) // Assign an ID to each menu for scrolling
-//                        }
-//                    }
-//                }
-//                .scrollTargetLayout()
-//                .scrollTargetBehavior(.viewAligned)
-//                .contentMargins(10)
-//                .onAppear {
-//                    withAnimation {
-//                        proxy.scrollTo(todayId, anchor: .center)
-//                        dateSelected = todayId
-//                        currentlyVisibleId = todayId
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
 struct DayLunch: View {
     let lunchService: LunchService
     let dailyMenus: [DailyMenu]
@@ -293,9 +142,7 @@ struct DayLunch: View {
                     VStack{
                         Button(){
                             print(selectedDate)
-//                            withAnimation(.spring(duration: 0.5, bounce: 1,blendDuration: 1)) {
                                 proxy.scrollTo(menu.id,anchor:.center)
-//                            }
                             selectedDate = menu.id
                         }label:{
                             VStack{
@@ -348,11 +195,11 @@ struct DayLunch: View {
             }.ignoresSafeArea()
         }.ignoresSafeArea()
             .scenePadding()
-            .onPreferenceChange(VisibleDatePreferenceKey.self) { visibleId in
-                                // Update the currently visible element
-                                
-                                    print("date"+"\(visibleId)")
-                            }
+//            .onPreferenceChange(VisibleDatePreferenceKey.self) { visibleId in
+//                                // Update the currently visible element
+//                                
+//                                    print("date"+"\(visibleId)")
+//                            } FOR DEBUGGING
 
             
 

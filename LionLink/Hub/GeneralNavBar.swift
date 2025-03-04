@@ -142,6 +142,7 @@ struct GeneralNavBar: View {
         )
         .onAppear {
             fetchUserProfile()
+            print(token)
         }
     }
     

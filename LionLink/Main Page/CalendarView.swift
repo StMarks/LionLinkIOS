@@ -392,159 +392,171 @@ struct CalendarView: View {
         }
     }
     
-        var body: some View {
-            if colorScheme == .dark {
-                ZStack {
-                    VStack {
-                        CalendarNavBar(month: monthFormatter.string(from: centeredDate))
-                        DateSelectorView(selectedDayIndex: $selectedIndex)
+    var body: some View {
+//        if colorScheme == .dark {
+            ZStack {
+                VStack {
+                    CalendarNavBar(month: monthFormatter.string(from: centeredDate))
+                    DateSelectorView(selectedDayIndex: $selectedIndex)
+                    if colorScheme == .dark{
                         Divider().colorInvert()
-                        
-                        TabView {
-                            HStack(spacing: 20) {
-                                if let currentEvent = findCurrentEvent() {
-                                    TimerView(startTime: currentEvent.startTime, endTime: currentEvent.endTime, name: currentEvent.abbreviatedTitle ?? currentEvent.title, color: Color(hex: currentEvent.colorHex))
-                                }
-                                if let nextEvent = findNextEvent() {
-                                    // Display next event details
-                                    NextEvent(eventName: nextEvent.title, backgroundColor: Color(hex: nextEvent.colorHex), startTime: formatTime(nextEvent.startTime), endTime: formatTime(nextEvent.endTime))
-                                } else {
-                                    Text("No More Events For Today")
-                                        .padding()
-                                        .background(Color.gray.opacity(0.2))
-                                        .cornerRadius(10)
-                                }
-                                
+                    }
+                    else{
+                        Divider()
+                    }
+                  
+                    
+                    TabView {
+                        HStack(spacing: 20) {
+                            if let currentEvent = findCurrentEvent() {
+                                TimerView(startTime: currentEvent.startTime, endTime: currentEvent.endTime, name: currentEvent.abbreviatedTitle ?? currentEvent.title, color: Color(hex: currentEvent.colorHex))
                             }
+                            if let nextEvent = findNextEvent() {
+                                // Display next event details
+                                NextEvent(eventName: nextEvent.title, backgroundColor: Color(hex: nextEvent.colorHex), startTime: formatTime(nextEvent.startTime), endTime: formatTime(nextEvent.endTime))
+                            } else {
+                                Text("No More Events For Today")
+                                    .padding()
+                                    .background(Color.gray.opacity(0.2))
+                                    .cornerRadius(10)
+                            }
+                            
+                        }
+                        .padding(.horizontal, 10)
+                        .tag(0)
+                        
+                        Text("Clubs Will Be Here")
                             .padding(.horizontal, 10)
-                            .tag(0)
-                            
-                            Text("Clubs Will Be Here")
-                                .padding(.horizontal, 10)
-                                .tag(1)
-                            
-                        }
-                        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                        .frame(height: 200)
+                            .tag(1)
+                        
+                    }
+                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                    .frame(height: 200)
+                    if colorScheme == .dark{
                         Divider().colorInvert()
-                        DayEventView(selectedIndex: $selectedIndex, showingCreateEventView: $showingCreateEventView, selectedEvent: $selectedEvent ,onDelete: deleteEvent, eventsByDay: groupedEvents, token: $token)
                     }
-                    .overlay(
-                        // Only show the EventDetailView if selectedEvent is not nil
-                        selectedEvent != nil ? EventDetailView(event: selectedEvent!, onDismiss: { selectedEvent = nil }, onDelete: { deleteEvent(event: selectedEvent!) }) : nil
-                    )
-                    .onReceive(timer) { _ in
+                    else{
+                        Divider()
                     }
-                    .sheet(isPresented: $showingCreateEventView) {
-                        CreateEventView(needsRefresh: $needsRefresh, token: token!)
-                    }
-                    .onChange(of: needsRefresh) {
-                        if needsRefresh {
-                            loadData()
-                        }
-                    }
-                    if isLoading {
-                        ProgressView("Loading…")
-                            .scaleEffect(1.5, anchor: .center)
-                            .progressViewStyle(CircularProgressViewStyle(tint: .blue))
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .background(Color.black.opacity(0.45))
-                            .edgesIgnoringSafeArea(.all)
-                    }
+                    DayEventView(selectedIndex: $selectedIndex, showingCreateEventView: $showingCreateEventView, selectedEvent: $selectedEvent ,onDelete: deleteEvent, eventsByDay: groupedEvents, token: $token)
                 }
-                .onAppear {
-                    setSelectedIndexBasedOnDay()
+                .overlay(
+                    // Only show the EventDetailView if selectedEvent is not nil
+                    selectedEvent != nil ? EventDetailView(event: selectedEvent!, onDismiss: { selectedEvent = nil }, onDelete: { deleteEvent(event: selectedEvent!) }) : nil
+                )
+                .onReceive(timer) { _ in
+                }
+                .sheet(isPresented: $showingCreateEventView) {
+                    CreateEventView(needsRefresh: $needsRefresh, token: token!)
+                }
+                .onChange(of: needsRefresh) {
                     if needsRefresh {
                         loadData()
-                        needsRefresh = false
-                    } else {
-                        loadData()
                     }
                 }
+                if isLoading {
+                    ProgressView("Loading…")
+                        .scaleEffect(1.5, anchor: .center)
+                        .progressViewStyle(CircularProgressViewStyle(tint: .blue))
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(Color.black.opacity(0.45))
+                        .edgesIgnoringSafeArea(.all)
+                }
+            }
+            .onAppear {
+                setSelectedIndexBasedOnDay()
+                if needsRefresh {
+                    loadData()
+                    needsRefresh = false
                 } else {
-                    ZStack {
-                        VStack {
-                            CalendarNavBar(month: monthFormatter.string(from: centeredDate))
-                            DateSelectorView(selectedDayIndex: $selectedIndex)
-                            
-                            Divider()
-                            
-                            TabView {
-                                HStack(spacing: 20) {
-                                    if let currentEvent = findCurrentEvent() {
-                                        TimerView(startTime: currentEvent.startTime, endTime: currentEvent.endTime, name: currentEvent.abbreviatedTitle ?? currentEvent.title, color: Color(hex: currentEvent.colorHex))
-                                    } else{
-                                        if let nextEvent = findNextEvent() {
-                                            TimerView(startTime: nextEvent.startTime, endTime: nextEvent.endTime, name: "next event", color: Color(hex: nextEvent.colorHex))
-                                        }
-                                    }
-                                    if let nextEvent = findNextEvent() {
-                                        NextEvent(eventName: nextEvent.title, backgroundColor: Color(hex: nextEvent.colorHex), startTime: formatTime(nextEvent.startTime), endTime: formatTime(nextEvent.endTime))
-                                    } else {
-                                        Text("No More Events For Today")
-                                            .padding()
-                                            .background(Color.gray.opacity(0.2))
-                                            .cornerRadius(10)
-                                    }
-                                    
-                                }
-                                .padding(.horizontal, 10)
-                                .tag(0)
-                                
-                                Text("Clubs Will Be Here")
-                                    .padding(.horizontal, 10)
-                                    .tag(1)
-                                
-                            }
-                            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                            .frame(height: 200)
-                            Divider()
-                            DayEventView(selectedIndex: $selectedIndex, showingCreateEventView: $showingCreateEventView, selectedEvent: $selectedEvent ,onDelete: deleteEvent, eventsByDay: groupedEvents, token: $token)
-                        }
-                        .overlay(
-                            Group {
-                                if let event = selectedEvent {
-                                    EventDetailView(event: event, onDismiss: {
-                                        withAnimation {
-                                            selectedEvent = nil
-                                        }
-                                    }, onDelete: {
-                                        deleteEvent(event: event)
-                                        selectedEvent = nil
-                                    })
-                                }
-                            }
-                        )
-                        .onReceive(timer) { _ in
-                        }
-                        .sheet(isPresented: $showingCreateEventView) {
-                            CreateEventView(needsRefresh: $needsRefresh, token: token!)
-                        }
-                        .onChange(of: needsRefresh) {
-                            if needsRefresh {
-                                loadData()
-                            }
-                        }
-                        if isLoading {
-                            ProgressView("Loading…")
-                                .scaleEffect(1.5, anchor: .center)
-                                .progressViewStyle(CircularProgressViewStyle(tint: .blue))
-                                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                .background(Color.black.opacity(0.45))
-                                .edgesIgnoringSafeArea(.all)
-                        }
-                    }
-                    .onAppear {
-                        setSelectedIndexBasedOnDay()
-                        if needsRefresh {
-                                loadData()
-                               needsRefresh = false
-                           } else {
-                               loadData()
-                           }
-                    }
+                    loadData()
+                }
             }
         }
+//        else {
+//            ZStack {
+//                VStack {
+//                    CalendarNavBar(month: monthFormatter.string(from: centeredDate))
+//                    DateSelectorView(selectedDayIndex: $selectedIndex)
+//                    
+//                    Divider()
+//                    
+//                    TabView {
+//                        HStack(spacing: 20) {
+//                            if let currentEvent = findCurrentEvent() {
+//                                TimerView(startTime: currentEvent.startTime, endTime: currentEvent.endTime, name: currentEvent.abbreviatedTitle ?? currentEvent.title, color: Color(hex: currentEvent.colorHex))
+//                            } else{
+//                                if let nextEvent = findNextEvent() {
+//                                    TimerView(startTime: nextEvent.startTime, endTime: nextEvent.endTime, name: "next event", color: Color(hex: nextEvent.colorHex))
+//                                }
+//                            }
+//                            if let nextEvent = findNextEvent() {
+//                                NextEvent(eventName: nextEvent.title, backgroundColor: Color(hex: nextEvent.colorHex), startTime: formatTime(nextEvent.startTime), endTime: formatTime(nextEvent.endTime))
+//                            } else {
+//                                Text("No More Events For Today")
+//                                    .padding()
+//                                    .background(Color.gray.opacity(0.2))
+//                                    .cornerRadius(10)
+//                            }
+//                            
+//                        }
+//                        .padding(.horizontal, 10)
+//                        .tag(0)
+//                        
+//                        Text("Clubs Will Be Here")
+//                            .padding(.horizontal, 10)
+//                            .tag(1)
+//                        
+//                    }
+//                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+//                    .frame(height: 200)
+//                    Divider()
+//                    DayEventView(selectedIndex: $selectedIndex, showingCreateEventView: $showingCreateEventView, selectedEvent: $selectedEvent ,onDelete: deleteEvent, eventsByDay: groupedEvents, token: $token)
+//                }
+//                .overlay(
+//                    Group {
+//                        if let event = selectedEvent {
+//                            EventDetailView(event: event, onDismiss: {
+//                                withAnimation {
+//                                    selectedEvent = nil
+//                                }
+//                            }, onDelete: {
+//                                deleteEvent(event: event)
+//                                selectedEvent = nil
+//                            })
+//                        }
+//                    }
+//                )
+//                .onReceive(timer) { _ in
+//                }
+//                .sheet(isPresented: $showingCreateEventView) {
+//                    CreateEventView(needsRefresh: $needsRefresh, token: token!)
+//                }
+//                .onChange(of: needsRefresh) {
+//                    if needsRefresh {
+//                        loadData()
+//                    }
+//                }
+//                if isLoading {
+//                    ProgressView("Loading…")
+//                        .scaleEffect(1.5, anchor: .center)
+//                        .progressViewStyle(CircularProgressViewStyle(tint: .blue))
+//                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+//                        .background(Color.black.opacity(0.45))
+//                        .edgesIgnoringSafeArea(.all)
+//                }
+//            }
+//            .onAppear {
+//                setSelectedIndexBasedOnDay()
+//                if needsRefresh {
+//                    loadData()
+//                    needsRefresh = false
+//                } else {
+//                    loadData()
+//                }
+//            }
+//        }
+//    }
         
     
     private func formatTime(_ date: Date) -> String {

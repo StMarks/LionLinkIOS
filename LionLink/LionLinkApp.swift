@@ -4,7 +4,7 @@ import UserNotifications
 
 
 @main
-struct LionLinkApp: App {
+    struct LionLinkApp: App {
     init() {
         //Gets permission to send notifications - Use of permission not implemented so not needed. 
             UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { granted, _ in

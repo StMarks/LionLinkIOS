@@ -12,8 +12,8 @@ struct AuthView: View {
     @State var randCat = MockData.cats.randomElement() ?? MockData.sampleCat
     var body: some View {
         NavigationView{
-            if colorScheme == .light { //lightmode
-                
+//            if colorScheme == .light { //lightmode
+//                
                 ZStack{
                     VStack(spacing: 20) {
                                 Spacer()
@@ -28,7 +28,7 @@ struct AuthView: View {
                         //title
                         Text("Lion Link")
                             .font(.system(size: 30, weight: .bold))
-                            .foregroundColor(.black)
+                            .foregroundColor(.whiteNBlack)
                         
                         //sign in with google button
                         Button(action: {
@@ -83,7 +83,8 @@ struct AuthView: View {
                         .padding(.bottom, 250)
                         Button(
                         action:{
-                            self.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmVzSW4iOiIzZCIsImlkIjozNDY2MjUzLCJlbWFpbCI6Imxpb25saW5rdGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MzkyOTU4ODB9.P9CyAcuh1AZ-4LRk3-cCRYLGzWNdKLxk6iR8IKibhq4"
+                            self.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmVzSW4iOiIzZCIsImlkIjozNDY2MjUzLCJlbWFpbCI6Imxpb25saW5rdGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MzkyOTU4ODB9.P9CyAcuh1AZ-4LRk3-cCRYLGzWNdKLxk6iR8IKibhq4"// WALTER
+//                            self.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmVzSW4iOiIzZCIsImlkIjo1MTQxMzU1LCJlbWFpbCI6Im1hdHRoZXdmZXJuYW5kZXpAc3RtYXJrc3NjaG9vbC5vcmciLCJpYXQiOjE3NDA1MDI4MzB9.QFzBjv8ozOnbmjOIL_6_otAHwFqOBVp_y1xHNFnnURc" //MATTHEW
                         }, label: {
                             Text("DemoMode")
                         })
@@ -95,88 +96,89 @@ struct AuthView: View {
                     }
                    
                 }
-            }
-                else{ //darkmode
-                    ZStack{
-                        VStack(spacing: 20) {
-                                    Spacer()
-                            
-                            //lionlink logo
-                            Image("lion")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 100, height: 100)
-                                //.padding()
-                            
-                            //title
-                            Text("Lion Link")
-                                .font(.system(size: 30, weight: .bold))
-                                .foregroundColor(.white)
-                            
-                            //sign in with google button
-                            Button(action: {
-                                self.showSafari = true //pressed to show the safari view
-                            }) {
-                                HStack {
-                                    Image("google")
-                                        .resizable()
-                                        .frame(width: 18, height: 18)
-                                    Text("Sign in with Google")
-                                        .font(.system(size: 20, weight: .semibold))}
-                                .padding()
-                                .frame(maxWidth: .infinity, maxHeight: 50)
-                                .background(Color.white)
-                                .foregroundColor(.black)
-                                .cornerRadius(8)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .stroke(Color.gray, lineWidth: 1)
-                                )
-                            }
-                            .padding(.horizontal, 40)
-                            
-                            .sheet(isPresented: $showSafari) {
-                                if let authURL = authURL {
-                                    SafariView(viewModel: viewModel, url: authURL)
-                                }
-                            }
-                            
-                            // Sign in with Apple Button (Button UI is in AppleLog(); SignInWithAppleButton is a system-provided UI component)
-                            AppleLog()
-                            
-                            //Privacy Policy
-                            VStack {
-                                Text("By clicking Sign in, you accept Lion Link's ")
-                                    .font(.system(size: 12))
-                                    .foregroundColor(.gray)
-                                    .multilineTextAlignment(.center)
-                                HStack(spacing: 0) {
-                                    Text("Privacy Policy")
-                                        .font(.system(size: 12, weight: .bold))
-                                        .foregroundColor(.blue)
-                                        .underline()
-                                        .onTapGesture {
-                                            if let url = URL(string: "https://hub-dev.stmarksschool.org/privacy-policy") {
-                                                UIApplication.shared.open(url)
-                                            }
-                                        }
-                                }
-                            }
-                            .padding(.horizontal, 40)
-                            .padding(.bottom, 250)
-                            Button(
-                            action:{
-                                self.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmVzSW4iOiIzZCIsImlkIjozNDY2MjUzLCJlbWFpbCI6Imxpb25saW5rdGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MzkyOTU4ODB9.P9CyAcuh1AZ-4LRk3-cCRYLGzWNdKLxk6iR8IKibhq4"
-                            }, label: {
-                                Text("DemoMode")
-                            })
-
-                        }.onOpenURL { url in
-                            handleURL(url)
-                            
-                        }
-                    }
-                }
+//            }
+//                else{ //darkmode
+//                    ZStack{
+//                        VStack(spacing: 20) {
+//                                    Spacer()
+//                            
+//                            //lionlink logo
+//                            Image("lion")
+//                                .resizable()
+//                                .scaledToFit()
+//                                .frame(width: 100, height: 100)
+//                                //.padding()
+//                            
+//                            //title
+//                            Text("Lion Link")
+//                                .font(.system(size: 30, weight: .bold))
+//                                .foregroundColor(.whiteNBlack)
+//                            
+//                            //sign in with google button
+//                            Button(action: {
+//                                self.showSafari = true //pressed to show the safari view
+//                            }) {
+//                                HStack {
+//                                    Image("google")
+//                                        .resizable()
+//                                        .frame(width: 18, height: 18)
+//                                    Text("Sign in with Google")
+//                                        .font(.system(size: 20, weight: .semibold))}
+//                                .padding()
+//                                .frame(maxWidth: .infinity, maxHeight: 50)
+//                                .background(Color.white)
+//                                .foregroundColor(.black)
+//                                .cornerRadius(8)
+//                                .overlay(
+//                                    RoundedRectangle(cornerRadius: 8)
+//                                        .stroke(Color.gray, lineWidth: 1)
+//                                )
+//                            }
+//                            .padding(.horizontal, 40)
+//                            
+//                            .sheet(isPresented: $showSafari) {
+//                                if let authURL = authURL {
+//                                    SafariView(viewModel: viewModel, url: authURL)
+//                                }
+//                            }
+//                            
+//                            // Sign in with Apple Button (Button UI is in AppleLog(); SignInWithAppleButton is a system-provided UI component)
+//                            AppleLog()
+//                            
+//                            //Privacy Policy
+//                            VStack {
+//                                Text("By clicking Sign in, you accept Lion Link's ")
+//                                    .font(.system(size: 12))
+//                                    .foregroundColor(.gray)
+//                                    .multilineTextAlignment(.center)
+//                                HStack(spacing: 0) {
+//                                    Text("Privacy Policy")
+//                                        .font(.system(size: 12, weight: .bold))
+//                                        .foregroundColor(.blue)
+//                                        .underline()
+//                                        .onTapGesture {
+//                                            if let url = URL(string: "https://hub-dev.stmarksschool.org/privacy-policy") {
+//                                                UIApplication.shared.open(url)
+//                                            }
+//                                        }
+//                                }
+//                            }
+//                            .padding(.horizontal, 40)
+//                            .padding(.bottom, 250)
+//                            Button(
+//                            action:{
+////                                self.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmVzSW4iOiIzZCIsImlkIjozNDY2MjUzLCJlbWFpbCI6Imxpb25saW5rdGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MzkyOTU4ODB9.P9CyAcuh1AZ-4LRk3-cCRYLGzWNdKLxk6iR8IKibhq4"
+//                                self.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmVzSW4iOiIzZCIsImlkIjo1MTQxMzU1LCJlbWFpbCI6Im1hdHRoZXdmZXJuYW5kZXpAc3RtYXJrc3NjaG9vbC5vcmciLCJpYXQiOjE3NDA1MDI4MzB9.QFzBjv8ozOnbmjOIL_6_otAHwFqOBVp_y1xHNFnnURc" //MATTHEW
+//                            }, label: {
+//                                Text("DemoMode")
+//                            })
+//
+//                        }.onOpenURL { url in
+//                            handleURL(url)
+//                            
+//                        }
+//                    }
+//                }
             
         }
     }

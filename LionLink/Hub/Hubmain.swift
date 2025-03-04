@@ -5,48 +5,67 @@ struct Hubmain: View {
     @AppStorage("token") var token: String?
     @Environment(\.colorScheme) var colorScheme
     @AppStorage("id") var id: Int?
+    @State private var profileImage: Image = Image(systemName: "person.fill")
     @State private var user: UserProfile?
     
     var body: some View {
         NavigationView {
-            VStack(spacing: 20) {
-                // Maybe have nickname instead for international students? Ask class the opinion
-                Text("Welcome \(user?.firstName ?? "")!")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .padding()
-                
-                HStack(spacing: 20) {
-                    Activity(text: "Calendar", iconName: "calendar", destination: AnyView(CalendarView().navigationBarBackButtonHidden(true)), active: false)
-                    Activity(text: "009", iconName: "bolt.horizontal", destination: AnyView(PlayerView(gameService: GameService(token: token!)).navigationBarBackButtonHidden(false)), active: false)
+            VStack{
+                HStack{
+                    Spacer()
+                    NavigationLink(
+                        destination: Profile().navigationBarBackButtonHidden(false),
+                        label: {
+                            profileImage
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 40, height: 40)
+                                .clipShape(Circle())
+                        }
+                    )
                 }
-                
-                HStack(spacing: 20) {
-                    Activity(text: "Dining Menu", iconName: "fork.knife", destination: AnyView(LunchMainView(lunchService: LunchService(token: token!)).navigationBarBackButtonHidden(true)), active: false)
-                    Activity(text: "Sports", iconName: "football", destination: AnyView(SportsView().navigationBarBackButtonHidden(true)), active: false)
-                }
-                HStack(spacing: 20) {
-                    Activity(text: "Clubs", subtext: "(Coming Soon)", iconName: "graduationcap", destination: AnyView(Clubmain().navigationBarBackButtonHidden(true)), active: false)
-                    Activity(text: "Lost & Found", subtext: "(Coming Soon)", iconName: "vial.viewfinder", destination: AnyView(Lostmain().navigationBarBackButtonHidden(false)), active: false)
-                }
-                //A Stack of Activities only meant for those with superadmin.
-                HStack(spacing: 20) {
-                    if user?.role.name == "superadmin" {
-                        Activity(text: "Admin Club", iconName: "tray", destination: AnyView(Clubmainthesecond().navigationBarBackButtonHidden(false)), active: false)
-                        Activity(text: "009 Admin", iconName: "bolt.horizontal", destination: AnyView(doubleooNineAdmin().navigationBarBackButtonHidden(false)), active: false)
+                VStack(spacing: 20) {
+                    
+                    // Maybe have nickname instead for international students? Ask class the opinion
+                    
+                    Text("Welcome \(user?.firstName ?? "")!")
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .padding()
+                    
+                    HStack(spacing: 20) {
+                        Activity(text: "Calendar", iconName: "calendar", destination: AnyView(CalendarView().navigationBarBackButtonHidden(true)), active: false)
+                        Activity(text: "009", iconName: "bolt.horizontal", destination: AnyView(PlayerView(gameService: GameService(token: token!)).navigationBarBackButtonHidden(false)), active: false)
                     }
+                    
+                    HStack(spacing: 20) {
+                        Activity(text: "Dining Menu", iconName: "fork.knife", destination: AnyView(LunchMainView(lunchService: LunchService(token: token!)).navigationBarBackButtonHidden(true)), active: false)
+                        Activity(text: "Sports", iconName: "football", destination: AnyView(SportsView().navigationBarBackButtonHidden(true)), active: false)
+                    }
+                    HStack(spacing: 20) {
+                        Activity(text: "Clubs", subtext: "(Coming Soon)", iconName: "graduationcap", destination: AnyView(Clubmain().navigationBarBackButtonHidden(true)), active: false)
+                        Activity(text: "Lost & Found", subtext: "(Coming Soon)", iconName: "vial.viewfinder", destination: AnyView(Lostmain().navigationBarBackButtonHidden(false)), active: false)
+                    }
+                    //A Stack of Activities only meant for those with superadmin.
+                    HStack(spacing: 20) {
+                        if user?.role.name == "superadmin" {
+                            Activity(text: "Admin Club", iconName: "tray", destination: AnyView(Clubmainthesecond().navigationBarBackButtonHidden(false)), active: false)
+                            Activity(text: "009 Admin", iconName: "bolt.horizontal", destination: AnyView(doubleooNineAdmin().navigationBarBackButtonHidden(false)), active: false)
+                        }
+                    }
+                    //                HStack(spacing:20){
+                    //                    Activity(text: "Forums", iconName: "vial.viewfinder", destination: AnyView(ForumsMainView().navigationBarBackButtonHidden(false)), active: false)
+                    //                }
+                    Spacer()
                 }
-//                HStack(spacing:20){
-//                    Activity(text: "Forums", iconName: "vial.viewfinder", destination: AnyView(ForumsMainView().navigationBarBackButtonHidden(false)), active: false)
-//                }
-                Spacer()
             }
             .padding()
-            .navigationBarTitle("Lion Link", displayMode: .inline)
+//            .navigationBarTitle("Lion Link", displayMode: .inline)
             .onAppear {
                 fetchUserProfile()
                 self.id = user?.id
             }
+                
         }
     }
     
@@ -86,9 +105,23 @@ struct Hubmain: View {
                 let decodedUser = try JSONDecoder().decode(UserProfile.self, from: data)
                 DispatchQueue.main.async {
                     self.user = decodedUser
+                    loadProfileImage(from: decodedUser.picture)
                 }
             } catch {
                 print("JSON decoding error: \(error)")
+            }
+        }.resume()
+    }
+    
+    // Function to load the profile image
+    func loadProfileImage(from urlString: String?) {
+        guard let urlString = urlString, let url = URL(string: urlString) else { return }
+        
+        URLSession.shared.dataTask(with: url) { data, _, _ in
+            if let data = data, let uiImage = UIImage(data: data) {
+                DispatchQueue.main.async {
+                    self.profileImage = Image(uiImage: uiImage)
+                }
             }
         }.resume()
     }
