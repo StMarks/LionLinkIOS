@@ -68,7 +68,7 @@ struct LunchDayView: View {
                                         
                                     }
                                     .scrollTargetLayout()
-                                    .scrollTargetBehavior(.viewAligned)
+//                                    .scrollTargetBehavior(.viewAligned)
                                 }
                                 .scrollTransition(.interactive){content, phase in
                                     content

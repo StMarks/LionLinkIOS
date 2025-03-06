@@ -7,11 +7,7 @@ struct ListView: View {
     @Environment(\.colorScheme) var colorScheme
     
     
-    private var dateFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm a"
-        return formatter
-    }
+
     
     var body: some View {
         if colorScheme == .dark {
@@ -19,7 +15,7 @@ struct ListView: View {
                 VStack(spacing: 16) { // Space between event cards
                     ForEach(events.sorted(by: { $0.startTime < $1.startTime })) { event in
                         // Time label above each event card
-                        Text("\(dateFormatter.string(from: event.startTime)) - \(dateFormatter.string(from: event.endTime))")
+                        Text("\(Date.dateFormatter.string(from: event.startTime)) - \(Date.dateFormatter.string(from: event.endTime))")
                             .font(.caption)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -36,9 +32,13 @@ struct ListView: View {
                                     .font(.headline)
                                     .foregroundColor(.white)
                                 
-                                Text("\(dateFormatter.string(from: event.startTime)) - \(dateFormatter.string(from: event.endTime))")
+                                Text("\(Date.dateFormatter.string(from: event.startTime)) - \(Date.dateFormatter.string(from: event.endTime))")
                                                                 .font(.subheadline)
                                                                 .foregroundColor(.white)
+                                                                .onAppear(){
+                                                                    print(Date.dateFormatter.string(from: event.startTime))
+                                                                }
+                               
 
                                 HStack {
                                     Image(systemName: "location.fill")
@@ -71,7 +71,7 @@ struct ListView: View {
                     ForEach(events.sorted(by: { $0.startTime < $1.startTime })) { event in
                         // Time label above each event card
 
-                        Text("\(dateFormatter.string(from: event.startTime)) - \(dateFormatter.string(from: event.endTime))")
+                        Text("\(Date.dateFormatter.string(from: event.startTime)) - \(Date.dateFormatter.string(from: event.endTime))")
                             .font(.caption)
                             .foregroundColor(.gray)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -88,9 +88,12 @@ struct ListView: View {
                                     .font(.headline)
                                     .foregroundColor(.black)
                                 
-                                Text("\(dateFormatter.string(from: event.startTime)) - \(dateFormatter.string(from: event.endTime))")
+                                Text("\(Date.dateFormatter.string(from: event.startTime)) - \(Date.dateFormatter.string(from: event.endTime))")
                                                                 .font(.subheadline)
                                                                 .foregroundColor(.gray)
+                                                                .onAppear(){
+                                                                    print(Date.dateFormatter.string(from: event.startTime))
+                                                                }
 
                                 HStack {
                                     Image(systemName: "location.fill")
@@ -145,7 +148,13 @@ extension Color {
         )
     }
 }
-
-
-
-
+extension Date {
+    static let dateFormatter: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "h:mm a"
+            // Use "America/New_York" for Eastern Time with DST support
+            formatter.timeZone = TimeZone(abbreviation: "GMT")
+            formatter.locale = Locale(identifier: "en_US_POSIX")
+            return formatter
+        }()
+}

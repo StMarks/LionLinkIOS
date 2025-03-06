@@ -14,18 +14,16 @@ struct Event: Encodable, Identifiable, Equatable {
     
     
     init(indvId: Int? = nil, startTime: String, endTime: String, teacher: String? = nil, title: String, abbreviatedTitle: String? = nil, location: String, hex: String) {
-            if let startDate = Date.ISO8601DateFormatter.date(from: startTime) {
-            self.startTime = startDate.addingTimeInterval(5 * 60 * 60) // Add 5 hours
-                print(startDate)
-            } else {
-                self.startTime = Date()
-            }
-            
-            if let endDate = Date.ISO8601DateFormatter.date(from: endTime) {
-                self.endTime = endDate.addingTimeInterval(5 * 60 * 60) // Add 5 hours
-            } else {
-                self.endTime = Date()
-            }
+        if let gmtDate = Date.ISO8601DateFormatter.date(from: startTime) {
+            self.startTime = gmtDate
+        } else {
+            self.startTime = Date()
+        }
+        if let gmtDate = Date.ISO8601DateFormatter.date(from: endTime) {
+                self.endTime = gmtDate
+        } else {
+            self.endTime = Date()
+        }
             
             self.teacher = teacher
             self.title = title
@@ -34,8 +32,6 @@ struct Event: Encodable, Identifiable, Equatable {
             self.colorHex = hex
             self.indvId = indvId
         }
-
-       
     func hexStringFromColor(color: UIColor) -> String {
         var red: CGFloat = 0
         var green: CGFloat = 0
@@ -56,10 +52,13 @@ struct Event: Encodable, Identifiable, Equatable {
 extension Date {
     static let ISO8601DateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-//        formatter.timeZone = TimeZone(secondsFromGMT: +14400)
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-        formatter.timeZone = TimeZone(secondsFromGMT: +14400)
+        formatter.timeZone = TimeZone(abbreviation: "GMT")
         formatter.locale = Locale(identifier: "en_US_POSIX")
         return formatter
     }()
 }
+
+
+
+
