@@ -59,106 +59,19 @@ struct LunchMainView: View {
         return dailyMenus
     }
     var body: some View {
-            GeneralNavBar(title:"Dining")
-        
-//        NavigationView {
-            ZStack{
-                VStack {
-                    //                    Button(){
-                    ////                        print(Date())
-                    ////                          print(menus)
-                    ////                        print(menus.randomElement()!)
-                    ////                        print(menus.randomElement()!.mealOfDay)
-                    ////                        print(menus.randomElement()!.contents)
-                    ////                        print(menus.randomElement()!.date)
-                    ////                        print(formattedDate(Date()))
-                    ////                        print(formatDateFromMenu(from: findTodaysMenu().randomElement()!.date)!)
-                    ////                        print(findTodaysMenu())
-                    //                          print(dailyMenus)
-                    //
-                    //                    }label:{
-                    //                        Text("Hi")
-                    //                    }
-                    //                    DateSelectorView(selectedDayIndex: $selectedIndex)
-                    
-                    LunchDayView(lunchService: lunchService, dailyMenus:dailyMenus,todayId: todayId, todayDate:todayDate,dateSelected:todayId).ignoresSafeArea()
-                    
-                    
-                }
-                //                Divider()
-                //
-                //                Group {
-                //                    HStack {
-                //                        TextField("New Menu ID", text: $newMenuId)
-                //                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                //                            .keyboardType(.numberPad)
-                //                        DatePicker("Date", selection: $newMenuDate, displayedComponents: .date)
-                //                    }
-                ////                    TextField("Meal of Day", text: $newMenuMealOfDay)
-                ////                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                //
-                //                    Picker("Meal Of Day", selection: $newMenuMealOfDay) {
-                //                        Text("Dinner").tag("Dinner")
-                //                          Text("Lunch").tag("Lunch")
-                //                        Text("Breakfast").tag("Breakfast")
-                //                    }
-                //                    .pickerStyle(SegmentedPickerStyle())
-                //
-                //                    TextField("Menu Contents", text: $newMenuContents)
-                //                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                //                    Button("Create Menu") {
-                //                        guard let id = Int(newMenuId) else {
-                //                            self.message = "Please enter a valid ID"
-                //                            return
-                //                        }
-                //                        let formatter = DateFormatter()
-                //                        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-                //                        let dateString = formatter.string(from: newMenuDate)
-                //                        let menuData = ["id": id, "date": dateString, "mealOfDay": newMenuMealOfDay, "contents": newMenuContents] as [String : Any]
-                //                        lunchService.createMenu(menuData: menuData) { success, responseMessage in
-                //                            self.message = responseMessage
-                //                            if success {
-                //                                self.fetchMenus()
-                //                            }
-                //                        }
-                //                    }
-                //                    .buttonStyle(ActionButtonStylet(backgroundColor: .green))
-                //                }.padding()
+        GeneralNavBar(title:"Dining")
+        ZStack{
+            VStack {
+                LunchDayView(lunchService: lunchService, dailyMenus:dailyMenus,todayId: todayId, todayDate:todayDate,dateSelected:todayId).ignoresSafeArea()
                 
-                //                Divider()
-                //
-                //                HStack {
-                //                    TextField("Menu ID to delete", text: $menuIdToDelete)
-                //                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                //                        .keyboardType(.numberPad)
-                //                    Button("Delete Menu") {
-                //                        guard let menuId = Int(menuIdToDelete) else {
-                //                            self.message = "Please enter a valid ID"
-                //                            return
-                //                        }
-                //                        lunchService.deleteMenu(menuId: menuId) { success, responseMessage in
-                //                            self.message = responseMessage
-                //                            if success {
-                //                                self.fetchMenus()
-                //                            }
-                //                        }
-                //                    }
-                //                    .buttonStyle(ActionButtonStylet(backgroundColor: .red))
-                //                }.padding()
-                //
-                //                if !message.isEmpty {
-                //                    Text(message)
-                //                        .foregroundColor(.primary)
-                //                        .padding()
-                //                }
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .onAppear {
-                self.fetchMenus()
-//                self.findTodaysMenu()
+                
             }
         }
-//    }
+        .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            self.fetchMenus()
+        }
+    }
     
     private func fetchMenus() {
         lunchService.getListOfMenus { success, menus in

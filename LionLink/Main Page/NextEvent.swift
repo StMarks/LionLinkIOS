@@ -10,7 +10,7 @@ struct NextEvent: View {
     var body: some View {
         RoundedRectangle(cornerRadius: 20)
             .fill(backgroundColor)
-            .frame(width: 170, height: 170)
+            .frame(width: 180, height: 180)
             .overlay(
                 
                 

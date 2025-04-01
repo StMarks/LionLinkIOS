@@ -60,7 +60,6 @@
 		50FF06D82AE7645000B6330E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 50FF06D72AE7645000B6330E /* Preview Assets.xcassets */; };
 		50FF06E12AE764A800B6330E /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF06E02AE764A800B6330E /* AuthView.swift */; };
 		50FF06E32AE764C200B6330E /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF06E22AE764C200B6330E /* SafariView.swift */; };
-		50FF06E72AE7651600B6330E /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF06E62AE7651600B6330E /* CalendarView.swift */; };
 		50FF071A2AE802B700B6330E /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF07192AE802B700B6330E /* SplashScreenView.swift */; };
 		50FF07372AE8AC1100B6330E /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF07362AE8AC1100B6330E /* TimerView.swift */; };
 		50FF07392AE8B69500B6330E /* NextEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF07382AE8B69500B6330E /* NextEvent.swift */; };
@@ -71,20 +70,11 @@
 		EB1245802CE6664D0006FD4D /* ForumsMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB12457F2CE6664D0006FD4D /* ForumsMainView.swift */; };
 		EB5390952CED9C4100B796A3 /* Cat.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5390942CED9C4100B796A3 /* Cat.swift */; };
 		EB6518222CCFCD69006A42A4 /* LunchMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6518212CCFCD69006A42A4 /* LunchMainView.swift */; };
-		EB82DEA52CDA8988003DD45C /* LunchMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB82DEA42CDA8988003DD45C /* LunchMenuView.swift */; };
-		EB82DEA72CDD2B68003DD45C /* OffsetReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB82DEA62CDD2B68003DD45C /* OffsetReader.swift */; };
 		EB84561C2CED6CB000E80F69 /* DummyPageMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB84561B2CED6CB000E80F69 /* DummyPageMainView.swift */; };
 		EB84561E2CED6CBC00E80F69 /* DummyPageMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB84561D2CED6CBC00E80F69 /* DummyPageMain.swift */; };
-		EB8B37492CFF72510024D572 /* AppleDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8B37482CFF72510024D572 /* AppleDelegate.swift */; };
-		EB8B374B2CFF72810024D572 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8B374A2CFF72810024D572 /* LoginViewController.swift */; };
-		EB8B374D2CFF729B0024D572 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8B374C2CFF729B0024D572 /* ResultViewController.swift */; };
-		EB8B374F2CFF72DE0024D572 /* KeychainItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8B374E2CFF72DE0024D572 /* KeychainItem.swift */; };
-		EB8B37512CFF73540024D572 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB8B37502CFF73540024D572 /* LaunchScreen.storyboard */; };
-		EB8B37532CFF76B50024D572 /* AppleLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8B37522CFF76B50024D572 /* AppleLoginView.swift */; };
-		EB8B37552CFF7A1F0024D572 /* AnotherLoginAppleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8B37542CFF7A1F0024D572 /* AnotherLoginAppleView.swift */; };
+		EB87F11B2D7684870036F737 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB87F11A2D7684870036F737 /* CalendarView.swift */; };
 		EB8B37572D001B5E0024D572 /* AppleLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8B37562D001B5E0024D572 /* AppleLog.swift */; };
 		EBC3380C2D6D7A3D004FD875 /* ApiConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC3380B2D6D7A3D004FD875 /* ApiConstants.swift */; };
-		EBC5F3932CD916EA00437A40 /* LunchTabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC5F3922CD916EA00437A40 /* LunchTabs.swift */; };
 		EBE67F712D6422FD0034E3E4 /* LunchDayView.swift 21-06-51-295.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE67F702D6422FD0034E3E4 /* LunchDayView.swift 21-06-51-295.swift */; };
 /* End PBXBuildFile section */
 
@@ -144,7 +134,6 @@
 		50FF06D72AE7645000B6330E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		50FF06E02AE764A800B6330E /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
 		50FF06E22AE764C200B6330E /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
-		50FF06E62AE7651600B6330E /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		50FF07192AE802B700B6330E /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		50FF07362AE8AC1100B6330E /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		50FF07382AE8B69500B6330E /* NextEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextEvent.swift; sourceTree = "<group>"; };
@@ -155,21 +144,12 @@
 		EB12457F2CE6664D0006FD4D /* ForumsMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumsMainView.swift; sourceTree = "<group>"; };
 		EB5390942CED9C4100B796A3 /* Cat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cat.swift; sourceTree = "<group>"; };
 		EB6518212CCFCD69006A42A4 /* LunchMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LunchMainView.swift; sourceTree = "<group>"; };
-		EB82DEA42CDA8988003DD45C /* LunchMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LunchMenuView.swift; sourceTree = "<group>"; };
-		EB82DEA62CDD2B68003DD45C /* OffsetReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffsetReader.swift; sourceTree = "<group>"; };
 		EB84561B2CED6CB000E80F69 /* DummyPageMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyPageMainView.swift; sourceTree = "<group>"; };
 		EB84561D2CED6CBC00E80F69 /* DummyPageMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyPageMain.swift; sourceTree = "<group>"; };
-		EB8B37482CFF72510024D572 /* AppleDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleDelegate.swift; sourceTree = "<group>"; };
-		EB8B374A2CFF72810024D572 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		EB8B374C2CFF729B0024D572 /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
-		EB8B374E2CFF72DE0024D572 /* KeychainItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainItem.swift; sourceTree = "<group>"; };
-		EB8B37502CFF73540024D572 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
-		EB8B37522CFF76B50024D572 /* AppleLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginView.swift; sourceTree = "<group>"; };
-		EB8B37542CFF7A1F0024D572 /* AnotherLoginAppleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnotherLoginAppleView.swift; sourceTree = "<group>"; };
+		EB87F11A2D7684870036F737 /* CalendarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		EB8B37562D001B5E0024D572 /* AppleLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLog.swift; sourceTree = "<group>"; };
 		EB8B37582D0020F70024D572 /* LionLink.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LionLink.entitlements; sourceTree = "<group>"; };
 		EBC3380B2D6D7A3D004FD875 /* ApiConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiConstants.swift; sourceTree = "<group>"; };
-		EBC5F3922CD916EA00437A40 /* LunchTabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LunchTabs.swift; sourceTree = "<group>"; };
 		EBE67F702D6422FD0034E3E4 /* LunchDayView.swift 21-06-51-295.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LunchDayView.swift 21-06-51-295.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -190,9 +170,6 @@
 				EBE67F702D6422FD0034E3E4 /* LunchDayView.swift 21-06-51-295.swift */,
 				071F2B8B2BD2AD25009CBDF8 /* Lunchmain.swift */,
 				EB6518212CCFCD69006A42A4 /* LunchMainView.swift */,
-				EB82DEA42CDA8988003DD45C /* LunchMenuView.swift */,
-				EBC5F3922CD916EA00437A40 /* LunchTabs.swift */,
-				EB82DEA62CDD2B68003DD45C /* OffsetReader.swift */,
 			);
 			path = Lunch;
 			sourceTree = "<group>";
@@ -315,6 +292,7 @@
 		50FF06CF2AE7645000B6330E /* LionLink */ = {
 			isa = PBXGroup;
 			children = (
+				50FF06D02AE7645000B6330E /* LionLinkApp.swift */,
 				EBC338082D6D79C5004FD875 /* APIConstants */,
 				EB8B37582D0020F70024D572 /* LionLink.entitlements */,
 				EB84561A2CED6C9D00E80F69 /* Dummy */,
@@ -332,7 +310,6 @@
 				50FF07182AE8029800B6330E /* Animation */,
 				50FF06F92AE786A300B6330E /* Main Page */,
 				50FF06F82AE7869A00B6330E /* Authentication */,
-				50FF06D02AE7645000B6330E /* LionLinkApp.swift */,
 				50FF06D42AE7645000B6330E /* Assets.xcassets */,
 				50FF06D62AE7645000B6330E /* Preview Content */,
 				078AADB22BC6DF44004B10E7 /* Models.swift */,
@@ -352,7 +329,6 @@
 			isa = PBXGroup;
 			children = (
 				6BF295ED2D0160F500A3B704 /* AppleLandingView.swift */,
-				EB8B37472CFF72280024D572 /* AppleLogin */,
 				50FF06E02AE764A800B6330E /* AuthView.swift */,
 				50FF06E22AE764C200B6330E /* SafariView.swift */,
 				50FF06D22AE7645000B6330E /* ContentView.swift */,
@@ -365,7 +341,7 @@
 		50FF06F92AE786A300B6330E /* Main Page */ = {
 			isa = PBXGroup;
 			children = (
-				50FF06E62AE7651600B6330E /* CalendarView.swift */,
+				EB87F11A2D7684870036F737 /* CalendarView.swift */,
 				50FF07362AE8AC1100B6330E /* TimerView.swift */,
 				50FF07382AE8B69500B6330E /* NextEvent.swift */,
 				501945CF2B07A6D50072E148 /* EventView.swift */,
@@ -408,20 +384,6 @@
 				EB84561D2CED6CBC00E80F69 /* DummyPageMain.swift */,
 			);
 			path = Dummy;
-			sourceTree = "<group>";
-		};
-		EB8B37472CFF72280024D572 /* AppleLogin */ = {
-			isa = PBXGroup;
-			children = (
-				EB8B37482CFF72510024D572 /* AppleDelegate.swift */,
-				EB8B374A2CFF72810024D572 /* LoginViewController.swift */,
-				EB8B374C2CFF729B0024D572 /* ResultViewController.swift */,
-				EB8B374E2CFF72DE0024D572 /* KeychainItem.swift */,
-				EB8B37502CFF73540024D572 /* LaunchScreen.storyboard */,
-				EB8B37522CFF76B50024D572 /* AppleLoginView.swift */,
-				EB8B37542CFF7A1F0024D572 /* AnotherLoginAppleView.swift */,
-			);
-			path = AppleLogin;
 			sourceTree = "<group>";
 		};
 		EBC338082D6D79C5004FD875 /* APIConstants */ = {
@@ -490,7 +452,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EB8B37512CFF73540024D572 /* LaunchScreen.storyboard in Resources */,
 				50FF06D82AE7645000B6330E /* Preview Assets.xcassets in Resources */,
 				50FF06D52AE7645000B6330E /* Assets.xcassets in Resources */,
 			);
@@ -505,10 +466,8 @@
 			files = (
 				EB5390952CED9C4100B796A3 /* Cat.swift in Sources */,
 				EB84561E2CED6CBC00E80F69 /* DummyPageMain.swift in Sources */,
-				EB8B374F2CFF72DE0024D572 /* KeychainItem.swift in Sources */,
 				5094CB282AFBEF9B005FB29E /* Hubmain.swift in Sources */,
 				078B91AE2BEDACAF00D1F179 /* ManagementView.swift in Sources */,
-				EB8B374B2CFF72810024D572 /* LoginViewController.swift in Sources */,
 				072F6DA02BD8B8B2008F0465 /* gameClass.swift in Sources */,
 				EB8B37572D001B5E0024D572 /* AppleLog.swift in Sources */,
 				072F6DA22BD94C67008F0465 /* doubleooNineAdmin.swift in Sources */,
@@ -525,15 +484,12 @@
 				071F2B8E2BD2AD30009CBDF8 /* Lostmain.swift in Sources */,
 				07BFE3C12B69EAEC00DFCCE2 /* Clubmainthesecond.swift in Sources */,
 				6BF295EE2D0160FB00A3B704 /* AppleLandingView.swift in Sources */,
-				EB8B37532CFF76B50024D572 /* AppleLoginView.swift in Sources */,
-				50FF06E72AE7651600B6330E /* CalendarView.swift in Sources */,
 				EB1245802CE6664D0006FD4D /* ForumsMainView.swift in Sources */,
 				07F67AFA2BF3D418006EDF5D /* ExploreAllClubsView.swift in Sources */,
 				5052F8FE2B202D0000C2BC2B /* ListView.swift in Sources */,
 				071F2B8C2BD2AD25009CBDF8 /* Lunchmain.swift in Sources */,
 				5094CB2B2AFE6F1D005FB29E /* Clubmain.swift in Sources */,
 				5052F9002B202D6600C2BC2B /* ColView.swift in Sources */,
-				EB82DEA52CDA8988003DD45C /* LunchMenuView.swift in Sources */,
 				EB84561C2CED6CB000E80F69 /* DummyPageMainView.swift in Sources */,
 				50FF06D32AE7645000B6330E /* ContentView.swift in Sources */,
 				500688532B1EFBCE0036B631 /* CustomTextField.swift in Sources */,
@@ -548,18 +504,16 @@
 				500688572B1EFD3F0036B631 /* Event.swift in Sources */,
 				07F67B002BF3D488006EDF5D /* MyClubsView.swift in Sources */,
 				078B91AA2BEDAC5000D1F179 /* RerollTargetsView.swift in Sources */,
-				EB8B37552CFF7A1F0024D572 /* AnotherLoginAppleView.swift in Sources */,
 				07F67B0A2BF3D53B006EDF5D /* EventsView.swift in Sources */,
 				5094CB302AFE727C005FB29E /* Activity.swift in Sources */,
 				50FF06E12AE764A800B6330E /* AuthView.swift in Sources */,
 				07F67B022BF3D49D006EDF5D /* SearchBar.swift in Sources */,
 				078B91A22BEDAB8A00D1F179 /* AdminActionsView.swift in Sources */,
+				EB87F11B2D7684870036F737 /* CalendarView.swift in Sources */,
 				50CA8C232B5A5166001DF7A6 /* EventDetailView.swift in Sources */,
-				EBC5F3932CD916EA00437A40 /* LunchTabs.swift in Sources */,
 				076D29EC2BBC733400286010 /* groupClass.swift in Sources */,
 				07F67B042BF3D4B9006EDF5D /* GeneralClubDetailView.swift in Sources */,
 				078AADB12BBE6BD3004B10E7 /* LogoutView.swift in Sources */,
-				EB8B37492CFF72510024D572 /* AppleDelegate.swift in Sources */,
 				07DD49E02BEE664C00FC4149 /* check.swift in Sources */,
 				5058BC902AF09766007B3628 /* Profile.swift in Sources */,
 				078B91AC2BEDAC8C00D1F179 /* PlayerListView.swift in Sources */,
@@ -570,9 +524,7 @@
 				EB12457B2CE430890006FD4D /* GeneralNavBar.swift in Sources */,
 				07F67B062BF3D507006EDF5D /* ClubDetailView.swift in Sources */,
 				071F2B902BD2AD56009CBDF8 /* doubleooNineMain.swift in Sources */,
-				EB8B374D2CFF729B0024D572 /* ResultViewController.swift in Sources */,
 				075D2CDA2B96E5E2000EC761 /* PrivacyPolicyView.swift in Sources */,
-				EB82DEA72CDD2B68003DD45C /* OffsetReader.swift in Sources */,
 				078B91A42BEDABAA00D1F179 /* EliminateUserView.swift in Sources */,
 				50FF06D12AE7645000B6330E /* LionLinkApp.swift in Sources */,
 				50FF07392AE8B69500B6330E /* NextEvent.swift in Sources */,
@@ -745,6 +697,7 @@
 		50FF06DD2AE7645000B6330E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = LionLink/LionLink.entitlements;

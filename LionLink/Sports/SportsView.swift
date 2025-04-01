@@ -11,24 +11,25 @@ import Foundation
 
     
 struct SportsView: View {
-    @State private var selectedTab: Int = 0 // 0 = Upcoming, 1 = My Team, etc.
+    @State private var selectedTab: Int = 2 // 0 = Upcoming, 1 = My Team, etc.
+    
     @State var teamClicked: Bool = false
     var body: some View {
         VStack {
             if !teamClicked{
-                GeneralNavBar(title:"Sports")
-                Spacer()
-                // Top segmented control
-                Picker(selection: $selectedTab, label: Text("")) {
-                    Text("Upcoming Games").tag(0)
-                    Text("My Team").tag(1)
-                    Text("Teams").tag(2)
-                    Text("Scores").tag(3)
-                }
-                .pickerStyle(SegmentedPickerStyle())
-                .padding()
-                .padding(.top, -8)
-            }
+               GeneralNavBar(title:"Sports")
+               Spacer()
+               // Top segmented control
+               Picker(selection: $selectedTab, label: Text("")) {
+                   Text("Upcoming Games").tag(0)
+                   Text("My Team").tag(1)
+                   Text("Teams").tag(2)
+                   Text("Scores").tag(3)
+               }
+               .pickerStyle(SegmentedPickerStyle())
+               .padding()
+               .padding(.top, -8)
+           }
             
             // Switch visible content based on selected segment
             switch selectedTab {
@@ -37,11 +38,11 @@ struct SportsView: View {
             case 1:
                 MyTeamViewTemp()
             case 2:
-                TeamsView()
+                TeamsView(teamClicked: $teamClicked)
             case 3:
                 ScoresView()
             default:
-                UpcomingGamesView()
+                TeamsView(teamClicked: $teamClicked)
             }
         }
     }
@@ -458,18 +459,21 @@ struct ScoreItemView: View {
     // MARK: - TEAMS PAGE
     
     // MARK: - TEAMS PAGE DATA
+// MARK: - TEAMS PAGE
+
+// MARK: - TEAMS PAGE DATA
 struct Sports: Identifiable, Codable {
     let id = UUID()
     let name: String
     let teams: [SportTeam]
 }
-    
+
 struct SportTeam: Identifiable, Codable {
     let id = UUID()
     let name: String
     let category: String
 }
-    
+
 struct MockMeets {
     static let sportsData: [Sports] = [
         Sports(name: "Tennis", teams: [
@@ -530,10 +534,10 @@ struct MockMeets {
         ])
     ]
 }
-    
+
 struct TeamsView: View {
     let allTeams = ["Tennis", "Golf", "Lacrosse", "Softball", "Baseball", "Crew", "Other"]//mine
-    
+    @Binding var teamClicked: Bool
     @State private var searchText = ""
     var body: some View {
         NavigationView {
@@ -545,62 +549,29 @@ struct TeamsView: View {
                     .padding(.top, -6)
                 
                 //search bar
-                                HStack {
-                                    Image(systemName: "magnifyingglass")
-                                        .foregroundColor(.gray)
-                                    TextField("Search", text: $searchText)
-                                        .disableAutocorrection(true)
-                                }
-                                .padding(8)
-                                .background(Color.gray.opacity(0.15))
-                                .cornerRadius(8)
-                
-                
-                ScrollView {
-                    VStack(spacing: 10) {
-                        ForEach(filteredTeams, id: \.self) { team in
-                            ZStack {
-                                // Rounded black border
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(Color.black, lineWidth: 1)
-                                    .overlay(alignment:.trailing){
-                                        Image(systemName: "chevron.right")
-                                            .foregroundColor(.gray)
-                                            .padding(.trailing, 16)
-                                    }
-                                
-                                // Row content
-                                HStack() {
-                                    Text(team)
-                                        .foregroundColor(.primary)
-                                        .padding(.leading, 16)
-                                    Spacer()
-                                }
-                                .padding(.vertical, 12)
-                            }
-                        }
-                    }
-                    .padding(.top, 4)
+                HStack {
+                    Image(systemName: "magnifyingglass")
+                        .foregroundColor(.gray)
+                    TextField("Search", text: $searchText)
+                        .disableAutocorrection(true)
                 }
-                
-                
-                
+                .padding(8)
+                .background(Color.gray.opacity(0.15))
+                .cornerRadius(8)
                 
                 ZStack(alignment:.topLeading){
                     List(searchResults) { sport in
-                        NavigationLink(destination: SportView(sport: sport)) {
+                        NavigationLink(destination: SportView(sport: sport,teamClicked: $teamClicked)) {
                             Text(sport.name)
                                 .padding(10) // Add padding inside the row
                                 .frame(maxWidth: .infinity, alignment: .leading) // Make the row fill the width
-                                .background(.thinMaterial) // Set a custom background color
-                                .cornerRadius(20) // Round the corners
+                                .cornerRadius(12) // Round the corners
                                 .foregroundColor(.primary) // Set text color
                                 .font(.headline) // Customize font
                                 .overlay(
-                                    RoundedRectangle(cornerRadius: 20)
+                                    RoundedRectangle(cornerRadius: 12)
                                         .stroke(Color.black, lineWidth: 1) // Add a border
                                 )
-                                .shadow(color: .whiteNBlack.opacity(0.4), radius: 5, x: 0, y: 2) // Add a shadow
                                 .foregroundColor(.black)
                                 .font(.headline)
                         }
@@ -611,6 +582,9 @@ struct TeamsView: View {
                     .searchable(text: $searchText)
                 }
                 .background(.clear)
+            }
+            .onAppear(){
+                teamClicked = false
             }
             .padding(.horizontal)
             .listStyle(.plain)
@@ -639,26 +613,27 @@ struct TeamsView: View {
         return allTeams.filter { $0.lowercased().contains(lower) }
     }
 }
-    
+
 struct SportView: View {
     let sport: Sports
     @State private var searchText = ""
+    @Binding var teamClicked: Bool
     var body: some View {
         
         List(searchResults) { team in
             NavigationLink(destination: TeamDetailView(team: team)) {
                 Text(team.name)
-                    .padding() // Add padding inside the row
+                    .padding(10) // Add padding inside the row
                     .frame(maxWidth: .infinity, alignment: .leading) // Make the row fill the width
-                    .background(.thinMaterial) // Set a custom background color
-                    .cornerRadius(20) // Round the corners
+                    //.background(.thinMaterial) // Set a custom background color
+                    .cornerRadius(12) // Round the corners
                     .foregroundColor(.primary) // Set text color
                     .font(.headline) // Customize font
                     .overlay(
-                        RoundedRectangle(cornerRadius: 20)
+                        RoundedRectangle(cornerRadius: 12)
                             .stroke(Color.black, lineWidth: 1) // Add a border
                     )
-                    .shadow(color: .whiteNBlack.opacity(0.4), radius: 5, x: 0, y: 2) // Add a shadow
+                    //.shadow(color: .whiteNBlack.opacity(0.4), radius: 5, x: 0, y: 2) // Add a shadow
                     .foregroundColor(.black)
                     .font(.headline)
                 
@@ -666,6 +641,9 @@ struct SportView: View {
             .tint(.black)
             .listRowSeparator(.hidden)
             
+        }
+        .onAppear(){
+            teamClicked = true
         }
         .searchable(text: $searchText)
         .navigationTitle(sport.name)
@@ -685,7 +663,6 @@ struct SportView: View {
     
 struct TeamDetailView: View {
     let team: SportTeam
-    
     var body: some View {
         VStack {
             Text(team.name)
@@ -696,6 +673,8 @@ struct TeamDetailView: View {
         }
     }
 }
+
+
     
     
     
