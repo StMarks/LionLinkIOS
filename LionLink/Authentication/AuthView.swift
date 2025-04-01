@@ -83,7 +83,7 @@ struct AuthView: View {
                         .padding(.bottom, 250)
                         Button(
                         action:{
-                            self.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmVzSW4iOiIzZCIsImlkIjozNDY2MjUzLCJlbWFpbCI6Imxpb25saW5rdGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MzkyOTU4ODB9.P9CyAcuh1AZ-4LRk3-cCRYLGzWNdKLxk6iR8IKibhq4"
+                            self.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmVzSW4iOiIzZCIsImlkIjo1MzMyNDUwLCJlbWFpbCI6ImppYXFpbGlAc3RtYXJrc3NjaG9vbC5vcmciLCJpYXQiOjE3NDEyODAwMjN9.eD5GlIz9vQ0nG2TmLg2NGtkKuX3GHZrc8E4wX2P25qU"//Test User Token
                         }, label: {
                             Text("DemoMode")
                         })
@@ -166,7 +166,7 @@ struct AuthView: View {
                             .padding(.bottom, 250)
                             Button(
                             action:{
-                                self.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmVzSW4iOiIzZCIsImlkIjozNDY2MjUzLCJlbWFpbCI6Imxpb25saW5rdGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MzkyOTU4ODB9.P9CyAcuh1AZ-4LRk3-cCRYLGzWNdKLxk6iR8IKibhq4"
+                                self.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmVzSW4iOiIzZCIsImlkIjo1MzMyNDUwLCJlbWFpbCI6ImppYXFpbGlAc3RtYXJrc3NjaG9vbC5vcmciLCJpYXQiOjE3NDEyODAwMjN9.eD5GlIz9vQ0nG2TmLg2NGtkKuX3GHZrc8E4wX2P25qU"//Test User Token
                             }, label: {
                                 Text("DemoMode")
                             })
