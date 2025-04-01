@@ -153,7 +153,7 @@ extension Date {
             let formatter = DateFormatter()
             formatter.dateFormat = "h:mm a"
             // Use "America/New_York" for Eastern Time with DST support
-            formatter.timeZone = TimeZone(abbreviation: "GMT")
+            
             formatter.locale = Locale(identifier: "en_US_POSIX")
             return formatter
         }()
